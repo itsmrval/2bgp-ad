@@ -21,6 +21,13 @@ l'attaque asrep roasting permet prendre la main sur d'autres comptes
 
 DHCPv6 spoofing/poisoning
 
+**Attaques simples :**
+Abus des DACL (Discretionary Access Control Lists)
+
+Prendre le controle d'un compte qui a les droits de modifier ou de create des gpo grâce aux 
+attaques précédentes pour lancer des attaques plus vastes
+
+
 **Attaques Importantes :**
 
 
