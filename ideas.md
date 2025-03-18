@@ -28,7 +28,7 @@ Votre équipe a tenté de pénétrer dans les coulisses l'IT du casino pour subt
 
 Ce revers, loin de constituer un échec définitif, met en lumière une piste inattendue : une vulnérabilité au cœur de l'annuaire Active Directory. En scrutant les communications internes, vous découvrez qu'un serveur LDAP, mal configuré et accessible en mode anonyme, pourrait être la clé pour contourner les défenses et obtenir les informations nécessaires. C'est à vous, expert AD, de transformer cette faille en opportunité et de préparer le prochain mouvement de l'équipe pour renverser la sécurité du casino.
 
-Reconnaissance et Énumération du Réseau
+ATTAQUE :
 
 Objectif : Identifier les services LDAP ouverts sur le réseau du casino.
 Méthode : Utilisez des outils comme nmap pour scanner le réseau et repérer les serveurs qui exposent le service LDAP.
