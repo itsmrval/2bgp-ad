@@ -30,13 +30,19 @@ Chaque pas vous rapprochera de la forteresse numérique de Benedict. Entre recon
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Level 1 (Reconnaissance ) :
+Level 1 (Reconnaissance NMAP) :
 
 Script pour histoire du niveau :
 
-Votre équipe a tenté de pénétrer dans les coulisses l'IT du casino pour subtiliser un compte AD stratégique, mais vos efforts se sont heurtés à un mur de sécurité imprévu. Les défenses internes se sont avérées plus solides que prévu et l'accès direct aux comptes critiques s'est avéré impossible par des moyens conventionnels.
+Votre équipe a tenté de pénétrer dans les coulisses IT du casino pour subtiliser un compte AD stratégique et en savoir plus sur le réseau, mais vos efforts se sont heurtés à un mur de sécurité imprévu. Les défenses internes se sont révélées plus solides que prévu, rendant l'accès direct aux comptes critiques impossible par des moyens conventionnels. 
 
-Ce revers, loin de constituer un échec définitif, met en lumière une piste inattendue : une vulnérabilité au cœur de l'annuaire Active Directory. En scrutant les communications internes, vous découvrez qu'un serveur LDAP, mal configuré et accessible en mode anonyme, pourrait être la clé pour contourner les défenses et obtenir les informations nécessaires. C'est à vous, expert AD, de transformer cette faille en opportunité et de préparer le prochain mouvement de l'équipe pour renverser la sécurité du casino.
+Cependant, l'équipe à réussi après quelques verres à soudoyer une travailleur de l'équipe IT une plage d'IP ... . En lançant une reconnaissance méticuleuse à l'aide de nmap, vous allez pouvoir cartographier le réseau du casino et identifier les services exposés.
+
+Attaque : 
+
+lancer un nmap et voir les ports ouverts.
+
+On peut dire que la key pour le CTF c'est les numéros des ports additionés pour pouvoir passé au prochain niveau. 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
