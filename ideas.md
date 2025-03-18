@@ -11,11 +11,20 @@ Tuto Exegol conteneur : https://youtu.be/7AI2rYDLIUs?si=uwSTkzRqh5wNxuXm
 
 Idées Attaques : 
 
+**Attaques de bas niveau :**
+
 LLMNR, NBT-NS et mDNS spoofing
 
 Kerberoast w/o pre-authentication
 
+l'attaque asrep roasting permet prendre la main sur d'autres comptes
+
 DHCPv6 spoofing/poisoning
+
+**Attaques Importantes :**
+
+
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
