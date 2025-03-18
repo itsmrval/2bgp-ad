@@ -40,7 +40,12 @@ Cependant, l'équipe à réussi après quelques verres à soudoyer une travaille
 
 Attaque : 
 
-lancer un nmap et voir les ports ouverts.
+lancer un nmap pour connaitre les ip qui répondent 
+
+nmap -sn 192.168.1.0/24
+
+avec les IPs faire un nmap :
+
 
 On peut dire que la key pour le CTF c'est les numéros des ports additionés pour pouvoir passé au prochain niveau. 
 
