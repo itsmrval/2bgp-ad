@@ -7,6 +7,8 @@ Infra:
 - 2 forêts (Bellagio et le Mirage)
 - Domaines enfants (Bellagio: casino.bellagio.com Mirage: casino.mirage.com MGM Grand: casino.mgmgrand.com )
 
+Tuto Exegol conteneur : https://youtu.be/7AI2rYDLIUs?si=uwSTkzRqh5wNxuXm
+
 Idées Attaques : 
 
 LLMNR, NBT-NS et mDNS spoofing
