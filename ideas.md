@@ -3,6 +3,11 @@ Ocean's Eleven
 theme song: https://youtu.be/sdSai09_jzc
 theme write: https://www.youtube.com/watch?v=FteCteGhnYY
 
+Infra:
+- 2 forêts (casino1 casino2 ??)
+- Domaines enfants (??)
+
+
 Level 1:
 Partage SMB publique ?
 
