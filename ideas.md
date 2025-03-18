@@ -9,11 +9,14 @@ Infra:
 
 
 
-Histoire inspiré de Ocean's Eleven :
+Histoire inspiré de Ocean's Eleven à mettre dans l'intro :
 
-Danny Ocean est un escroc charismatique et il a un objectif : Dévaliser en meme temps 3 des plus grands casinos de Las Vegas tous appartenant au redoutable Terry Benedict un membre influant de la mafia.
+Danny Ocean est un maître du casse et le cerveau derrière l'opération la plus audacieuse jamais orchestrée sur le Strip de Las Vegas. Son objectif ? Dévaliser simultanément trois des plus prestigieux casinos détenus par le redoutable Terry Benedict, un magnat de la mafia dont le pouvoir s'étend jusque dans les systèmes numériques.
 
-Pour mener cela à bien, Ocean se doit de réunir une équipe de onze spécialistes aux compétences complémentaires, allant du technicien à l'expert en sécurité, en passant par le maître du déguisement. Ocean vous à a l’oeil depuis longtemps et a observe vos fais et geste et a decidé de vous faire confiance et de vous intégrer à l'équipe. Grace a vos connaissance en AD vous allez aider l'équipe à s'infiltrer et à dévaliser ces 3 casinos. 
+Pour préparer ce coup d'éclat, Ocean a réuni une équipe de onze spécialistes aux compétences complémentaires : ingénieurs, hackers, experts en sécurité et as du déguisement numérique. Vous, reconnu pour votre expertise en Active Directory, avez été minutieusement sélectionné. Sans disposer d'un compte initial pour accéder au domaine, votre mission consistera à infiltrer l'environnement AD, contourner ses défenses et exploiter ses failles pour obtenir les accès nécessaires.
+
+Chaque pas vous rapprochera de la forteresse numérique de Benedict. Entre reconnaissance réseau, escalades de privilèges et attaques ciblées, vous devrez user de ruse et d'innovation pour déjouer les mécanismes de sécurité et créer le ticket d'or qui vous ouvrira les portes de ces casinos virtuels. La réussite de l'opération repose sur votre capacité à découvrir et exploiter les vulnérabilités d'un Active Directory verrouillé, sans compte de départ. Bienvenue dans l'équipe : le braquage commence maintenant.
+
 
 
 Level 1:
