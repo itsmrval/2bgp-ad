@@ -1,3 +1,10 @@
+# Description: This tasks will create a new SDN zone, vnet, and subnet.
+
+# needed provided variables:
+# sdn_name
+# sdn_network
+# sdn_gateway
+
 - name: check_zone
   shell: pvesh get /cluster/sdn/zones --output-format=json | grep -q "{{ sdn_name }}"
   register: sdn_zone_exists

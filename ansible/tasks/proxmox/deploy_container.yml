@@ -1,0 +1,49 @@
+# Description: This task is responsible for deploying a container.
+
+# needed provided variables:
+# container_id
+# container_name
+# container_memory
+# container_cores
+# container_ip
+# template_name
+# enable_tun (optional)
+- name: check_container
+  shell: pct list | grep -q "{{ container_id }}"
+  register: container_exists
+  failed_when: false
+  changed_when: false
+
+- name: get_template_path
+  shell: pveam list "{{ template_storage }}" | grep "{{ template_name }}" | awk '{print $1}'
+  register: template_path
+  when: container_exists.rc != 0
+  changed_when: false
+
+- name: create_container
+  shell: >
+    pct create "{{ container_id }}" 
+    "{{ template_path.stdout }}" 
+    --hostname "{{ container_name }}" 
+    --cores "{{ container_cores }}" 
+    --memory "{{ container_memory }}" 
+    --net0 name=eth0,bridge="{{ sdn_corenet_name }}",ip="{{ container_ip }}/24,gw={{ sdn_corenet_gateway }}" 
+    --onboot 1
+  when: container_exists.rc != 0
+
+- name: tun_container
+  block:
+    - name: Ensure TUN device settings are in container config
+      lineinfile:
+        path: "/etc/pve/lxc/{{ container_id }}.conf"
+        line: "{{ item }}"
+        create: yes
+      loop:
+        - "lxc.cgroup2.devices.allow: c 10:200 rwm"
+        - "lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file"
+        - "features: fuse=1,keyctl=1,mknod=1,nesting=1"
+  when: enable_tun is defined and enable_tun
+
+- name: start_container
+  shell: pct start "{{ container_id }}"
+  when: container_exists.rc != 0

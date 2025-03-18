@@ -1,4 +1,8 @@
----
+# Description: Download a Proxmox template from the Proxmox VE repository
+
+# needed provided variables:
+# template_storage
+# template_name
 
 - name: check_template
   shell: pveam list "{{ template_storage }}" | grep -q "{{ template_name }}"

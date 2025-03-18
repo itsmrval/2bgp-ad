@@ -1,0 +1,18 @@
+# Description: This file is used to execute a command inside a container.
+
+# needed provided variables:
+# container_id
+# command
+
+- name: check_running
+  command: pct status {{ container_id }}
+  register: container_status
+  failed_when: "'status: running' not in container_status.stdout"
+
+- name: exec
+  shell: pct exec {{ container_id }} -- {{ command }}
+  register: command_output
+
+- name: display
+  debug:
+    var: command_output.stdout

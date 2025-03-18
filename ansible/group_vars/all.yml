@@ -1,15 +1,15 @@
 ---
 proxmox_node: "{{ inventory_hostname }}"
 
-sdn_name: "corenet"
-sdn_network: "172.16.0.0/24"
-sdn_gateway: "172.16.0.254"
+sdn_corenet_name: "corenet"
+sdn_corenet_network: "172.16.0.0/24"
+sdn_corenet_gateway: "172.16.0.254"
 
 template_storage: "local"
-template_name: "debian-12-standard"
+template_alpine_name: "alpine-3.21-default"
 
-container_id: 100
-container_name: "example"
-container_memory: 1024
-container_cores: 1
-container_ip: "172.16.0.1"
+container_openvpn_id: 100
+container_openvpn_name: "openvpn"
+container_openvpn_memory: 1024
+container_openvpn_cores: 1
+container_openvpn_ip: "172.16.0.1"

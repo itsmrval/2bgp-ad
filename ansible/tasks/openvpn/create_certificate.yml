@@ -1,0 +1,64 @@
+
+- name: generate_client
+  command: /etc/openvpn/easy-rsa/easyrsa gen-req {{ username }} nopass
+  args:
+    chdir: /etc/openvpn/easy-rsa
+  environment:
+    EASYRSA_BATCH: "1"
+
+- name: sign_client
+  command: /etc/openvpn/easy-rsa/easyrsa sign-req client {{ username }}
+  args:
+    chdir: /etc/openvpn/easy-rsa
+  environment:
+    EASYRSA_BATCH: "1"
+
+- name: create_client_config
+  file:
+    path: /etc/openvpn/ccd/{{ username }}
+    state: directory
+
+- name: create_client_route
+  copy:
+    content: |
+      ifconfig-push 10.8.0.{{ 2 + client_index }} 255.255.255.0
+      iroute {{ route }}
+    dest: /etc/openvpn/ccd/{{ username }}
+
+- name: create_client_ovpn
+  copy:
+    content: |
+      client
+      dev tun
+      proto udp
+      remote YOUR_SERVER_IP 1194
+      resolv-retry infinite
+      nobind
+      user nobody
+      group nogroup
+      persist-key
+      persist-tun
+      ca ca.crt
+      cert {{ username }}.crt
+      key {{ username }}.key
+      remote-cert-tls server
+      cipher AES-256-CBC
+      verb 3
+      auth-user-pass
+    dest: /etc/openvpn/ccd/{{ username }}.ovpn
+
+- name: copy_certs
+  copy:
+    src: "{{ item }}"
+    dest: /etc/openvpn/ccd/
+    remote_src: yes
+  loop:
+    - /etc/openvpn/easy-rsa/pki/issued/{{ username }}.crt
+    - /etc/openvpn/easy-rsa/pki/private/{{ username }}.key
+
+- name: create_auth
+  copy:
+    content: |
+      {{ username }}
+      {{ password }}
+    dest: /etc/openvpn/ccd/{{ username }}.auth
