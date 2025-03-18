@@ -1,0 +1,22 @@
+---
+
+- name: check_template
+  shell: pveam list "{{ template_storage }}" | grep -q "{{ template_name }}"
+  register: template_exists
+  failed_when: false
+  changed_when: false
+
+- name: list_template
+  shell: pveam available | grep {{ template_name }}
+  register: available_templates
+  when: template_exists.rc != 0
+
+- name: get_template
+  set_fact:
+    latest_template: "{{ available_templates.stdout_lines[0].split()[1] }}"
+  when: template_exists.rc != 0 and available_templates.stdout_lines | length > 0
+
+- name: download_template
+  shell: pveam download "{{ template_storage }}" "{{ latest_template }}"
+  when: template_exists.rc != 0 and available_templates.stdout_lines | length > 0
+  register: template_downloaded

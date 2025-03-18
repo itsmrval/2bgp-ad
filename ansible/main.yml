@@ -1,0 +1,15 @@
+---
+- name: init_deploy
+  hosts: proxmox_node
+  gather_facts: yes
+  become: yes
+  
+  tasks:
+    - name: deploy_sdn
+      import_tasks: tasks/sdn.yml
+      
+    - name: download_template
+      import_tasks: tasks/template.yml
+      
+    - name: deploy_container
+      import_tasks: tasks/container.yml

@@ -1,0 +1,44 @@
+- name: check_zone
+  shell: pvesh get /cluster/sdn/zones --output-format=json | grep -q "{{ sdn_name }}"
+  register: sdn_zone_exists
+  failed_when: false
+  changed_when: false
+
+- name: create_zone
+  shell: pvesh create /cluster/sdn/zones --zone "{{ sdn_name }}" --type simple
+  when: sdn_zone_exists.rc != 0
+  register: zone_created
+
+- name: check_vnet
+  shell: pvesh get /cluster/sdn/vnets --output-format=json | grep -q "{{ sdn_name }}"
+  register: sdn_vnet_exists
+  failed_when: false
+  changed_when: false
+
+- name: create_vnet
+  shell: >
+    pvesh create /cluster/sdn/vnets
+    --zone "{{ sdn_name }}"
+    --vnet "{{ sdn_name }}"
+  when: sdn_vnet_exists.rc != 0 or zone_created.changed
+  register: vnet_created
+
+- name: check_subnet
+  shell: pvesh get /cluster/sdn/vnets/{{ sdn_name }}/subnets --output-format=json | grep -q "{{ sdn_network }}"
+  register: sdn_subnet_exists
+  failed_when: false
+  changed_when: false
+
+- name: create_subnet
+  shell: >
+    pvesh create /cluster/sdn/vnets/{{ sdn_name }}/subnets
+    --subnet "{{ sdn_network }}"
+    --type subnet
+    --gateway "{{ sdn_gateway }}"
+    --snat
+  when: sdn_subnet_exists.rc != 0 or vnet_created.changed or zone_created.changed
+  register: subnet_created
+
+- name: apply
+  shell: pvesh set /cluster/sdn
+  when: zone_created.changed or vnet_created.changed or subnet_created.changed

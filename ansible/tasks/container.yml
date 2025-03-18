@@ -1,0 +1,25 @@
+---
+
+- name: check_container
+  shell: pct list | grep -q "{{ container_id }}"
+  register: container_exists
+  failed_when: false
+  changed_when: false
+
+- name: get_template_path
+  shell: pveam list "{{ template_storage }}" | grep "{{ template_name }}" | awk '{print $1}'
+  register: template_path
+  when: container_exists.rc != 0
+  changed_when: false
+
+- name: create_container
+  shell: >
+    pct create "{{ container_id }}" 
+    "{{ template_path.stdout }}" 
+    --hostname "{{ container_name }}" 
+    --cores "{{ container_cores }}" 
+    --memory "{{ container_memory }}" 
+    --net0 name=eth0,bridge="{{ sdn_name }}",ip="{{ container_ip }}/24,gw={{ sdn_gateway }}" 
+    --onboot 1 
+    --start 1
+  when: container_exists.rc != 0
