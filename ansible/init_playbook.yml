@@ -41,5 +41,5 @@
     - name: run_docker_install
       import_tasks: tasks/remote/run_playbook.yml
       vars:
-        playbook_path: "remote_playbook/deploy_docker.yml"  
+        playbook_path: "remote_playbook/deploy_vpn.yml"  
         container_id: "{{ container_core_id }}"

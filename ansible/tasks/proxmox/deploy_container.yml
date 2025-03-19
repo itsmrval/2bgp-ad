@@ -27,6 +27,7 @@
     --hostname "{{ container_name }}" 
     --cores "{{ container_cores }}" 
     --memory "{{ container_memory }}" 
+    --storage "{{ container_storage }}"
     --net0 name=eth0,bridge="{{ sdn_corenet_name }}",ip="{{ container_ip }}/24,gw={{ sdn_corenet_gateway }}" 
     --onboot 1
   when: container_exists.rc != 0
