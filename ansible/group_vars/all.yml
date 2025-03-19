@@ -6,10 +6,10 @@ sdn_corenet_network: "172.16.0.0/24"
 sdn_corenet_gateway: "172.16.0.254"
 
 template_storage: "local"
-template_alpine_name: "alpine-3.21-default"
+template_alpine_name: "ubuntu-24.04-standard"
 
-container_openvpn_id: 100
-container_openvpn_name: "openvpn"
-container_openvpn_memory: 1024
-container_openvpn_cores: 1
-container_openvpn_ip: "172.16.0.1"
+container_core_id: 200
+container_core_name: "core-orch"
+container_core_memory: 1024
+container_core_cores: 1
+container_core_ip: "172.16.0.1"

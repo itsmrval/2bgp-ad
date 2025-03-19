@@ -1,0 +1,37 @@
+# Description: This playbook will run a playbook on a remote container
+
+# Needed provided variables:
+# container_id
+# playbook_path
+# playbook_vars (optional)
+# playbook_inventory (optional)
+
+- name: read_playbook
+  set_fact:
+    playbook_content: "{{ lookup('file', playbook_path) }}"
+
+- name: create_playbook
+  include_tasks: tasks/proxmox/exec_container.yml
+  vars:
+    command: |
+      /bin/bash -c "cat > /tmp/{{ playbook_path | basename }} << 'ENDOFPLAYBOOK'
+      {{ playbook_content }}
+      ENDOFPLAYBOOK"
+
+- name: verify_playbook
+  include_tasks: tasks/proxmox/exec_container.yml
+  vars:
+    command: cat /tmp/{{ playbook_path | basename }}
+  register: verify_result
+
+- name: run_playbook
+  include_tasks: tasks/proxmox/exec_container.yml
+  vars:
+    command: |
+      /bin/bash -c "
+      export LC_ALL=C.UTF-8 && 
+      export LANG=C.UTF-8 && 
+      ansible-playbook /tmp/{{ playbook_path | basename }}
+      {% if playbook_inventory is defined and playbook_inventory | length > 0 %} -i {{ playbook_inventory }}{% endif %}
+      {% if playbook_vars is defined and playbook_vars | length > 0 %} --extra-vars '{{ playbook_vars | to_json }}'{% endif %}
+      " 

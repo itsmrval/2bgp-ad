@@ -1,0 +1,20 @@
+# Description: This playbook will deploy ansible on a remote container
+
+# needed provided variables:
+# container_id
+
+- name: upgrade
+  import_tasks: tasks/proxmox/exec_container.yml
+  vars:
+    command: "apt-get update && apt-get upgrade -y"
+
+- name: install_python
+  import_tasks: tasks/proxmox/exec_container.yml
+  vars:
+    command: "apt-get install -y python3"
+
+
+- name: install_ansible
+  import_tasks: tasks/proxmox/exec_container.yml
+  vars:
+    command: "apt-get install -y ansible"

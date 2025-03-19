@@ -1,0 +1,60 @@
+---
+- name: Deploy Docker and Docker Compose
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: apt_update
+      apt:
+        update_cache: yes
+
+    - name: apt_upgrade
+      apt:
+        upgrade: dist
+
+    - name: install_deps
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: install_gpg
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: install_docker
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: check_running
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: install_compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
+
+    - name: create_docker_compose
+      copy:
+        dest: /opt/docker-compose.yml
+        content: |
+          version: '3.8'
+          services:
+            web:
+              image: nginx:latest
+              ports:
+                - "80:80"
