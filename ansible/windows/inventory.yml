@@ -1,0 +1,44 @@
+all:
+  vars:
+    ansible_connection: winrm
+    ansible_winrm_server_cert_validation: ignore
+    ansible_winrm_transport: ntlm
+    ansible_winrm_port: 5986
+    ansible_winrm_scheme: https
+    ansible_user: Administrator
+    ansible_password: VotreMotDePasse  # Utilisez ansible-vault pour sécuriser ce mot de passe
+
+  children:
+    windows_servers:
+      hosts:
+        win2012_1:
+          ansible_host: 172.16.1.50
+          vm_name: AD2012-1
+          template: win2012_template
+          memory: 4096
+          cores: 2
+          disk_size: 50G
+          
+        win2012_2:
+          ansible_host: 172.16.1.51
+          vm_name: AD2017
+          template: win2012_template
+          memory: 4096
+          cores: 2
+          disk_size: 50G
+          
+        win2016:
+          ansible_host: 172.16.1.52
+          vm_name: AD2016
+          template: win2016_template
+          memory: 4096
+          cores: 2
+          disk_size: 50G
+          
+    proxmox:
+      hosts:
+        proxmox_host:
+          ansible_host: 192.168.
+          ansible_user: root
+          ansible_connection: ssh
+          ansible_ssh_private_key_file: ~/.ssh/id_rsa

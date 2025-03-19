@@ -1,0 +1,52 @@
+---
+- name: Configure Windows Servers
+  hosts: windows_servers
+  gather_facts: yes
+  tasks:
+    - name: Set hostname
+      win_hostname:
+        name: "{{ vm_name }}"
+      register: hostname_result
+    
+    - name: Reboot if hostname changed
+      win_reboot:
+        msg: "Rebooting because hostname changed"
+        pre_reboot_delay: 15
+        post_reboot_delay: 60
+      when: hostname_result.reboot_required
+    
+    - name: Set static IP
+      win_shell: |
+        $interface = Get-NetAdapter | Where-Object {$_.Status -eq "Up"}
+        $ip = "{{ ansible_host }}"
+        $gateway = "172.16.X.1"
+        $dns = "172.16.X.50", "172.16.X.52"
+        $subnet = "24"
+        
+        New-NetIPAddress -InterfaceIndex $interface.ifIndex -IPAddress $ip -PrefixLength $subnet -DefaultGateway $gateway
+        Set-DnsClientServerAddress -InterfaceIndex $interface.ifIndex -ServerAddresses $dns
+      
+    - name: Enable Remote Desktop
+      win_regedit:
+        path: HKLM:\System\CurrentControlSet\Control\Terminal Server
+        name: fDenyTSConnections
+        data: 0
+        type: dword
+      
+    - name: Enable RDP through firewall
+      win_firewall_rule:
+        name: Remote Desktop
+        localport: 3389
+        action: allow
+        direction: in
+        protocol: tcp
+        state: present
+        enabled: yes
+    
+    - name: Install Windows Updates
+      win_updates:
+        category_names:
+          - SecurityUpdates
+          - CriticalUpdates
+        reboot: yes
+        reboot_timeout: 3600
