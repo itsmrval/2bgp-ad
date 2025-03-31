@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ocean's Eleven Dot Matrix Style</title>
+  <style>
+    /* Mise en page de base */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #000; /* Fond noir */
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+
+    /* Conteneur principal */
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Titre "OCEAN'S ELEVEN" en points rouges */
+    .title {
+      position: relative;
+      z-index: 2;            /* Au-dessus du "11" */
+      font-size: 4em;        /* Taille de la police à ajuster */
+      text-align: left;      /* Aligné à gauche au lieu de center */
+      padding-left: 15%;     /* Augmenté l'espace à gauche pour le centrer davantage */
+      top: 40%;              /* Ajuste la position verticale */
+      margin: 0;             /* Retiré auto pour ne pas centrer */
+      width: 100%;
+      color: transparent;    /* On rend le texte transparent pour n'afficher que le background */
+      background-image: repeating-radial-gradient(
+        #ffffff 0 2px,
+        transparent 2px 6px
+      );
+      background-clip: text;        /* Découpe le background dans le texte */
+      -webkit-background-clip: text;/* Préfixe pour Chrome/Safari */
+      background-size: 8px 8px;     /* Ajuste la taille et l'espacement des points */
+    }
+
+    /* Le grand chiffre "11" en points dorés, placé derrière */
+    .number {
+      position: absolute;
+      top: 50%;
+      right: 2%; /* Plus à droite */
+      transform: translateY(-50%);
+      z-index: 1;             /* Derrière le titre */
+      font-size: 25em;        /* Agrandi */
+      color: transparent;     /* Même principe de transparence */
+      background-image: repeating-radial-gradient(
+        #ff0000 0 3px,
+        transparent 3px 10px
+      );
+      background-clip: text;
+      -webkit-background-clip: text;
+      background-size: 13px 13px;
+      margin: 0;
+      line-height: 0.9;       /* Pour que le "11" prenne moins de hauteur verticale */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">OCEAN'S ELEVEN</h1>
+    <h1 class="number">11</h1>
+  </div>
+</body>
+</html>

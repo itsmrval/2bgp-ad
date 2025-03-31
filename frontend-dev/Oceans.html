@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ocean's Eleven Intro</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: white;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .bar {
+      position: absolute;
+      bottom: 0;
+      width: 5px;
+      background-color: #d52b1e;
+      animation: grow 1s ease-out forwards;
+    }
+
+    .bar:nth-child(1) { left: 15%; height: 0; animation-delay: 0.2s; }
+    .bar:nth-child(2) { left: 18%; height: 0; animation-delay: 0.4s; }
+    .bar:nth-child(3) { left: 21%; height: 0; animation-delay: 0.6s; }
+    .bar:nth-child(4) { left: 24%; height: 0; animation-delay: 0.8s; }
+    .bar:nth-child(5) { left: 27%; height: 0; animation-delay: 1s; }
+
+    @keyframes grow {
+      to { height: 100%; }
+    }
+
+    .red-block {
+      position: absolute;
+      bottom: -50%;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background-color: #d52b1e;
+      animation: slideUp 1s ease-out 1.2s forwards;
+    }
+
+    @keyframes slideUp {
+      to { bottom: 0; }
+    }
+
+    .text {
+      position: absolute;
+      top: 30%;
+      width: 100%;
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 1s ease-in 2.4s forwards;
+      z-index: 10; /* Add z-index to ensure text is above other elements */
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .text span {
+      display: block;
+      font-size: 3.5em; /* Increased font size */
+      font-weight: bold;
+      letter-spacing: 2px;
+      margin-bottom: 10px; /* Added space between lines */
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3); /* Added shadow for better visibility */
+    }
+
+    .line-text {
+      position: absolute;
+      color: rgb(0, 0, 0);
+      font-weight: bold;
+      font-size: 1.5em;
+      transform: rotate(90deg);
+      transform-origin: left center;
+      white-space: nowrap;
+      opacity: 0;
+      animation: fadeIn 0.8s ease-in 1.8s forwards;
+    }
+
+  .line-text-1 { bottom: 65%; left: 15.5%; }
+  .line-text-2 { bottom: 70%; left: 18.5%; }
+  .line-text-3 { bottom: 75%; left: 21.5%; }
+  .line-text-4 { bottom: 80%; left: 24.5%; }
+  .line-text-5 { bottom: 65%; left: 27.5%; }
+
+    .red-text { color: #d52b1e; }
+    .black-text { color: black; }
+  </style>
+</head>
+<body>
+
+  <!-- Lignes verticales -->
+  <div class="bar"></div>
+  <div class="bar"></div>
+  <div class="bar"></div>
+  <div class="bar"></div>
+  <div class="bar"></div>
+
+
+  <!-- Bloc rouge -->
+  <div class="red-block"></div>
+
+  <!-- Texte -->
+  <div class="text">
+    <span class="red-text">2BGP</span>
+    <span class="black-text">PRESENTS</span>
+  </div>
+
+</body>
+</html>
