@@ -1,26 +1,101 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import Introsound from '../pages/assets/intro.mp3';
 
-const Intro = () => {
+const Intro = ({ onComplete = () => {} }) => {
+    const [currentNumber, setCurrentNumber] = useState(1);
+    const [title, setTitle] = useState('');
+    const [animationComplete, setAnimationComplete] = useState(false);
+    const [key, setKey] = useState(0);
+    const [direction, setDirection] = useState(0);
+    const [numberColor, setNumberColor] = useState('#ff0000');
+    const [titleColor, setTitleColor] = useState('#ffffff');
+
     useEffect(() => {
-        // We'll keep this JavaScript for additional control if needed
-        const title = document.querySelector('.title');
-        const number = document.querySelector('.number');
-        
-        // Reset animations when component mounts
-        title.style.opacity = 1; // We'll control visibility with CSS animation instead
-        number.style.opacity = 1;
+        const audio = new Audio(Introsound);
+        audio.play().catch(err => console.error("Error playing audio:", err));
     }, []);
+
+    useEffect(() => {
+        const titles = {
+            1: "OCEAN'S ONE",
+            2: "OCEAN'S TWO",
+            3: "2BGP TEAMS",
+            4: "MATHIEU BERSIN",
+            5: "CORENTIN BONNEAU",
+            6: "FRANCOIS GOYALONGO",
+            7: "VALENTIN PUCCETTI",
+            8: "OCEAN'S EIGHT",
+            9: "OCEAN'S NINE",
+            10: "OCEAN'S TEN",
+            11: "OCEAN'S ELEVEN"
+        };
+
+        const colors = {
+            1: { number: '#ffcc5c'  },
+            2: { number: '#515e7b'},
+            3: { number: '#3063ff'},
+            4: { number: '#fe54ff' },
+            5: { number: '#ff6b54' },
+            7: { number: '#8f00ff' },
+            6: { number: '#ffdd5f' },
+            8: { number: '#ff1493' },
+            9: { number: '#00ffff' },
+            10: { number: '#ffd700' },
+            11: { number: '#ff0000' }
+        };
+
+        setTitle(titles[currentNumber]);
+        setNumberColor(colors[currentNumber].number);
+        setTitleColor(colors[currentNumber].title || '#ffffff');
+
+        setDirection(currentNumber % 4);
+        setKey(prevKey => prevKey + 1);
+    }, [currentNumber]);
+
+    useEffect(() => {
+        setAnimationComplete(false);
+
+        const timer = setTimeout(() => {
+            setAnimationComplete(true);
+        }, 2500);
+
+        return () => clearTimeout(timer);
+    }, [currentNumber]);
+
+    useEffect(() => {
+        if (animationComplete) {
+            if (currentNumber < 11) {
+                const nextTimer = setTimeout(() => {
+                    setCurrentNumber(prev => prev + 1);
+                }, 500);
+                return () => clearTimeout(nextTimer);
+            } else {
+                onComplete();
+            }
+        }
+    }, [animationComplete, currentNumber, onComplete]);
+
+    const getAnimationClass = () => {
+        switch(direction) {
+            case 0: return "left-to-right";
+            case 1: return "right-to-left";
+            case 2: return "top-to-bottom";
+            case 3: return "bottom-to-top";
+            default: return "left-to-right";
+        }
+    };
+
+    const animationClass = getAnimationClass();
 
     return (
         <div className="container">
             <style>{`
-                /* Mise en page de base */
                 html, body {
                     margin: 0;
                     padding: 0;
                     width: 100%;
                     height: 100%;
-                    background: #000; /* Fond noir */
+                    background: #000;
                     font-family: sans-serif;
                     overflow: hidden;
                     display: flex;
@@ -28,7 +103,6 @@ const Intro = () => {
                     align-items: center;
                 }
 
-                /* Conteneur principal */
                 .container {
                     position: relative;
                     width: 100%;
@@ -36,37 +110,34 @@ const Intro = () => {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    flex-direction: row;
                 }
 
-                /* Titre "OCEAN'S ELEVEN" en points blancs */
                 .title {
                     position: relative;
                     z-index: 2;
                     font-size: 4em;
-                    text-align: center;
+                    text-align: right;
                     margin: 0;
+                    margin-right: 20px;
                     color: transparent;
                     background-image: repeating-radial-gradient(
-                        #ffffff 0 2px,
+                        ${titleColor} 0 2px,
                         transparent 2px 6px
                     );
                     background-clip: text;
                     -webkit-background-clip: text;
                     background-size: 8px 8px;
-                    animation: titleAppear 3s forwards;
+                    animation: titleAppear-${animationClass} 1.5s forwards;
                     opacity: 0;
-                    clip-path: inset(0 100% 0 0); /* Start with text clipped */
                 }
 
-                /* Le grand chiffre "11" en points rouges */
                 .number {
                     position: relative;
                     z-index: 1;
                     font-size: 25em;
                     color: transparent;
                     background-image: repeating-radial-gradient(
-                        #ff0000 0 3px,
+                        ${numberColor} 0 3px,
                         transparent 3px 10px
                     );
                     background-clip: text;
@@ -74,63 +145,117 @@ const Intro = () => {
                     background-size: 13px 13px;
                     margin: 0;
                     line-height: 0.9;
-                    margin-left: -20px;
-                    animation: numberAppear 3s forwards;
-                    animation-delay: 1.5s;
+                    animation: numberAppear-${animationClass} 1.5s forwards;
+                    animation-delay: 0.8s;
                     opacity: 0;
-                    clip-path: inset(0 100% 0 0); /* Start with number clipped */
                 }
 
-                /* Animation for title appearance */
-                @keyframes titleAppear {
+                @keyframes titleAppear-left-to-right {
                     0% {
                         background-size: 4px 4px;
                         opacity: 0;
                         clip-path: inset(0 100% 0 0);
                     }
-                    30% {
-                        opacity: 0.5;
-                        background-size: 6px 6px;
-                        clip-path: inset(0 75% 0 0);
-                    }
-                    65% {
-                        opacity: 0.8;
-                        background-size: 7px 7px;
-                        clip-path: inset(0 25% 0 0);
-                    }
                     100% {
                         background-size: 8px 8px;
                         opacity: 1;
-                        clip-path: inset(0 0 0 0); /* Fully visible */
+                        clip-path: inset(0 0 0 0);
                     }
                 }
-                
-                /* Animation for number appearance */
-                @keyframes numberAppear {
+
+                @keyframes numberAppear-left-to-right {
                     0% {
                         background-size: 6px 6px;
                         opacity: 0;
                         clip-path: inset(0 100% 0 0);
                     }
-                    30% {
-                        opacity: 0.5;
-                        background-size: 9px 9px;
-                        clip-path: inset(0 75% 0 0);
+                    100% {
+                        background-size: 13px 13px;
+                        opacity: 1;
+                        clip-path: inset(0 0 0 0);
                     }
-                    65% {
-                        opacity: 0.8;
-                        background-size: 11px 11px;
-                        clip-path: inset(0 25% 0 0);
+                }
+
+                @keyframes titleAppear-right-to-left {
+                    0% {
+                        background-size: 4px 4px;
+                        opacity: 0;
+                        clip-path: inset(0 0 0 100%);
+                    }
+                    100% {
+                        background-size: 8px 8px;
+                        opacity: 1;
+                        clip-path: inset(0 0 0 0);
+                    }
+                }
+
+                @keyframes numberAppear-right-to-left {
+                    0% {
+                        background-size: 6px 6px;
+                        opacity: 0;
+                        clip-path: inset(0 0 0 100%);
                     }
                     100% {
                         background-size: 13px 13px;
                         opacity: 1;
-                        clip-path: inset(0 0 0 0); /* Fully visible */
+                        clip-path: inset(0 0 0 0);
+                    }
+                }
+
+                @keyframes titleAppear-top-to-bottom {
+                    0% {
+                        background-size: 4px 4px;
+                        opacity: 0;
+                        clip-path: inset(100% 0 0 0);
+                    }
+                    100% {
+                        background-size: 8px 8px;
+                        opacity: 1;
+                        clip-path: inset(0 0 0 0);
+                    }
+                }
+
+                @keyframes numberAppear-top-to-bottom {
+                    0% {
+                        background-size: 6px 6px;
+                        opacity: 0;
+                        clip-path: inset(100% 0 0 0);
+                    }
+                    100% {
+                        background-size: 13px 13px;
+                        opacity: 1;
+                        clip-path: inset(0 0 0 0);
+                    }
+                }
+
+                @keyframes titleAppear-bottom-to-top {
+                    0% {
+                        background-size: 4px 4px;
+                        opacity: 0;
+                        clip-path: inset(0 0 100% 0);
+                    }
+                    100% {
+                        background-size: 8px 8px;
+                        opacity: 1;
+                        clip-path: inset(0 0 0 0);
+                    }
+                }
+
+                @keyframes numberAppear-bottom-to-top {
+                    0% {
+                        background-size: 6px 6px;
+                        opacity: 0;
+                        clip-path: inset(0 0 100% 0);
+                    }
+                    100% {
+                        background-size: 13px 13px;
+                        opacity: 1;
+                        clip-path: inset(0 0 0 0);
                     }
                 }
             `}</style>
-            <h1 className="title">OCEAN'S ELEVEN</h1>
-            <h1 className="number">11</h1>
+            <h1 className={`title ${animationClass}`} key={`title-${key}`}>{title}</h1>
+            <h1 className={`number ${animationClass}`} key={`number-${key}`}>{currentNumber}</h1>
         </div>
     );
 };

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte à Jouer Lumineuse - Ocean's Eleven Effect</title>
+    <style>
+        /* Mise en page de base */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #000;
+            margin: 0;
+        }
+
+        .card {
+            width: 200px;
+            height: 300px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            background-color: transparent; /* Fond transparent */
+            box-shadow: none;
+            position: relative;
+        }
+        
+        /* Ajout d'un pseudo-élément pour créer le contour dot matrix */
+        .card::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border-radius: 12px;
+            background: transparent;
+            z-index: -1;
+            box-shadow: 0 0 4px #3498db, 0 0 8px #3498db;
+            background-image: 
+                radial-gradient(#3498db 1px, transparent 1px),
+                radial-gradient(#3498db 1px, transparent 1px);
+            background-size: 5px 5px;
+            background-position: 0 0, 2.5px 2.5px;
+            animation: border-pulse 2s infinite alternate;
+        }
+
+        /* Style du symbole (exemple : ♥) avec effet dot matrix et animations */
+        .symbol {
+            font-size: 4em;
+            color: transparent;
+            background-image: repeating-radial-gradient(
+                #e50914 0 2px,
+                transparent 2px 6px
+            );
+            background-clip: text;
+            -webkit-background-clip: text;
+            background-size: 8px 8px;
+            animation: pulse 2s infinite, neon 1.5s infinite alternate;
+        }
+
+        /* Style du numéro ou de la lettre (exemple : A) avec effet différent (doré) */
+        .number {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1.5em;
+            color: transparent;
+            background-image: repeating-radial-gradient(
+                #ff0000 0 3px,
+                transparent 3px 10px
+            );
+            background-clip: text;
+            -webkit-background-clip: text;
+            background-size: 13px 13px;
+            animation: pulse 2s infinite, neon-number 1.5s infinite alternate;
+        }
+
+        /* Animation de pulsation */
+        @keyframes pulse {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Animation pour le contour */
+        @keyframes border-pulse {
+            from { box-shadow: 0 0 4px #3498db, 0 0 8px #3498db; }
+            to { box-shadow: 0 0 8px #3498db, 0 0 16px #3498db, 0 0 24px #3498db; }
+        }
+
+        /* Effet néon pour le symbole */
+        @keyframes neon {
+            from { text-shadow: 0 0 10px #e50914, 0 0 20px #e50914, 0 0 30px #e50914; }
+            to   { text-shadow: 0 0 20px #e50914, 0 0 30px #e50914, 0 0 40px #e50914; }
+        }
+
+        /* Effet néon pour le numéro */
+        @keyframes neon-number {
+            from { text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700; }
+            to   { text-shadow: 0 0 15px #ffd700, 0 0 20px #ffd700; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="number">A</div>
+        <div class="symbol">♥</div>
+    </div>
+</body>
+</html>
