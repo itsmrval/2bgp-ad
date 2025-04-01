@@ -1,0 +1,194 @@
+/* Base styles */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    font-family: sans-serif;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Title styling */
+.title {
+    position: relative;
+    z-index: 2;
+    font-size: 4em;
+    text-align: right;
+    margin: 0;
+    margin-right: 20px;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    opacity: 0;
+}
+
+/* Number styling */
+.number {
+    position: relative;
+    z-index: 1;
+    font-size: 25em;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    margin: 0;
+    line-height: 0.9;
+    opacity: 0;
+}
+
+/* Animation classes for different directions */
+/* Left to Right animations */
+.title.left-to-right {
+    animation: titleAppear-left-to-right 1.5s forwards;
+}
+
+.number.left-to-right {
+    animation: numberAppear-left-to-right 1.5s forwards;
+    animation-delay: 0.8s;
+}
+
+@keyframes titleAppear-left-to-right {
+    0% {
+        background-size: 4px 4px;
+        opacity: 0;
+        clip-path: inset(0 100% 0 0);
+    }
+    100% {
+        background-size: 8px 8px;
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+@keyframes numberAppear-left-to-right {
+    0% {
+        background-size: 6px 6px;
+        opacity: 0;
+        clip-path: inset(0 100% 0 0);
+    }
+    100% {
+        background-size: 13px 13px;
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+/* Right to Left animations */
+.title.right-to-left {
+    animation: titleAppear-right-to-left 1.5s forwards;
+}
+
+.number.right-to-left {
+    animation: numberAppear-right-to-left 1.5s forwards;
+    animation-delay: 0.8s;
+}
+
+@keyframes titleAppear-right-to-left {
+    0% {
+        background-size: 4px 4px;
+        opacity: 0;
+        clip-path: inset(0 0 0 100%);
+    }
+    100% {
+        background-size: 8px 8px;
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+@keyframes numberAppear-right-to-left {
+    0% {
+        background-size: 6px 6px;
+        opacity: 0;
+        clip-path: inset(0 0 0 100%);
+    }
+    100% {
+        background-size: 13px 13px;
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+/* Top to Bottom animations */
+.title.top-to-bottom {
+    animation: titleAppear-top-to-bottom 1.5s forwards;
+}
+
+.number.top-to-bottom {
+    animation: numberAppear-top-to-bottom 1.5s forwards;
+    animation-delay: 0.8s;
+}
+
+@keyframes titleAppear-top-to-bottom {
+    0% {
+        background-size: 4px 4px;
+        opacity: 0;
+        clip-path: inset(100% 0 0 0);
+    }
+    100% {
+        background-size: 8px 8px;
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+@keyframes numberAppear-top-to-bottom {
+    0% {
+        background-size: 6px 6px;
+        opacity: 0;
+        clip-path: inset(100% 0 0 0);
+    }
+    100% {
+        background-size: 13px 13px;
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+/* Bottom to Top animations */
+.title.bottom-to-top {
+    animation: titleAppear-bottom-to-top 1.5s forwards;
+}
+
+.number.bottom-to-top {
+    animation: numberAppear-bottom-to-top 1.5s forwards;
+    animation-delay: 0.8s;
+}
+
+@keyframes titleAppear-bottom-to-top {
+    0% {
+        background-size: 4px 4px;
+        opacity: 0;
+        clip-path: inset(0 0 100% 0);
+    }
+    100% {
+        background-size: 8px 8px;
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+@keyframes numberAppear-bottom-to-top {
+    0% {
+        background-size: 6px 6px;
+        opacity: 0;
+        clip-path: inset(0 0 100% 0);
+    }
+    100% {
+        background-size: 13px 13px;
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+    }
+}
