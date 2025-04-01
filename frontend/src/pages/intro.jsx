@@ -9,6 +9,7 @@ const Intro = ({ onComplete = () => {} }) => {
     const [direction, setDirection] = useState(0);
     const [numberColor, setNumberColor] = useState('#ff0000');
     const [titleColor, setTitleColor] = useState('#ffffff');
+    const [showButton, setShowButton] = useState(false);
 
     useEffect(() => {
         const audio = new Audio(Introsound);
@@ -70,7 +71,13 @@ const Intro = ({ onComplete = () => {} }) => {
                 }, 500);
                 return () => clearTimeout(nextTimer);
             } else {
+                const buttonTimer = setTimeout(() => {
+                    setShowButton(true);
+                }, 1000);
+                
                 onComplete();
+                
+                return () => clearTimeout(buttonTimer);
             }
         }
     }, [animationComplete, currentNumber, onComplete]);
@@ -86,6 +93,10 @@ const Intro = ({ onComplete = () => {} }) => {
     };
 
     const animationClass = getAnimationClass();
+
+    const handleNavigation = () => {
+        window.location.href = '/login';
+    };
 
     return (
         <div className="container">
@@ -253,9 +264,82 @@ const Intro = ({ onComplete = () => {} }) => {
                         clip-path: inset(0 0 0 0);
                     }
                 }
+
+                .skip-button {
+                    position: absolute;
+                    bottom: 40px;
+                    right: 60%;
+                    padding: 12px 30px;
+                    border: none;
+                    border-radius: 30px;
+                    font-size: 18px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    z-index: 100;
+                    color: white;
+                    background: linear-gradient(135deg, #ff0844 0%, #ff3366 50%, #ff0844 100%);
+                    box-shadow: 0 4px 15px rgba(255, 8, 68, 0.4);
+                    transition: all 0.3s ease;
+                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 10px;
+                    opacity: 0;
+                    transform: translateY(20px);
+                    animation: fadeInButton 0.8s forwards;
+                }
+
+                @keyframes fadeInButton {
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                .skip-button:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 7px 20px rgba(255, 8, 68, 0.6);
+                    background: linear-gradient(135deg, #ff3366 0%, #ff0844 50%, #ff3366 100%);
+                }
+                
+                .skip-button:active {
+                    transform: translateY(1px);
+                    box-shadow: 0 3px 10px rgba(255, 8, 68, 0.4);
+                }
+
+                .button-icon {
+                    font-size: 20px;
+                    display: inline-block;
+                    margin-right: 5px;
+                }
+
+                .button-text {
+                    position: relative;
+                    z-index: 2;
+                }
+
+                @keyframes sparkle {
+                    0%, 100% { opacity: 0.4; }
+                    50% { opacity: 1; }
+                }
+
+                .sparkle {
+                    position: absolute;
+                    background: rgba(255, 255, 255, 0.7);
+                    border-radius: 50%;
+                    animation: sparkle 1.5s infinite;
+                }
             `}</style>
             <h1 className={`title ${animationClass}`} key={`title-${key}`}>{title}</h1>
             <h1 className={`number ${animationClass}`} key={`number-${key}`}>{currentNumber}</h1>
+            
+            {showButton && (
+                <button className="skip-button" onClick={handleNavigation}>
+                    <span className="button-icon">💎</span>
+                    <span className="button-text">Enter the Heist</span>
+                </button>
+            )}
         </div>
     );
 };
