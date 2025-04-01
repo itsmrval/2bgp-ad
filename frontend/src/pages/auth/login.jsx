@@ -1,7 +1,7 @@
 import React from 'react';
 import Login from '../../components/login/Login.jsx';
 
-const intro = () => {
+const LoginPage = () => {
   const handleIntroComplete = () => {
   };
 return (
@@ -11,4 +11,4 @@ return (
   );
 };
 
-export default intro;
+export default LoginPage;

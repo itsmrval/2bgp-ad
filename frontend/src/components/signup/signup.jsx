@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { FaUserAlt, FaLock, FaEnvelope, FaUserPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import '../styles/auth.css';
-import backgroundImage from '../assets/background1.jpg';
+import '../../assets/styles/auth.css';
+import backgroundImage from '../../assets/img/background1.jpg';
 
 const Signup = () => {
   // Simple state variables for easier understanding
