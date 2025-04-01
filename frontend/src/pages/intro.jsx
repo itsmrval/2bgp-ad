@@ -156,8 +156,8 @@ const Intro = ({ onComplete = () => {} }) => {
                     background-size: 13px 13px;
                     margin: 0;
                     line-height: 0.9;
-                    animation: numberAppear-${animationClass} 1.5s forwards;
-                    animation-delay: 0.8s;
+                    animation: numberAppear-${animationClass} 2s forwards;
+                    animation-delay: 1s;
                     opacity: 0;
                 }
 
