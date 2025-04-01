@@ -2,11 +2,9 @@ import React from 'react';
 import Login from '../../components/login/Login.jsx';
 
 const LoginPage = () => {
-  const handleIntroComplete = () => {
-  };
-return (
+  return (
     <div>
-      <Login/>
+      <Login />
     </div>
   );
 };
