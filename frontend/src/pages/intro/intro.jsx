@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Intro from '../../components/intro/Intro.jsx';
 
-const intro = () => {
+const Intro_page = () => {
   const handleIntroComplete = () => {
   };
 return (
@@ -12,7 +12,7 @@ return (
   );
 };
 
-export default intro;
+export default Intro_page;
 
 
 

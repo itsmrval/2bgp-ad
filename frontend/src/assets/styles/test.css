@@ -1,0 +1,207 @@
+/* Conteneur principal */
+.login-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Bouton d'enregistrement */
+  .save-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 10;
+  }
+  
+  .save-button button {
+    background-color: black;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  /* Section de gauche */
+  .login-left {
+    width: 33.33%;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Section de droite */
+  .login-right {
+    width: 66.67%;
+    background-color: #f3f4f6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Cercle extérieur */
+  .circle-container {
+    width: 192px;
+    height: 192px;
+    border: 4px solid white;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Cercle intérieur avec le symbole $ */
+  .circle-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 176px;
+    height: 176px;
+    border-radius: 50%;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .circle-inner span {
+    color: white;
+    font-size: 6rem;
+    font-weight: 900;
+  }
+  
+  /* Cercle avec bordure pointillée */
+  .circle-dotted {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 8px dotted white;
+    border-radius: 50%;
+    box-sizing: border-box;
+  }
+  
+  /* Titres de la section droite */
+  .title {
+    font-size: 6rem;
+    font-weight: 900;
+    margin: 0.5rem 0;
+  }
+  
+  .title.black {
+    color: black;
+  }
+  
+  .title.red {
+    color: #B91C1C;
+  }
+  
+  /* Styles du formulaire */
+  .form {
+    background-color: #fff;
+    display: block;
+    padding: 2rem;
+    max-width: 850px;
+    width: 60%;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  .form-title {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 600;
+    text-align: center;
+    color: #000;
+    margin-bottom: 1.5rem;
+  }
+  
+  .input-container {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .input-container input,
+  .form button {
+    outline: none;
+    border: 1px solid #e5e7eb;
+    margin: 8px 0;
+  }
+  
+  .input-container input {
+    background-color: #fff;
+    padding: 1.25rem;
+    padding-right: 3rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    width: 100%;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  .input-container span {
+    display: grid;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    place-content: center;
+  }
+  
+  .input-container span svg {
+    color: #9CA3AF;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  
+  .submit {
+    display: block;
+    padding: 1rem 1.5rem;
+    background-color: rgb(0, 0, 0);
+    color: #ffffff;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 500;
+    width: 100%;
+    border-radius: 0.5rem;
+    text-transform: uppercase;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit:hover {
+    background-color: #FF0000;
+  }
+  
+  .signup-link {
+    color: #6B7280;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 1.5rem;
+  }
+  
+  .signup-link a {
+    text-decoration: underline;
+  }
+  

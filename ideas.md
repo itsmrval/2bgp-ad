@@ -4,7 +4,7 @@ theme song: https://youtu.be/sdSai09_jzc
 theme write: https://www.youtube.com/watch?v=FteCteGhnYY
 
 Infra:
-- 2 forêts (Bellagio et le Mirage)
+- 3 forêts (Bellagio, The Mirage, MGM Grand)
 - Domaines enfants (Bellagio: casino.bellagio.com Mirage: casino.mirage.com MGM Grand: casino.mgmgrand.com )
 
 Tuto Exegol conteneur : https://youtu.be/7AI2rYDLIUs?si=uwSTkzRqh5wNxuXm
