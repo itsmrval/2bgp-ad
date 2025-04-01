@@ -63,7 +63,6 @@
   command: cp /var/lib/vz/template/file_xml/autounattend.xml /var/lib/vz/template/provision_winsrv/
   become: yes
 
-
 - name: Install genisoimage
   apt:
     name: genisoimage
@@ -88,7 +87,6 @@
     --cores {{ vm_cores }}
     --memory {{ vm_memory }}
     --ide2 file=local:iso/Windows_Server_Auto.iso,media=cdrom
-    --net0 model=e1000,bridge=vmbr0,firewall=1
     --scsihw virtio-scsi-pci
     --sata0 {{ storage_name }}:{{ drive_size_gb }},format={{ format }}
     --ostype {{ vm_os_type }}
@@ -105,21 +103,26 @@
   retries: 30
   delay: 10
 
+- name: Wait for Windows installation to complete
+  command: >
+    qm guest exec {{ next_vmid.stdout }} -- powershell.exe -Command "Get-Content 'C:\Windows\Setup\State\State.ini'"
+  register: installation_complete
+  until: installation_complete.stdout is search('ImageState=IMAGE_STATE_COMPLETE')
+  retries: 60
+  delay: 10
+
 - name: Wait for QEMU Guest Agent to become accessible
   shell: "qm agent {{ next_vmid.stdout }} ping"
   register: agent_result
   until: agent_result.rc == 0
   retries: 60
   delay: 10
-  ignore_errors: yes
 
-- name: Remove IDE CD Drive
-  command: "qm set {{ next_vmid.stdout }} --delete ide2"
-  when: agent_result.rc == 0
-
-- name: Shutdown VM
+- name: Attempt to Shutdown VM using QEMU Guest Agent
   command: "qm shutdown {{ next_vmid.stdout }}"
   when: agent_result.rc == 0
+  register: shutdown_result
+  ignore_errors: yes
 
 - name: Wait for VM to be in stopped state
   shell: "qm list | grep {{ next_vmid.stdout }} | awk '{print $3}'"
@@ -127,13 +130,21 @@
   until: vm_status.stdout | trim == "stopped"
   retries: 30
   delay: 10
-  when: agent_result.rc == 0
+
+- name: Force stop VM if still running or if shutdown failed
+  command: "qm stop {{ next_vmid.stdout }}"
+  when: (vm_status.stdout | trim != "stopped") or (shutdown_result is defined and shutdown_result.rc != 0)
+
+- name: Wait for VM to be in stopped state after force stop
+  shell: "qm list | grep {{ next_vmid.stdout }} | awk '{print $3}'"
+  register: vm_status
+  until: vm_status.stdout | trim == "stopped"
+  retries: 15
+  delay: 5
 
 - name: Create template from VM
   command: "qm template {{ next_vmid.stdout }}"
-  when: agent_result.rc == 0
 
 - name: Done
   debug:
-    msg: "Template build {{ vm_name }}, with VMID {{ next_vmid.stdout }} complete and accessible via QEMU Guest Agent."
-  when: agent_result.rc == 0
+    msg: "Template build {{ vm_name }}, with VMID {{ next_vmid.stdout }} complete."

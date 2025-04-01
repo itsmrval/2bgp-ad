@@ -12,7 +12,6 @@
         vm_id: "{{ vm_id_2012 }}"
         iso_file: "{{ vm_iso_2012 }}"
         vm_name: "{{ vm_name_2012 }}"
-        winsrv_ip: "{{ ip }}"
         storage_name: "local"
         iso_dir: "/var/lib/vz/template/iso"
         provision_iso_name: "{{ vm_name }}provision.iso"
@@ -24,7 +23,6 @@
         format: "qcow2"
         vm_os_type: "win8"  
         agent: 1
-        bridge: "vmbr0"
   
  
 
