@@ -1,28 +1,30 @@
 ---
-- name: playbook_WindowsSRV
+- name: Create Template WinSRV
   hosts: proxmox_node
   gather_facts: no
 
   tasks:
 
-    - name: Debug proxmox_user
-      debug:
-        msg: "Proxmox User is {{ proxmox_user }}"
-
-
-  # Deploy windows server 2016
-    - name: deploy_winsrv_2016
-      import_tasks: tasks/windows/deploy_winsrv.yml
-      vars:
-        vm_id: "{{ vm_id_2016 }}"
-        vm_name: "{{ vm_name_2016 }}"
-        template_vmid: "{{ template_vmid_2016 }}"
-        
   # Deploy windows server 2012
     - name: deploy_winsrv_2012
       import_tasks: tasks/windows/deploy_winsrv.yml
       vars:
         vm_id: "{{ vm_id_2012 }}"
+        iso_file: "{{ vm_iso_2012 }}"
         vm_name: "{{ vm_name_2012 }}"
-        template_vmid: "{{ template_vmid_2012 }}"
+        winsrv_ip: "{{ ip }}"
+        storage_name: "local"
+        iso_dir: "/var/lib/vz/template/iso"
+        provision_iso_name: "{{ vm_name }}provision.iso"
+        provision_dir: "/var/lib/vz/template/provision_winsrv"
+        vm_memory: 1024  
+        vm_cores: 1
+        vm_sockets: 1
+        drive_size_gb: 14
+        format: "qcow2"
+        vm_os_type: "win8"  
+        agent: 1
+        bridge: "vmbr0"
+  
+ 
 

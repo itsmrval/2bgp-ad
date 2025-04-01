@@ -1,0 +1,33 @@
+mkdir -p /mnt/winiso /var/lib/vz/template/provision_winsrv/
+
+mount -o loop /var/lib/vz/template/iso/winsrv2012.iso /mnt/winiso
+
+rsync -av /mnt/winiso/ /var/lib/vz/template/provision_winsrv/
+
+umount /mnt/winiso
+
+cp /var/lib/vz/template/file_xml/autounattend.xml /var/lib/vz/template/provision_winsrv/
+
+apt install genisoimage -y
+
+genisoimage -o /var/lib/vz/template/iso/Windows_Server_Auto.iso \
+-b boot/etfsboot.com -no-emul-boot -boot-load-size 8 -iso-level 3 \
+-relaxed-filenames -allow-lowercase -allow-multidot -udf -J -joliet-long \
+-eltorito-alt-boot -e boot/boot.sdi -no-emul-boot -V "WinSrv_Auto" \
+-allow-limited-size /var/lib/vz/template/provision_winsrv/
+
+
+
+
+========================================================
+
+Test WINRM PVE
+
+sudo apt-get install python3 python3-pip
+pip3 install pywinrm
+
+
+
+
+
+        
