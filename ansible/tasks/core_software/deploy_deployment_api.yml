@@ -1,0 +1,52 @@
+---
+- name: create_dir
+  file:
+    path: /opt/deployment_api
+    state: directory
+    mode: '0755'
+
+- name: create_venv
+  command: python3 -m venv /opt/deployment_api/venv
+  args:
+    creates: /opt/deployment_api/venv
+
+- name: install_env
+  pip:
+    name: flask
+    state: present
+    virtualenv: /opt/deployment_api/venv
+
+- name: copy_app_files
+  copy:
+    src: ../../../deployment_api/
+    dest: /opt/deployment_api/
+    remote_src: no
+    mode: '0644'
+
+- name: create_systemd
+  copy:
+    dest: /etc/systemd/system/deployment_api.service
+    content: |
+      [Unit]
+      Description=Deployment API
+      After=network.target
+
+      [Service]
+      User=root
+      WorkingDirectory=/opt/deployment_api
+      ExecStart=/opt/deployment_api/venv/bin/python /opt/deployment_api/app.py
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+    mode: '0644'
+
+- name: reload_systemd
+  systemd:
+    daemon_reload: yes
+
+- name: start_service
+  systemd:
+    name: deployment_api
+    enabled: yes
+    state: started

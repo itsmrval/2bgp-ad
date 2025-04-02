@@ -51,27 +51,27 @@
   when: zone_created.changed or vnet_created.changed or subnet_created.changed
 
 - name: check_security_group
-  shell: pvesh get /cluster/firewall/groups --output-format=json | grep -q "{{ sdn_name }}"
-  register: sdn_security_group_exists
-  failed_when: false
-  changed_when: false
+  when: sdn_cust is defined
+  block:
+    - name: check_security_group
+      shell: pvesh get /cluster/firewall/groups --output-format=json | grep -q "{{ sdn_name }}"
+      register: sdn_security_group_exists
+      failed_when: false
+      changed_when: false
 
-- name: create_security_group
-  shell: pvesh create /cluster/firewall/groups --group "{{ sdn_name }}"
-  when: sdn_security_group_exists.rc != 0
-  register: security_group_created
+    - name: create_security_group
+      shell: pvesh create /cluster/firewall/groups --group "{{ sdn_name }}"
+      when: sdn_security_group_exists.rc != 0
+      register: security_group_created
 
-- name: check_security_rule
-  shell: pvesh get /cluster/firewall/groups/{{ sdn_name }} --output-format=json | grep -q "{{ sdn_name }}"
-  register: sdn_security_rule_exists
-  failed_when: false
-  changed_when: false
+    - name: check_security_rule
+      shell: pvesh get /cluster/firewall/groups/{{ sdn_name }} --output-format=json | grep -q "{{ sdn_name }}"
+      register: sdn_security_rule_exists
+      failed_when: false
+      changed_when: false
 
-- name: create_security_rule
-  shell: >
-    pvesh create /cluster/firewall/groups/{{ sdn_name }} --action "ACCEPT" --type in --source "{{ sdn_network }}" -enable 1
-  when: sdn_security_rule_exists.rc != 0 or security_group_created.changed
-  register: security_rule_created
-
-
-  ### TODO: FIREWAlL OK FOR ISOLATING NET ETC
+    - name: create_security_rule
+      shell: >
+        pvesh create /cluster/firewall/groups/{{ sdn_name }} --action "ACCEPT" --type in --source "{{ sdn_network }}" -enable 1
+      when: sdn_security_rule_exists.rc != 0 or security_group_created.changed
+      register: security_rule_created

@@ -5,6 +5,7 @@
   become: yes
   
   tasks:
+
   # Deploy SDN on the Proxmox node
     - name: deploy_sdn
       import_tasks: tasks/proxmox/deploy_sdn.yml
@@ -33,5 +34,19 @@
         enable_tun: true
 
   # Deploy ansible on the VPN container
-    - name: install_ansible
+    - name: install_requirements
       import_tasks: tasks/core_software/install_requirements.yml
+      delegate_to: vpn_ct 
+
+  # Deploy the Deployment API on the VPN container (delegated to vpn_ct)
+    - name: deploy_deployment_api
+      import_tasks: tasks/core_software/deploy_deployment_api.yml
+      delegate_to: vpn_ct 
+
+  # Deploy SDN demo
+    - name: deploy_sdn_demo
+      import_tasks: tasks/proxmox/deploy_sdn.yml
+      vars:
+        sdn_name: "cust100"
+        sdn_network: "10.100.0.0/16"
+        sdn_gateway: "10.100.0.254"

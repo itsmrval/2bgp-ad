@@ -9,7 +9,7 @@ template_storage: "local"
 template_alpine_name: "ubuntu-24.04-standard"
 
 container_vpn_id: 1000
-container_vpn_name: "core-orch"
+container_vpn_name: "ct_vpn"
 container_vpn_memory: 1024
 container_vpn_cores: 1
 container_vpn_ip: "172.16.0.1"
