@@ -36,12 +36,12 @@
   # Deploy ansible on the VPN container
     - name: install_requirements
       import_tasks: tasks/core_software/install_requirements.yml
-      delegate_to: vpn_ct 
+      delegate_to: core-vpn 
 
-  # Deploy the Deployment API on the VPN container (delegated to vpn_ct)
+  # Deploy the Deployment API on the VPN container (delegated to core-vpn)
     - name: deploy_deployment_api
       import_tasks: tasks/core_software/deploy_deployment_api.yml
-      delegate_to: vpn_ct 
+      delegate_to: core-vpn 
 
   # Deploy SDN demo
     - name: deploy_sdn_demo
