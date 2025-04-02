@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../../assets/styles/test.css';
-import PlayingCard from '../PlayingCard'; // Import the PlayingCard component
+import PlayingCard from '../PlayingCard';
 
 function Login() {
+    // Simple state for email and password
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    // Simple form submission
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log('Login with:', email, password);
+        // Add login logic here
+    };
+
     return (
         <div className="login-container">
             {/* Section de gauche – fond noir avec le symbole $ */}
@@ -17,10 +29,15 @@ function Login() {
 
             {/* Section de droite – fond gris clair avec le texte BELLAGIO */}
             <div className="login-right">
-                <form className="form">
-                    <p className="form-title">Sign in to your account</p>
+                <form className="form" onSubmit={handleSubmit}>
+                    <p className="form-title">Join Ocean's Team</p>
                     <div className="input-container">
-                        <input placeholder="Enter email" type="email" />
+                        <input 
+                            placeholder="Enter email" 
+                            type="email" 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
                         <span>
                             <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
@@ -28,7 +45,12 @@ function Login() {
                         </span>
                     </div>
                     <div className="input-container">
-                        <input placeholder="Enter password" type="password" />
+                        <input 
+                            placeholder="Enter password" 
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)} 
+                        />
                         <span>
                             <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
@@ -41,7 +63,7 @@ function Login() {
                     </button>
                     <p className="signup-link">
                         No account?
-                        <a href="#">Sign up</a>
+                        <Link to="/signup">Sign up</Link>
                     </p>
                 </form>
             </div>
