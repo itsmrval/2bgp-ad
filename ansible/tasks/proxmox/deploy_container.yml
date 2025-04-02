@@ -7,7 +7,9 @@
 # container_cores
 # container_ip
 # template_name
+# container_size
 # enable_tun (optional)
+
 - name: check_container
   shell: pct list | grep -q "{{ container_id }}"
   register: container_exists
@@ -20,17 +22,36 @@
   when: container_exists.rc != 0
   changed_when: false
 
-- name: create_container
+- name: get_pubkey
+  shell: cat /root/.ssh/id_rsa.pub
+  register: proxmox_ssh_key
+  changed_when: false
+
+- name: Save SSH key to temporary file
+  copy:
+    content: "{{ proxmox_ssh_key.stdout }}"
+    dest: /tmp/proxmox_ssh_key.pub
+  changed_when: false
+
+- name: create_vpn_container
   shell: >
     pct create "{{ container_id }}" 
     "{{ template_path.stdout }}" 
     --hostname "{{ container_name }}" 
     --cores "{{ container_cores }}" 
     --memory "{{ container_memory }}" 
-    --storage "{{ container_storage }}"
+    --storage "{{ template_storage }}"
+    --rootfs {{ template_storage }}:{{ container_size }}
     --net0 name=eth0,bridge="{{ sdn_corenet_name }}",ip="{{ container_ip }}/24,gw={{ sdn_corenet_gateway }}" 
     --onboot 1
+    --ssh-public-keys /tmp/proxmox_ssh_key.pub
   when: container_exists.rc != 0
+
+- name: Remove temporary SSH key file
+  file:
+    path: /tmp/proxmox_ssh_key.pub
+    state: absent
+  changed_when: false
 
 - name: tun_container
   block:

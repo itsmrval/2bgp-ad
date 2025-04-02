@@ -19,8 +19,12 @@
   vars:
     command: "apt-get install -y ansible"
 
+- name: install_pipx
+  import_tasks: tasks/proxmox/exec_container.yml
+  vars:
+    command: "apt-get install -y pipx"
+
 - name: install_winrm_plugin
   import_tasks: tasks/proxmox/exec_container.yml
   vars:
-  #pip ou pipx ou pip3 à tester
     command: "pipx install http://github.com/diyan/pywinrm/archive/master.zip#egg=pywinrm --include-deps"

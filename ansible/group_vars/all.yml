@@ -8,8 +8,8 @@ sdn_corenet_gateway: "172.16.0.254"
 template_storage: "local"
 template_alpine_name: "ubuntu-24.04-standard"
 
-container_core_id: 200
-container_core_name: "core-orch"
-container_core_memory: 1024
-container_core_cores: 1
-container_core_ip: "172.16.0.1"
+container_vpn_id: 1000
+container_vpn_name: "core-orch"
+container_vpn_memory: 1024
+container_vpn_cores: 1
+container_vpn_ip: "172.16.0.1"

@@ -1,0 +1,16 @@
+- name: deploy_wireguard
+  hosts: localhost
+  become: yes
+  
+  tasks:
+    - name: install_wireguard
+      apt:
+        name: wireguard
+        state: present
+        update_cache: yes
+
+    - name: enable_wireguard
+      systemd:
+        name: wg-quick@wg0
+        enabled: yes
+        state: started

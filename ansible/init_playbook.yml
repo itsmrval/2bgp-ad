@@ -19,27 +19,19 @@
       vars:
         template_name: "{{ template_alpine_name }}"
 
-  # Deploy the Core container
-    - name: deploy_core_container
+  # Deploy the VPN container
+    - name: deploy_vpn_container
       import_tasks: tasks/proxmox/deploy_container.yml
       vars:
-        container_id: "{{ container_core_id }}"
-        container_name: "{{ container_core_name }}"
-        container_memory: "{{ container_core_memory }}"
-        container_cores: "{{ container_core_cores }}"
-        container_ip: "{{ container_core_ip }}"
+        container_id: "{{ container_vpn_id }}"
+        container_name: "{{ container_vpn_name }}"
+        container_memory: "{{ container_vpn_memory }}"
+        container_cores: "{{ container_vpn_cores }}"
+        container_ip: "{{ container_vpn_ip }}"
         template_name: "{{ template_alpine_name }}"
+        container_size: 8
         enable_tun: true
 
-  # Deploy ansible on the Core container
+  # Deploy ansible on the VPN container
     - name: install_ansible
-      import_tasks: tasks/remote/deploy_ansible.yml
-      vars:
-        container_id: "{{ container_core_id }}"
-
-  # Run the Docker playbook on the Core container
-    - name: run_docker_install
-      import_tasks: tasks/remote/run_playbook.yml
-      vars:
-        playbook_path: "remote_playbook/deploy_vpn.yml"  
-        container_id: "{{ container_core_id }}"
+      import_tasks: tasks/core_software/install_requirements.yml

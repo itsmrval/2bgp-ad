@@ -1,5 +1,5 @@
 ---
-- name: Deploy Docker and Docker Compose
+- name: deploy_docker
   hosts: localhost
   become: yes
 
@@ -47,14 +47,3 @@
         url: https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-Linux-x86_64
         dest: /usr/local/bin/docker-compose
         mode: '0755'
-
-    - name: create_docker_compose
-      copy:
-        dest: /opt/docker-compose.yml
-        content: |
-          version: '3.8'
-          services:
-            web:
-              image: nginx:latest
-              ports:
-                - "80:80"

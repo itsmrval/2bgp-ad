@@ -1,0 +1,20 @@
+- name: deploy_python
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: apt_update
+      apt:
+        update_cache: yes
+
+    - name: apt_upgrade
+      apt:
+        upgrade: dist
+
+    - name: install_deps
+      apt:
+        name:
+          - python3
+          - python3-pip
+          - python3-venv
+        state: present

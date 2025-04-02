@@ -1,0 +1,108 @@
+# Needed variables:
+# - client_id
+# - public_address
+
+- name: create_wireguard_client
+  hosts: localhost
+  become: yes
+  vars:
+    temp_dir: "/tmp/wireguard_{{ client_id }}"
+    api_url: "http://127.0.0.1:5000"
+
+  tasks:
+    - name: create_temporary_directory
+      file:
+        path: "{{ temp_dir }}"
+        state: directory
+        mode: '0700'
+
+    - name: generate_wireguard_server_keys
+      shell: |
+        wg genkey | tee {{ temp_dir }}/server_private.key | wg pubkey | tee {{ temp_dir }}/server_public.key
+      args:
+        creates: "{{ temp_dir }}/server_private.key"
+
+    - name: generate_wireguard_client_keys
+      shell: |
+        wg genkey | tee {{ temp_dir }}/client_private.key | wg pubkey | tee {{ temp_dir }}/client_public.key
+      args:
+        creates: "{{ temp_dir }}/client_private.key"
+
+    - name: read_server_private_key
+      slurp:
+        src: "{{ temp_dir }}/server_private.key"
+      register: server_private_key_b64
+
+    - name: read_server_public_key
+      slurp:
+        src: "{{ temp_dir }}/server_public.key"
+      register: server_public_key_b64
+
+    - name: read_client_private_key
+      slurp:
+        src: "{{ temp_dir }}/client_private.key"
+      register: client_private_key_b64
+
+    - name: read_client_public_key
+      slurp:
+        src: "{{ temp_dir }}/client_public.key"
+      register: client_public_key_b64
+
+    - name: set_key_facts
+      set_fact:
+        server_private_key: "{{ server_private_key_b64['content'] | b64decode | trim }}"
+        server_public_key: "{{ server_public_key_b64['content'] | b64decode | trim }}"
+        client_private_key: "{{ client_private_key_b64['content'] | b64decode | trim }}"
+        client_public_key: "{{ client_public_key_b64['content'] | b64decode | trim }}"
+
+    - name: create_wireguard_config
+      copy:
+        dest: "/etc/wireguard/wg{{ client_id }}.conf"
+        content: |
+          [Interface]
+          Address = 172.17.{{ client_id }}.1/30
+          PrivateKey = {{ server_private_key }}
+          ListenPort = 51820
+
+          [Peer]
+          PublicKey = {{ client_public_key }}
+          AllowedIPs = 10.{{ client_id }}.0.0/16,172.17.{{ client_id }}.2/32
+          PersistentKeepalive = 5
+
+    - name: enable_and_start_wireguard
+      systemd:
+        name: "wg-quick@wg{{ client_id }}"
+        enabled: yes
+        state: started
+
+    - name: store_client_keys_in_api
+      uri:
+        url: "{{ api_url }}/wg/{{ client_id }}"
+        method: POST
+        body_format: json
+        body:
+          private_key: "{{ client_private_key }}"
+          public_key: "{{ client_public_key }}"
+          server_public_key: "{{ server_public_key }}"
+          public_address: "{{ public_address }}"
+        status_code: 200
+      register: api_result
+      failed_when: api_result.status != 200 and api_result.status != 201
+
+    - name: display_api_result
+      debug:
+        msg: "API result: {{ api_result }}"
+
+    - name: get_client_config_from_api
+      uri:
+        url: "{{ api_url }}/wg/{{ client_id }}"
+        method: GET
+        return_content: yes
+      register: config_result
+      failed_when: config_result.status != 200
+      ignore_errors: yes
+
+    - name: remove_temporary_files
+      file:
+        path: "{{ temp_dir }}"
+        state: absent
