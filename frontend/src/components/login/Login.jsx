@@ -4,15 +4,22 @@ import '../../assets/styles/test.css';
 import PlayingCard from '../PlayingCard';
 
 function Login() {
-    // Simple state for email and password
-    const [email, setEmail] = useState('');
+    // Using generic identifier for login that accepts both email and username
+    const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
 
-    // Simple form submission
+    // Form submission that works with either email or username
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Login with:', email, password);
-        // Add login logic here
+        console.log('Login with identifier:', identifier, 'password:', password);
+        
+        // Here you would typically handle authentication
+        // const isEmail = identifier.includes('@');
+        // if (isEmail) {
+        //     loginWithEmail(identifier, password);
+        // } else {
+        //     loginWithUsername(identifier, password);
+        // }
     };
 
     return (
@@ -33,10 +40,10 @@ function Login() {
                     <p className="form-title">Join Ocean's Team</p>
                     <div className="input-container">
                         <input 
-                            placeholder="Enter email" 
-                            type="email" 
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Email or Username" 
+                            type="text" 
+                            value={identifier}
+                            onChange={(e) => setIdentifier(e.target.value)}
                         />
                         <span>
                             <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

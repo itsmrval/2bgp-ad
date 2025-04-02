@@ -4,6 +4,7 @@ import '../../assets/styles/test.css';
 
 function Signup() {
     const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -16,7 +17,7 @@ function Signup() {
             return;
         }
 
-        console.log('Signup with:', email, password);
+        console.log('Signup with:', email, username, password);
         // Add signup logic here
     };
 
@@ -52,6 +53,21 @@ function Signup() {
                     </div>
                     <div className="input-container">
                         <input
+                            placeholder="Enter username"
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                        />
+                        <span>
+                            <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <circle cx="12" cy="7" r="4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div className="input-container">
+                        <input
                             placeholder="Enter password"
                             type="password"
                             value={password}
@@ -81,7 +97,7 @@ function Signup() {
                         </span>
                     </div>
                     <button className="submit" type="submit">
-                        Sign in
+                        Sign up
                     </button>
                     <p className="signup-link">
                         Already have an account?

@@ -3,6 +3,7 @@ import React from 'react';
 import LoginPages from './pages/auth/login';
 import SignupPages from './pages/auth/signup';
 import Intro from './pages/intro/intro';
+import MainPage from './pages/main/main';
 
 function App() {
     return (
@@ -11,6 +12,7 @@ function App() {
                 <Route path="/" element={<Intro />} />
                 <Route path="/login" element={<LoginPages />} />
                 <Route path="/signup" element={<SignupPages />} />
+                <Route path="/main" element={<MainPage />} />
                 <Route path="*" element={<Navigate to="/login" />} />
             </Routes>
         </Router>
