@@ -33,6 +33,12 @@
     dest: /tmp/proxmox_ssh_key.pub
   changed_when: false
 
+- name: ssh-keygen_remove
+  shell: ssh-keygen -R "{{ container_ip }}"
+  when: container_exists.rc != 0 
+  delegate_to: localhost
+  become: false
+
 - name: create_vpn_container
   shell: >
     pct create "{{ container_id }}" 

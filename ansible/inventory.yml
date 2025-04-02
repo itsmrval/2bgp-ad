@@ -11,4 +11,4 @@ all:
         core-vpn:
           ansible_host: 172.16.0.1
           ansible_user: root
-          ansible_ssh_common_args: '-o ProxyCommand="ssh -o ForwardAgent=yes root@192.168.48.184 \"ssh-add && nc %h %p\""' 
+          ansible_ssh_common_args: '-o ProxyCommand="ssh -o ForwardAgent=yes root@192.168.48.184 \"ssh-add && nc %h %p\"" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' 
