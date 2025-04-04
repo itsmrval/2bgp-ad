@@ -22,22 +22,11 @@
   when: container_exists.rc != 0
   changed_when: false
 
-- name: get_pubkey
-  shell: cat /root/.ssh/id_rsa.pub
-  register: proxmox_ssh_key
-  changed_when: false
-
 - name: save_pubkey
   copy:
-    content: "{{ proxmox_ssh_key.stdout }}"
-    dest: /tmp/proxmox_ssh_key.pub
+    src: ../../ssh_key/id_rsa.pub
+    dest: "/tmp/ssh_key_{{ container_id }}.pub"
   changed_when: false
-
-- name: ssh-keygen_remove
-  shell: ssh-keygen -R "{{ container_ip }}"
-  when: container_exists.rc != 0 
-  delegate_to: localhost
-  become: false
 
 - name: create_vpn_container
   shell: >
@@ -50,13 +39,12 @@
     --rootfs {{ template_storage }}:{{ container_size }}
     --net0 name=eth0,bridge="{{ sdn_corenet_name }}",ip="{{ container_ip }}/24,gw={{ sdn_corenet_gateway }}",firewall=1
     --onboot 1
-    --ssh-public-keys /tmp/proxmox_ssh_key.pub
+    --ssh-public-keys /tmp/ssh_key_"{{ container_id }}".pub
   when: container_exists.rc != 0
 
-  
 - name: remove_pubkey
   file:
-    path: /tmp/proxmox_ssh_key.pub
+    path: "/tmp/ssh_key_{{ container_id }}.pub"
     state: absent
   changed_when: false
 

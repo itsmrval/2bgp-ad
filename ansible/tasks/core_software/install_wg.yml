@@ -1,0 +1,11 @@
+# Description: This tasks will install wireguard
+
+- name: apt_update
+  apt:
+    update_cache: yes
+    upgrade: yes
+
+- name: install_wireguard
+  apt:
+    name: wireguard
+    state: present

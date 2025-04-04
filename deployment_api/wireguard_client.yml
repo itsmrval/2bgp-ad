@@ -62,7 +62,7 @@
           [Interface]
           Address = 172.17.{{ client_id }}.1/30
           PrivateKey = {{ server_private_key }}
-          ListenPort = 51820
+          ListenPort = 51{{client_id}}
 
           [Peer]
           PublicKey = {{ client_public_key }}

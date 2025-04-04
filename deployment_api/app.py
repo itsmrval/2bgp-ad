@@ -67,7 +67,7 @@ def create_client(client_id):
     private_key = data['private_key']
     public_key = data['public_key']
     server_public_key = data.get('server_public_key', '')
-    public_address = data.get('public_address', 'vpn.example.com')
+    public_address = data.get('public_address', 'vpn.2bgp-ad.rvcs.fr')
     
     filename = f'client_{client_id}.json'
     filepath = os.path.join(CONFIGS_DIR, filename)
@@ -108,7 +108,7 @@ DNS = 1.1.1.1, 8.8.8.8
 
 [Peer]
 PublicKey = {client_data['server_public_key']}
-Endpoint = {client_data['public_address']}:51820
+Endpoint = {client_data['public_address']}:51{client_id}
 AllowedIPs = 10.{client_id}.0.0/16,172.17.{client_id}.1/32
 PersistentKeepalive = 5
 """
