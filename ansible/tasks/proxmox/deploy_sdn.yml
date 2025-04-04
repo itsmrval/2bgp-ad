@@ -4,6 +4,7 @@
 # sdn_name
 # sdn_network
 # sdn_gateway
+# sdn_cust (optional)
 
 - name: check_zone
   shell: pvesh get /cluster/sdn/zones --output-format=json | grep -q "{{ sdn_name }}"

@@ -33,6 +33,7 @@
         sdn_name: "cust100"
         sdn_network: "10.100.0.0/16"
         sdn_gateway: "10.100.0.254"
+        sdn_cust: true
       
     # Apply iptables rules for WireGuard
     - name: setup_iptable
