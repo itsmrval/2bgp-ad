@@ -1,4 +1,5 @@
 import React from 'react';
+import PlayingCard from '../PlayingCard';
 
 const Main = () => {
     const mainStyle = {
@@ -12,12 +13,24 @@ const Main = () => {
         right: 0,
         bottom: 0,
         margin: 0,
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    };
+
+    const cardStyle = {
+        margin: '10px',
+        boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+        transition: '0.3s',
+        borderRadius: '5px'
     };
 
     return (
         <div style={mainStyle}>
-            {/* Content will go here */}
+            <div style={cardStyle}>
+                <PlayingCard value="A" suit="hearts" />
+            </div>
         </div>
     );
 };

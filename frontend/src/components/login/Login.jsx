@@ -40,7 +40,7 @@ function Login() {
                     <p className="form-title">Join Ocean's Team</p>
                     <div className="input-container">
                         <input 
-                            placeholder="Email or Username" 
+                            placeholder="Username" 
                             type="text" 
                             value={identifier}
                             onChange={(e) => setIdentifier(e.target.value)}

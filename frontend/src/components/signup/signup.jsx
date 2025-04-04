@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import '../../assets/styles/test.css';
 
 function Signup() {
-    const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -17,7 +16,7 @@ function Signup() {
             return;
         }
 
-        console.log('Signup with:', email, username, password);
+        console.log('Signup with:', username, password);
         // Add signup logic here
     };
 
@@ -37,20 +36,6 @@ function Signup() {
             <div className="login-right">
                 <form className="form" onSubmit={handleSubmit}>
                     <p className="form-title">Join Ocean's Team</p>
-                    <div className="input-container">
-                        <input
-                            placeholder="Enter email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <span>
-                            <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
-                            </svg>
-                        </span>
-                    </div>
                     <div className="input-container">
                         <input
                             placeholder="Enter username"
