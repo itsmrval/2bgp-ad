@@ -10,7 +10,7 @@
   # Permission ssh key for ansible
     - name: apply_chmod_ssh_key
       file:
-        path: ./ssh_key/id_rsa
+        path: ./assets/ssh_key/id_rsa
         mode: '0600'
       delegate_to: localhost
       become: no
@@ -66,7 +66,7 @@
         name: "{{ container_vpn_ip }}"
         groups: vpn_containers
         ansible_ssh_common_args: "-o ProxyJump=root@192.168.48.184 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o IdentitiesOnly=yes"
-        ansible_ssh_private_key_file: "./ssh_key/id_rsa"
+        ansible_ssh_private_key_file: "./assets/ssh_key/id_rsa"
         ansible_user: root
 
     # Wait for the VPN container to be reachable via SSH
@@ -116,7 +116,7 @@
         name: "{{ container_web_ip }}"
         groups: web_containers
         ansible_ssh_common_args: "-o ProxyJump=root@192.168.48.184 -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
-        ansible_ssh_private_key_file: "./ssh_key/id_rsa"
+        ansible_ssh_private_key_file: "./assets/ssh_key/id_rsa"
         ansible_user: root
 
     # Wait for the Web container to be reachable via SSH
@@ -130,7 +130,9 @@
       register: ssh_web_result
       until: ssh_web_result is succeeded
 
-    # Install Docker on the Web container  
-    - name: install_docker
-      import_tasks: tasks/core_software/install_docker.yml
-      delegate_to: "{{ container_web_ip }}"
+  ### PREPARING TEMPLATES ###
+    - name: prepare_windows_template
+      import_tasks: tasks/windows/prepare_template.yml
+
+    - name: build_windows_template
+      import_tasks: tasks/windows/build_template.yml

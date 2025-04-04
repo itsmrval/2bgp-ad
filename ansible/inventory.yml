@@ -2,6 +2,7 @@ all:
   children:
     proxmox:
       hosts:
-        proxmox_node:
+        # Specify proxmox node name
+        pve-e48-eta4:
           ansible_host: 192.168.48.184
           ansible_user: root

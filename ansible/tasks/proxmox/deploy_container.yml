@@ -23,7 +23,7 @@
 
 - name: save_pubkey
   copy:
-    src: ../../ssh_key/id_rsa.pub
+    src: ../../assets/ssh_key/id_rsa.pub
     dest: "/tmp/ssh_key_{{ container_id }}.pub"
   changed_when: false
 

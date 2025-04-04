@@ -52,6 +52,15 @@
             </UserData>
         </component>
     </settings>
+    <settings pass="offlineServicing">
+        <component name="Microsoft-Windows-PnpCustomizationsNonWinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <DriverPaths>
+                <PathAndCredentials wcm:action="add" wcm:keyValue="1">
+                    <Path>D:\vioserial\xp\amd64\</Path>
+                </PathAndCredentials>
+            </DriverPaths>
+        </component>
+    </settings>
     <settings pass="specialize">
         <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <ComputerName>*</ComputerName>
@@ -59,14 +68,9 @@
         <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <RunSynchronous>
                 <RunSynchronousCommand wcm:action="add">
-                    <Description>Copy setup script</Description>
+                    <Description>Install QEMU Guest Agent</Description>
                     <Order>1</Order>
-                    <Path>cmd.exe /c copy D:\setup_script.ps1 %WINDIR%\Setup\SetupComplete.ps1</Path>
-                </RunSynchronousCommand>
-                <RunSynchronousCommand wcm:action="add">
-                    <Description>Execute SetupComplete PowerShell script</Description>
-                    <Order>2</Order>
-                    <Path>powershell.exe -ExecutionPolicy Bypass -File %WINDIR%\Setup\SetupComplete.ps1</Path>
+                    <Path>msiexec /i D:\qemu-ga.msi /qn ADDLOCAL=ALL</Path>
                 </RunSynchronousCommand>
             </RunSynchronous>
         </component>

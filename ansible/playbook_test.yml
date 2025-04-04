@@ -1,0 +1,8 @@
+---
+- name: test_playbook
+  hosts: all
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: build_template
+      import_tasks: tasks/windows/build_template.yml

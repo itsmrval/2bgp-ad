@@ -8,6 +8,16 @@ sdn_corenet_gateway: "172.16.0.254"
 template_storage: "local"
 template_name: "ubuntu-24.04-standard"
 
+template_win_1: "111"
+template_win_2: "112"
+template_win_3: "113"
+
+iso_virtio_drivers: "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.189-1/virtio-win.iso"
+iso_virtio_drivers_name: "virtio-win.iso"
+
+iso_winserv2012: "https://go.microsoft.com/fwlink/p/?LinkID=2195443&clcid=0x409&culture=en-us&country=USo"
+iso_winserv2012_name: "winsrv2012.iso"
+
 container_vpn_id: 1000
 container_vpn_name: "core-vpn"
 container_vpn_memory: 1024
@@ -19,3 +29,4 @@ container_web_name: "core-web"
 container_web_memory: 1024
 container_web_cores: 1
 container_web_ip: "172.16.0.2"
+
