@@ -1,6 +1,6 @@
 ---
 - name: init_playbook
-  hosts: proxmox_node
+  hosts: all
   gather_facts: yes
   become: yes
   tasks:
