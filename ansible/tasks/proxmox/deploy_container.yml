@@ -6,7 +6,6 @@
 # container_memory
 # container_cores
 # container_ip
-# template_name
 # container_size
 # enable_tun (optional)
 

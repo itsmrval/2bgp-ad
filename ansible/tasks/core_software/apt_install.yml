@@ -1,0 +1,11 @@
+# Description: This task will install multiple packages provided as a variable
+
+- name: apt_update
+  apt:
+    update_cache: yes
+    upgrade: yes
+
+- name: install_packages
+  apt:
+    name: "{{ apt_packages }}"
+    state: present

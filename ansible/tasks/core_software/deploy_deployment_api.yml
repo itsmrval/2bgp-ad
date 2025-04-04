@@ -1,4 +1,3 @@
----
 - name: create_dir
   file:
     path: /opt/deployment_api

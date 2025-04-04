@@ -1,0 +1,48 @@
+  - name: install_requirements
+    import_tasks: ../core_software/apt_install.yml
+    vars:
+      apt_packages:
+        - curl
+        - ca-certificates
+        - apt-transport-https
+        - software-properties-common  
+
+  - name: add_key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+  - name: add_repo
+    apt_repository:
+      repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+      state: present
+
+  - name: download_docker
+    apt:
+      name: docker-ce
+      state: present
+
+  - name: enable_service
+    systemd:
+      name: docker
+      state: started
+      enabled: yes
+
+  - name: download_compose
+    command: >
+      curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+
+  - name: set_permissions
+    file:
+      path: /usr/local/bin/docker-compose
+      mode: 'u+x'
+
+  - name: verify_docker_compose
+    command: docker-compose --version
+    register: docker_compose_version
+    changed_when: false
+
+  - name: verify_docker
+    command: docker --version
+    register: docker_version
+    changed_when: false
