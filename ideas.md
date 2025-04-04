@@ -19,7 +19,6 @@ Kerberoast w/o pre-authentication
 
 l'attaque asrep roasting permet prendre la main sur d'autres comptes
 
-DHCPv6 spoofing/poisoning
 
 **Attaques simples :**
 Abus des DACL (Discretionary Access Control Lists)
