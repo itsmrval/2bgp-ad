@@ -1,0 +1,18 @@
+  # Check if the templates exist
+  - name: Check if templates exist
+    ansible.builtin.command:
+      cmd: qm list
+    register: qm_list_output
+    changed_when: false
+
+  # Set facts for each template's existence
+  - name: Set template existence facts
+    ansible.builtin.set_fact:
+      template_exists_111: "{{ '111' in qm_list_output.stdout }}"
+      template_exists_112: "{{ '112' in qm_list_output.stdout }}"
+      template_exists_113: "{{ '113' in qm_list_output.stdout }}"
+
+  # Create a fact indicating if all templates exist
+  - name: Check if all templates exist
+    ansible.builtin.set_fact:
+      all_templates_exist: "{{ template_exists_111 and template_exists_112 and template_exists_113 }}"

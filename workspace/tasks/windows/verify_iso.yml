@@ -1,0 +1,22 @@
+# Check if the ISO file exists in the local storage
+- name: Check if WinSRV2012 ISO exists
+  stat:
+    path: "{{ iso_dir }}/winserv2012.iso"
+  register: iso_stat
+
+- name: Install aria2
+  apt:
+    name: aria2
+    state: present
+  when: not iso_stat.stat.exists
+  become: yes
+
+- name: Download WinSRV2012 ISO using aria2
+  command: >
+    aria2c -x 16 -s 16 -k 1M 
+    -d "{{ iso_dir }}" 
+    -o winsrv2012.iso 
+    "https://go.microsoft.com/fwlink/p/?LinkID=2195443&clcid=0x409&culture=en-us&country=USo"
+  args:
+    creates: "{{ iso_dir }}/winsrv2012.iso"
+  when: not iso_stat.stat.exists

@@ -1,7 +1,21 @@
-- name: Get available VMID
-  command: pvesh get /cluster/nextid -vmid {{ vm_id }}
-  register: next_vmid
-  failed_when: next_vmid.rc != 0
+- name: Check if /mnt/winiso is mounted
+  command: mountpoint -q /mnt/winiso
+  register: winiso_mount_check
+  ignore_errors: yes
+  changed_when: false
+
+- name: Unmount /mnt/winiso if mounted
+  command: umount /mnt/winiso
+  when: winiso_mount_check.rc == 0
+  become: yes
+  ignore_errors: yes
+
+- name: Remove existing /mnt/winiso directory
+  file:
+    path: /mnt/winiso
+    state: absent
+  become: yes
+  ignore_errors: yes
 
 - name: Create temp directories
   file:
@@ -14,6 +28,7 @@
     - /var/lib/vz/template/file_xml/
     - /var/lib/vz/template/provision_winsrv/temp
   become: yes
+  ignore_errors: yes
 
 - name: Copy autounattend.xml to provision directory on Proxmox
   copy:
@@ -34,6 +49,7 @@
     name: 
       - python3-lxml
       - python3-pip
+      - genisoimage  # Ajouté ici pour éviter une tâche supplémentaire
     state: present
   become: yes
 
@@ -48,7 +64,12 @@
   ignore_errors: yes
 
 - name: Mount Windows Server ISO
-  command: mount -o loop {{ iso_dir }}/{{ iso_file }} /mnt/winiso
+  mount:
+    src: "{{ iso_dir }}/{{ iso_file }}"
+    path: /mnt/winiso
+    fstype: iso9660
+    opts: loop
+    state: mounted
   become: yes
 
 - name: Copy ISO contents to provision directory
@@ -56,17 +77,16 @@
   become: yes
 
 - name: Unmount Windows Server ISO
-  command: umount /mnt/winiso
+  mount:
+    path: /mnt/winiso
+    state: unmounted
   become: yes
 
 - name: Copy autounattend.xml to provision directory
-  command: cp /var/lib/vz/template/file_xml/autounattend.xml /var/lib/vz/template/provision_winsrv/
-  become: yes
-
-- name: Install genisoimage
-  apt:
-    name: genisoimage
-    state: present
+  copy:
+    src: /var/lib/vz/template/file_xml/autounattend.xml
+    dest: /var/lib/vz/template/provision_winsrv/autounattend.xml
+    remote_src: yes
   become: yes
 
 - name: Create new ISO file
@@ -81,70 +101,66 @@
 
 - name: Create VM
   command: >
-    qm create {{ next_vmid.stdout }}
-    --name {{ vm_name }}
+    qm create {{ item.vm_id }}
+    --name {{ item.vm_name }}
     --sockets {{ vm_sockets }}
     --cores {{ vm_cores }}
     --memory {{ vm_memory }}
     --ide2 file=local:iso/Windows_Server_Auto.iso,media=cdrom
     --scsihw virtio-scsi-pci
-    --sata0 {{ storage_name }}:{{ drive_size_gb }},format={{ format }}
+    --sata0 {{ item.storage_name }}:{{ drive_size_gb }},format={{ format }}
     --ostype {{ vm_os_type }}
-    --agent 1
+    --agent {{ agent }}
     --boot order=ide2
+  with_items: "{{ vms }}"
+  register: vm_creation
 
-- name: Start VM
-  command: "qm start {{ next_vmid.stdout }}"
-
-- name: Wait for VM to be in running state
-  shell: "qm list | grep {{ next_vmid.stdout }} | awk '{print $3}'"
-  register: vm_status
-  until: vm_status.stdout | trim == "running"
-  retries: 30
-  delay: 10
+- name: Start VMs
+  command: "qm start {{ item.vm_id }}"
+  with_items: "{{ vms }}"
+  when: item.vm_id in vm_creation.results | map(attribute='item.vm_id') | list
 
 - name: Wait for Windows installation to complete
   command: >
-    qm guest exec {{ next_vmid.stdout }} -- powershell.exe -Command "Get-Content 'C:\Windows\Setup\State\State.ini'"
+    qm guest exec {{ item.vm_id }} -- powershell.exe -Command "Get-Content 'C:\Windows\Setup\State\State.ini'"
   register: installation_complete
   until: installation_complete.stdout is search('ImageState=IMAGE_STATE_COMPLETE')
-  retries: 60
+  retries: 120
   delay: 10
+  with_items: "{{ vms }}"
 
 - name: Wait for QEMU Guest Agent to become accessible
-  shell: "qm agent {{ next_vmid.stdout }} ping"
+  shell: "qm agent {{ item.vm_id }} ping"
   register: agent_result
   until: agent_result.rc == 0
   retries: 60
   delay: 10
+  with_items: "{{ vms }}"
 
 - name: Attempt to Shutdown VM using QEMU Guest Agent
-  command: "qm shutdown {{ next_vmid.stdout }}"
-  when: agent_result.rc == 0
+  command: "qm shutdown {{ item.vm_id }}"
+  when: item.vm_id in vm_creation.results | map(attribute='item.vm_id') | list
   register: shutdown_result
   ignore_errors: yes
+  with_items: "{{ vms }}"
 
 - name: Wait for VM to be in stopped state
-  shell: "qm list | grep {{ next_vmid.stdout }} | awk '{print $3}'"
+  shell: "qm list | grep {{ item.vm_id }} | awk '{print $3}'"
   register: vm_status
   until: vm_status.stdout | trim == "stopped"
   retries: 30
   delay: 10
-
-- name: Force stop VM if still running or if shutdown failed
-  command: "qm stop {{ next_vmid.stdout }}"
-  when: (vm_status.stdout | trim != "stopped") or (shutdown_result is defined and shutdown_result.rc != 0)
-
-- name: Wait for VM to be in stopped state after force stop
-  shell: "qm list | grep {{ next_vmid.stdout }} | awk '{print $3}'"
-  register: vm_status
-  until: vm_status.stdout | trim == "stopped"
-  retries: 15
-  delay: 5
+  with_items: "{{ vms }}"
 
 - name: Create template from VM
-  command: "qm template {{ next_vmid.stdout }}"
+  command: "qm template {{ item.vm_id }}"
+  with_items: "{{ vms }}"
+
+- name: Enable Firewall on Template
+  command: "pvesh set /nodes/{{ node }}/qemu/{{ item.vm_id }}/firewall/options -enable true"
+  with_items: "{{ vms }}"
 
 - name: Done
   debug:
-    msg: "Template build {{ vm_name }}, with VMID {{ next_vmid.stdout }} complete."
+    msg: "Template build {{ item.vm_name }}, with VMID {{ item.vm_id }} complete."
+  with_items: "{{ vms }}"
