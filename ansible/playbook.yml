@@ -5,6 +5,9 @@
   become: yes
   tasks:
 
+  ### SETUP ANSIBLE ###
+
+  # Permission ssh key for ansible
     - name: apply_chmod_ssh_key
       file:
         path: ./ssh_key/id_rsa
@@ -12,14 +15,6 @@
       delegate_to: localhost
       become: no
       run_once: true
-
-  ### SETUP ANSIBLE ###
-
-    # Apply chmod to SSH key
-    - name: apply_chmod_ssh_key
-      command: chmod 600 ./ssh_key/id_rsa
-      become: yes
-      when: ansible_os_family == "Linux" 
 
   ### DEPLOY NET PROXMOX NODE ###
     
