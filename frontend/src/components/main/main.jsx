@@ -1,6 +1,5 @@
 import React from 'react';
-import PlayingCard from '../PlayingCard';
-
+import Test from '../Test.jsx';
 const Main = () => {
     const mainStyle = {
         backgroundColor: 'white',
@@ -20,7 +19,6 @@ const Main = () => {
     };
 
     const cardStyle = {
-        margin: '10px',
         boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
         transition: '0.3s',
         borderRadius: '5px'
@@ -29,7 +27,7 @@ const Main = () => {
     return (
         <div style={mainStyle}>
             <div style={cardStyle}>
-                <PlayingCard value="A" suit="hearts" />
+                <Test />
             </div>
         </div>
     );
