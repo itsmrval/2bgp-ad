@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../../components/header/Header.jsx';
-import Main from '../../components/main/Main.jsx';
+import Main from '../../components/main/main.jsx';
 import Footer from '../../components/footer/Footer.jsx';
 
 const MainPage = () => {
