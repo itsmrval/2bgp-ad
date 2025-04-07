@@ -11,6 +11,8 @@ Tuto Exegol conteneur : https://youtu.be/7AI2rYDLIUs?si=uwSTkzRqh5wNxuXm
 
 Idées Attaques : 
 
+On a besoin de 14 attaques !!!
+
 **Attaques de bas niveau :**
 
 LLMNR, NBT-NS et mDNS spoofing
@@ -36,11 +38,17 @@ AdminSDHolder
 
 Histoire inspiré de Ocean's Eleven à mettre dans l'intro :
 
-Danny Ocean est un maître du casse et le cerveau derrière l'opération la plus audacieuse jamais orchestrée sur le Strip de Las Vegas. Son objectif ? Dévaliser simultanément trois des plus prestigieux casinos détenus par le redoutable Terry Benedict, un magnat de la mafia dont le pouvoir s'étend jusque dans les systèmes numériques.
 
-Pour préparer ce coup d'éclat, Ocean a réuni une équipe de onze spécialistes aux compétences complémentaires : ingénieurs, hackers, experts en sécurité et as du déguisement numérique. Vous, reconnu pour votre expertise en Active Directory, avez été minutieusement sélectionné. Sans disposer d'un compte initial pour accéder au domaine, votre mission consistera à infiltrer l'environnement AD, contourner ses défenses et exploiter ses failles pour obtenir les accès nécessaires.
+Danny Ocean est un maître du casse et le cerveau derrière l'opération la plus audacieuse jamais orchestrée sur le Strip de Las Vegas. Après 2 ans passés en prison loin de sa femme Son objectif ? La reconquérir et dévaliser simultanément trois des plus prestigieux casinos détenus par le redoutable Terry Benedict, un magnat de la mafia et le nouvel homme de son ex femme dont le pouvoir s'étend jusque dans les systèmes numériques.
 
-Chaque pas vous rapprochera de la forteresse numérique de Benedict. Entre reconnaissance réseau, escalades de privilèges et attaques ciblées, vous devrez user de ruse et d'innovation pour déjouer les mécanismes de sécurité et créer le ticket d'or qui vous ouvrira les portes de ces casinos virtuels. La réussite de l'opération repose sur votre capacité à découvrir et exploiter les vulnérabilités d'un Active Directory verrouillé, sans compte de départ. Bienvenue dans l'équipe : le braquage commence maintenant.
+Pour préparer ce coup d’éclat, Ocean a réuni une équipe de onze spécialistes aux compétences complémentaires : voleur, expert en explosifs, pilotes hors pair, acrobate, as du déguisement.
+Vous avez été reconnu pour vos prouesses et votre talent en réussissant un certain CTF nommé 2BGP, et vos compétences en pentest ont attiré l’attention d’Ocean.
+
+Reconnu pour votre expertise en Active Directory et Windows Server, vous avez été minutieusement sélectionné. 
+
+Votre objectif est d’aider le groupe à s’infiltrer dans les casinos. Pendant qu’ils seront sur le terrain, c’est à vous de surveiller tous les agissements. Vous serez infiltré directement dans une chambre d’hôtel, équipé de votre matériel informatique. Pour cela, ils ont besoin de votre aide : vous devrez découvrir et cartographier le réseau informatique des casinos. 
+
+Bienvenu dans l'équipe et que le braquage commence !!!
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -96,6 +104,27 @@ Level 6:
 
 
 Level 7:
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level 8:
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level 9:
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level 10:
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level 11:
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level 12:
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level 13:
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level 14:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
