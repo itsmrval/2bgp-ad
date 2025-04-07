@@ -17,7 +17,8 @@
       run_once: true
 
   ### DEPLOY NET PROXMOX NODE ###
-    
+
+
     # Deploy SDN on the Proxmox node
     - name: deploy_sdn
       import_tasks: tasks/proxmox/deploy_sdn.yml
@@ -46,6 +47,10 @@
     # Download the template 
     - name: download_template
       import_tasks: tasks/proxmox/download_template.yml
+
+    # Configure Proxmox user for ansible
+    - name: create_template_user
+      import_tasks: tasks/proxmox/create_template_user.yml
 
   ### DEPLOY CORE VPN CONTAINER ###
     
