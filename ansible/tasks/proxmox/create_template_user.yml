@@ -12,17 +12,3 @@
 
 - name: setup_permissions
   ansible.builtin.shell: "pveum aclmod / -group {{ ansible_pve_api_group }} -role PVEAdmin"
-
-- name: create_token
-  ansible.builtin.shell: "pveum user token add {{ ansible_pve_api_user }} {{ ansible_pve_api_token_id }} --comment '{{ ansible_pve_api_token_id }}'"
-  register: token_result
-  failed_when: token_result.rc != 0 and 'already exists' not in token_result.stderr
-  changed_when: token_result.rc == 0
-
-- name: get_token
-  ansible.builtin.shell: "pveum user token list {{ ansible_pve_api_user }} --output-format json"
-  register: token_output
-
-- name: display
-  debug:
-    var: token_output.stdout_lines
