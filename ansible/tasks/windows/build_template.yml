@@ -2,6 +2,8 @@
   set_fact:
     vms:
       - { vm_id: "{{ template_id }}", vm_name: "build-{{ template_id }}", storage_name: "local" }
+      - { vm_id: "{{ template_win_2 }}", vm_name: "build-02", storage_name: "local" }
+      - { vm_id: "{{ template_win_3}}", vm_name: "build-03", storage_name: "local" }
     iso_file: "winsrv2012.iso"
     storage_name: "local"
     iso_dir: "/var/lib/vz/template/iso"

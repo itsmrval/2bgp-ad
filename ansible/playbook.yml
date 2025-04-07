@@ -135,17 +135,5 @@
     - name: prepare_windows_template
       import_tasks: tasks/windows/prepare_template.yml
 
-    - name: build windows template 1
-      include_tasks: tasks/windows/build_template.yml
-      vars:
-        template_id: 111
-
-    - name: build windows template 2
-      include_tasks: tasks/windows/build_template.yml
-      vars:
-        template_id: 112
-
-    - name: build windows template 3
-      include_tasks: tasks/windows/build_template.yml
-      vars:
-        template_id: 113
+    - name: build_windows_template
+      import_tasks: tasks/windows/build_template.yml
