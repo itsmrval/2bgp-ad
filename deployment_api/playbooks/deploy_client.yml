@@ -1,0 +1,43 @@
+- name: deploy_client
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: fact
+      set_fact:
+        templates:
+          - { id: 111 }
+          - { id: 112 }
+          - { id: 113 }
+
+    - name: creating_deploy
+      community.general.proxmox_kvm:
+        api_user: "{{ proxmox_user }}"
+        api_password: "{{ proxmox_password }}"
+        api_host: "{{ proxmox_ip }}:8006"
+        node: "{{ proxmox_node }}"
+        vmid:  "{{ item.id }}"
+        clone: "{{ item.id }}"
+        newid: "{{ client_id }}00{{ item.id }}"
+        name: "vm-{{ client_id }}-{{ item.id }}"
+        full: yes
+        net:
+          net0: "e1000=,bridge=cust{{ client_id }}"
+        state: present
+        timeout: 600
+      with_items: "{{ templates }}"
+      async: 1200
+      poll: 0
+      register: deploy_jobs
+
+    - name: waiting_deploy
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      retries: 100
+      delay: 3
+      with_items: "{{ deploy_jobs.results }}"
+

@@ -39,7 +39,7 @@
     - name: setup_iptable
       import_tasks: tasks/proxmox/setup_forward.yml
       vars:
-        dest_ip: "{{ container_vpn_ip }}"
+        dest_ip: "{{ container_deployment_ip }}"
         port: "511-1000"
         protocol: "udp"
 
@@ -53,27 +53,27 @@
     - name: deploy_vpn_container
       import_tasks: tasks/proxmox/deploy_container.yml
       vars:
-        container_id: "{{ container_vpn_id }}"
-        container_name: "{{ container_vpn_name }}"
-        container_memory: "{{ container_vpn_memory }}"
-        container_cores: "{{ container_vpn_cores }}"
-        container_ip: "{{ container_vpn_ip }}"
+        container_id: "{{ container_deployment_id }}"
+        container_name: "{{ container_deployment_name }}"
+        container_memory: "{{ container_deployment_memory }}"
+        container_cores: "{{ container_deployment_cores }}"
+        container_ip: "{{ container_deployment_ip }}"
         container_size: 8
         enable_tun: true
 
     # Dynamically add the vpn container to inventory with SSH args
     - name: add_vpn_container_to_inventory
       add_host:
-        name: "{{ container_vpn_ip }}"
+        name: "{{ container_deployment_ip }}"
         groups: vpn_containers
-        ansible_ssh_common_args: "-o ProxyJump=root@192.168.48.184 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o IdentitiesOnly=yes"
+        ansible_ssh_common_args: "-o ProxyJump=root@{{ ansible_default_ipv4.address }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o IdentitiesOnly=yes"
         ansible_ssh_private_key_file: "./assets/ssh_key/id_rsa"
         ansible_user: root
 
     # Wait for the VPN container to be reachable via SSH
     - name: wait_for_ssh_vpn_container
       wait_for:
-        host: "{{ container_vpn_ip }}"
+        host: "{{ container_deployment_ip }}"
         port: 22
         delay: 3
         timeout: 300
@@ -90,12 +90,12 @@
           - ansible
           - pipx
           - wireguard
-      delegate_to: "{{ container_vpn_ip }}"
+      delegate_to: "{{ container_deployment_ip }}"
       
     # Deploy the Deployment API on the VPN container
     - name: deploy_deployment_api
       import_tasks: tasks/core_software/deploy_deployment_api.yml
-      delegate_to: "{{ container_vpn_ip }}" 
+      delegate_to: "{{ container_deployment_ip }}" 
 
   ### DEPLOY CORE WEB CONTAINER ###
     
@@ -116,7 +116,7 @@
       add_host:
         name: "{{ container_web_ip }}"
         groups: web_containers
-        ansible_ssh_common_args: "-o ProxyJump=root@192.168.48.184 -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+        ansible_ssh_common_args: "-o ProxyJump=root@{{ ansible_default_ipv4.address }} -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
         ansible_ssh_private_key_file: "./assets/ssh_key/id_rsa"
         ansible_user: root
 

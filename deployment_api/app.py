@@ -9,25 +9,39 @@ app = Flask(__name__)
 
 # config
 WG_PLAYBOOK_PATH = './wireguard_client.yml'
+INF_PLAYBOOK_PATH = './deploy_client.yml'
 CONFIGS_DIR = './configs'
 
 os.makedirs(CONFIGS_DIR, exist_ok=True)
 
-@app.route('/wg', methods=['POST'])
+# get content from proxmox_ip from ./playbooks/vars.yml
+print('Loading configuration...')
+with open('./playbooks/vars.yml', 'r') as f:
+    lines = f.readlines()
+    proxmox_ip = ''
+    for line in lines:
+        if 'proxmox_ip' in line:
+            proxmox_ip = line.split(':')[1].strip()
+            proxmox_ip = re.sub(r'\"', '', proxmox_ip)
+            break
+    if not proxmox_ip:
+        raise ValueError('proxmox_ip not found in vars.yml')
+print(f'Using PVE IP {proxmox_ip}')
+
+@app.route('/inf', methods=['POST'])
 def generate_client():
     data = request.json
     
-    if not data or 'client_id' not in data or 'public_address' not in data:
-        return jsonify({'error': 'Missing required fields: client_id and public_address'}), 400
+    if not data or 'client_id' not in data:
+        return jsonify({'error': 'Missing required fields: client_id'}), 400
     
     client_id = data['client_id']
-    public_address = data['public_address']
     
     try:
         cmd = [
             'ansible-playbook', 
             WG_PLAYBOOK_PATH, 
-            f'--extra-vars=client_id={client_id} public_address={public_address}'
+            f'--extra-vars=client_id={client_id}'
         ]
         
         result = subprocess.run(
@@ -47,7 +61,48 @@ def generate_client():
         return jsonify({
             'status': 'success',
             'client_id': client_id,
-            'public_address': public_address,
+            'message': 'Infrastructure generated successfully'
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+
+@app.route('/wg', methods=['POST'])
+def generate_client():
+    data = request.json
+    
+    if not data or 'client_id' not in data:
+        return jsonify({'error': 'Missing required fields: client_id'}), 400
+    
+    client_id = data['client_id']
+    
+    try:
+        cmd = [
+            'ansible-playbook', 
+            WG_PLAYBOOK_PATH, 
+            f'--extra-vars=client_id={client_id}'
+        ]
+        
+        result = subprocess.run(
+            cmd, 
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        
+        if result.returncode != 0:
+            return jsonify({
+                'status': 'error',
+                'message': 'Ansible playbook execution failed',
+                'error': result.stderr
+            }), 500
+        
+        return jsonify({
+            'status': 'success',
+            'client_id': client_id,
             'message': 'Client generated successfully'
         })
         
@@ -67,7 +122,6 @@ def create_client(client_id):
     private_key = data['private_key']
     public_key = data['public_key']
     server_public_key = data.get('server_public_key', '')
-    public_address = data.get('public_address', 'vpn.2bgp-ad.rvcs.fr')
     
     filename = f'client_{client_id}.json'
     filepath = os.path.join(CONFIGS_DIR, filename)
@@ -77,7 +131,7 @@ def create_client(client_id):
         'private_key': private_key,
         'public_key': public_key,
         'server_public_key': server_public_key,
-        'public_address': public_address
+        'public_address': proxmox_ip
     }
     
     with open(filepath, 'w') as f:
@@ -108,7 +162,7 @@ DNS = 1.1.1.1, 8.8.8.8
 
 [Peer]
 PublicKey = {client_data['server_public_key']}
-Endpoint = {client_data['public_address']}:51{client_id}
+Endpoint = {proxmox_ip}:51{client_id}
 AllowedIPs = 10.{client_id}.0.0/16,172.17.{client_id}.1/32
 PersistentKeepalive = 5
 """

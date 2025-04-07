@@ -1,0 +1,4 @@
+proxmox_ip: ""
+proxmox_user: ""
+proxmox_password: ""
+proxmox_node: ""

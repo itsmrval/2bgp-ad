@@ -22,6 +22,16 @@
     remote_src: no
     mode: '0644'
 
+- name: create_vars_file
+  copy:
+    dest: /opt/deployment_api/vars.yml
+    content: |
+      proxmox_ip: "{{ ansible_default_ipv4.address }}"
+      proxmox_user: "{{ ansible_pve_api_user }}@pve"
+      proxmox_password: "{{ ansible_pve_api_password }}"
+      proxmox_node: "{{ ansible_hostname }}"
+    mode: '0644'
+
 - name: create_systemd
   copy:
     dest: /etc/systemd/system/deployment_api.service

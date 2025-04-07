@@ -1,8 +1,0 @@
----
-- name: test
-  hosts: all
-  gather_facts: yes
-  become: yes
-  tasks:
-    - name: demo
-      import_tasks: tasks/proxmox/create_template_user.yml

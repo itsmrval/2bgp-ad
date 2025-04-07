@@ -1,6 +1,5 @@
 # Needed variables:
 # - client_id
-# - public_address
 
 - name: create_wireguard_client
   hosts: localhost
@@ -84,7 +83,7 @@
           private_key: "{{ client_private_key }}"
           public_key: "{{ client_public_key }}"
           server_public_key: "{{ server_public_key }}"
-          public_address: "{{ public_address }}"
+          public_address: "{{ proxmox_ip }}"
         status_code: 200
       register: api_result
       failed_when: api_result.status != 200 and api_result.status != 201
