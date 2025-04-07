@@ -19,8 +19,37 @@ const Intro = () => {
     useEffect(() => {
         const audio = new Audio(Introsound);
         audio.play().catch(err => console.error("Error playing audio:", err));
+
+        // Add page-specific styles when component mounts
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .intro-page-container {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                background: #000;
+                font-family: sans-serif;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Cleanup function to remove styles when component unmounts
+        return () => {
+            document.head.removeChild(style);
+        };
     }, []);
 
+    // Rest of your component code remains the same
     useEffect(() => {
         const titles = {
             1: "OCEAN'S ONE",
@@ -115,24 +144,25 @@ const Intro = () => {
     const animationClass = getAnimationClass();
 
     return (
-        <div className="container">
-            <h1
-                className={`title ${animationClass}`}
-                key={`title-${key}`}
-                ref={titleRef}
-            >
-                {title}
-            </h1>
-            <h1
-                className={`number ${animationClass}`}
-                key={`number-${key}`}
-                ref={numberRef}
-            >
-                {currentNumber}
-            </h1>
+        <div className="intro-page-container">
+            <div className="container">
+                <h1
+                    className={`title ${animationClass}`}
+                    key={`title-${key}`}
+                    ref={titleRef}
+                >
+                    {title}
+                </h1>
+                <h1
+                    className={`number ${animationClass}`}
+                    key={`number-${key}`}
+                    ref={numberRef}
+                >
+                    {currentNumber}
+                </h1>
+            </div>
         </div>
     );
 };
 
 export default Intro;
-    

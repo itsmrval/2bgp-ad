@@ -1,0 +1,74 @@
+.mission-app-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffffff;
+    margin: 0;
+}
+
+.card {
+    border: 2px solid red;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 600px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Ajout pour positionner l'élément flèche */
+}
+
+.card-header {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 1.25em;
+}
+
+.card-stats {
+    display: flex;
+    justify-content: space-around;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.card-stat {
+    text-align: center;
+    flex: 1;
+}
+
+.card-stat strong {
+    display: block;
+    color: #333;
+}
+
+.card-stat span {
+    color: #555;
+}
+
+.card-body {
+    padding: 20px;
+    color: black;
+    font-size: 1em;
+    flex: 1;
+    margin-bottom: 20px;
+}
+
+.card-text {
+    margin-bottom: 10px;
+}
+
+.arrow-left {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-right: 15px solid red;
+    border-bottom: 10px solid transparent;
+}

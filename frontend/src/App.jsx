@@ -5,6 +5,7 @@ import SignupPages from './pages/auth/signup';
 import Intro from './pages/intro/intro';
 import MainPage from './pages/main/main';
 import TestPage from './pages/main/test';
+import MissionPage from './pages/mission/mission';
 
 
 function App() {
@@ -16,6 +17,8 @@ function App() {
                 <Route path="/signup" element={<SignupPages />} />
                 <Route path="/main" element={<MainPage />} />
                 <Route path="/test" element={<TestPage />} />
+                <Route path="/mission" element={<MissionPage />} />
+                {/* Redirect all other paths to the login page */}
                 <Route path="*" element={<Navigate to="/login" />} />
             </Routes>
         </Router>

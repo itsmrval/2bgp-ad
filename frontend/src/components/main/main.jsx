@@ -1,5 +1,7 @@
 import React from 'react';
 import Test from '../Test.jsx';
+import GameTable from '../GameTable.jsx';
+
 const Main = () => {
     const mainStyle = {
         backgroundColor: 'white',
