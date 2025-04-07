@@ -32,9 +32,15 @@
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: rgb(255, 0, 0);
+    height: 110px; /* Make the logo smaller */
+    width: auto; /* Maintain aspect ratio */
+    display: block;
+}
+
+.logo img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
 }
 
 .main-nav {
@@ -58,7 +64,7 @@
     margin-right: 1rem;
     cursor: pointer;
     color: rgb(0, 0, 0);
-    font-size: 1.5rem; /* Augmenté de 1.125rem à 1.5rem */
+    font-size: 35px; /* Augmenté de 1.125rem à 1.5rem */
     transition: color 0.3s ease;
 }
 

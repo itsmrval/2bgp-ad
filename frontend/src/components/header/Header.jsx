@@ -86,7 +86,9 @@ const StyledWrapper = styled.div`
 const TransparentHeader = () => {
   return (
     <header className="transparent-header">
-      <div className="logo">2BGP</div>
+      <div className="logo">
+      <img src={require('../../assets/logo/logo.png')} alt="2BGP Logo" />
+      </div>
       <nav className="main-nav">
         <ul>
           <li>ACCUEIL</li>
