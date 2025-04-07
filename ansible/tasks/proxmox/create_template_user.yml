@@ -1,0 +1,28 @@
+- name: create_group
+  ansible.builtin.shell: "pveum groupadd {{ ansible_pve_api_group }}"
+  register: group_result
+  failed_when: group_result.rc != 0 and 'already exists' not in group_result.stderr
+  changed_when: group_result.rc == 0
+
+- name: create_user
+  ansible.builtin.shell: "pveum useradd {{ ansible_pve_api_user }} --password {{ ansible_pve_api_password }} --groups {{ ansible_pve_api_group }}"
+  register: user_result
+  failed_when: user_result.rc != 0 and 'already exists' not in user_result.stderr
+  changed_when: user_result.rc == 0
+
+- name: setup_permissions
+  ansible.builtin.shell: "pveum aclmod / -group {{ ansible_pve_api_group }} -role PVEAdmin"
+
+- name: create_token
+  ansible.builtin.shell: "pveum user token add {{ ansible_pve_api_user }} {{ ansible_pve_api_token_id }} --comment '{{ ansible_pve_api_token_id }}'"
+  register: token_result
+  failed_when: token_result.rc != 0 and 'already exists' not in token_result.stderr
+  changed_when: token_result.rc == 0
+
+- name: get_token
+  ansible.builtin.shell: "pveum user token list {{ ansible_pve_api_user }} --output-format json"
+  register: token_output
+
+- name: display
+  debug:
+    var: token_output.stdout_lines

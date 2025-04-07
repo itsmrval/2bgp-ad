@@ -18,15 +18,19 @@ iso_virtio_drivers_name: "virtio-win.iso"
 iso_winserv2012: "https://go.microsoft.com/fwlink/p/?LinkID=2195443&clcid=0x409&culture=en-us&country=USo"
 iso_winserv2012_name: "winsrv2012.iso"
 
-container_vpn_id: 1000
-container_vpn_name: "core-vpn"
+container_vpn_id: 2000
+container_vpn_name: "core-deployment"
 container_vpn_memory: 1024
 container_vpn_cores: 1
 container_vpn_ip: "172.16.0.1"
 
-container_web_id: 1001
+container_web_id: 2001
 container_web_name: "core-web"
 container_web_memory: 1024
 container_web_cores: 1
 container_web_ip: "172.16.0.2"
 
+ansible_pve_api_user: "2bgp@pve"
+ansible_pve_api_group: "2bgp"
+ansible_pve_api_password: "password"
+ansible_pve_api_token_id: "ansible"
