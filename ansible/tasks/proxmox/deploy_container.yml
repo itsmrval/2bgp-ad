@@ -27,7 +27,7 @@
     dest: "/tmp/ssh_key_{{ container_id }}.pub"
   changed_when: false
 
-- name: create_vpn_container
+- name: create_container
   shell: >
     pct create "{{ container_id }}" 
     "{{ template_path.stdout }}" 
