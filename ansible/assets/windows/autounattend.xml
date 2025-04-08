@@ -74,6 +74,20 @@
                 </RunSynchronousCommand>
             </RunSynchronous>
         </component>
+        <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <RunSynchronous>
+                <RunSynchronousCommand wcm:action="add">
+                    <Description>Install AD DS Role</Description>
+                    <Order>2</Order>
+                    <Path>powershell -Command "Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools"</Path>
+                </RunSynchronousCommand>
+                <RunSynchronousCommand wcm:action="add">
+                    <Description>Promote to Domain Controller</Description>
+                    <Order>3</Order>
+                    <Path>powershell -Command "Import-Module ADDSDeployment; Install-ADDSDomainController -DomainName 'bellagio.com' -InstallDNS -SafeModeAdministratorPassword (ConvertTo-SecureString 'YourSafeModePassword' -AsPlainText -Force) -Force"</Path>
+                </RunSynchronousCommand>
+            </RunSynchronous>
+        </component>
     </settings>
     <settings pass="oobeSystem">
         <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">

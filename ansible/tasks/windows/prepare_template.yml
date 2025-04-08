@@ -12,7 +12,7 @@
 
 - name: check_windows_iso_exists
   stat:
-    path: "/var/lib/vz/template/iso/{{ iso_winserv2012_name }}"
+    path: "/var/lib/vz/template/iso/{{ iso_winserv2019_name }}"
   register: windows_iso_stat
 
 - name: check_virtio_iso_exists
@@ -26,14 +26,14 @@
     state: present
   become: yes
 
-- name: download_winsrv2012_iso
+- name: download_winsrv2019_iso
   command: >
     aria2c -x 16 -s 16 -k 1M 
     -d "/var/lib/vz/template/iso/" 
-    -o "{{ iso_winserv2012_name }}"
-    "{{ iso_winserv2012 }}"
+    -o "{{ iso_winserv2019_name }}"
+    "{{ iso_winserv2019 }}"
   args:
-    creates: "/var/lib/vz/template/iso/{{ iso_winserv2012_name }}"
+    creates: "/var/lib/vz/template/iso/{{ iso_winserv2019_name }}"
   when: not windows_iso_stat.stat.exists
 
 - name: download_virtio_drivers_iso
@@ -117,7 +117,7 @@
   become: yes
 
 - name: mount_windows_server_iso
-  command: mount -o loop,ro /var/lib/vz/template/iso/{{ iso_winserv2012_name }} /mnt/winiso
+  command: mount -o loop,ro /var/lib/vz/template/iso/{{ iso_winserv2019_name }} /mnt/winiso
   become: yes
 
 - name: copy_winiso

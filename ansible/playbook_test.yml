@@ -1,0 +1,13 @@
+---
+- name: init_playbook
+  hosts: all
+  gather_facts: yes
+  become: yes
+  tasks:
+  
+  ### PREPARING WINDOWS TEMPLATES ###
+    - name: prepare_windows_template
+      import_tasks: tasks/windows/prepare_template.yml
+
+    - name: build_windows_template
+      import_tasks: tasks/windows/build_template.yml
