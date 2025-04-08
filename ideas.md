@@ -8,6 +8,121 @@ Infra:
 - Domaines enfants (Bellagio: casino.bellagio.com Mirage: casino.mirage.com MGM Grand: casino.mgmgrand.com )
 - Pour les groupes dans les AD : Croupiers ( la ou un des equipiers est dedans (pas de droit) )  Sécurité casinon basique (Peu de droit) Sécurité vidéo (autre droit) sécurité des coffres ( beaucoup de droit mais pas admin admin) et le compte créateur de Terry Beneditct
 
+Domaines et Unités d'Organisation (OU)
+
+Domaines et Unités d'Organisation (OU)
+
+Domaines Enfants
+    Bellagio: casino.bellagio.com
+    Mirage: casino.mirage.com
+    MGM Grand: casino.mgmgrand.com
+
+Unités d'Organisation (OU)
+
+Bellagio
+  
+  OU=Management
+      PC: ManagementPC-Bellagio
+      Utilisateurs: Benedict, Manager1-Bellagio, Manager2-Bellagio
+  
+  OU=VIP
+      PC: VIPPC-Bellagio
+      Utilisateurs: VIPManager-Bellagio, VIPAssistant-Bellagio
+  
+  OU=Sécurité
+      PC: SecurityPC-Bellagio
+      Utilisateurs: SecurityChief-Bellagio, SecurityGuard1-Bellagio, SecurityGuard2-Bellagio
+  
+  OU=IT
+      PC: ITServer-Bellagio, ITPC-Bellagio
+      Utilisateurs: ITAdmin-Bellagio, ITSupport1-Bellagio, ITSupport2-Bellagio
+  
+  OU=Croupier
+      PC: CroupierPC-Bellagio
+      Utilisateurs: Croupier1-Bellagio, Croupier2-Bellagio
+    
+Mirage
+
+  OU=Management
+      PC: ManagementPC-Mirage
+      Utilisateurs: Benedict, Manager1-Mirage, Manager2-Mirage
+  
+  OU=VIP
+      PC: VIPPC-Mirage
+      Utilisateurs: VIPManager-Mirage, VIPAssistant-Mirage
+  
+  OU=Sécurité
+      PC: SecurityPC-Mirage
+      Utilisateurs: SecurityChief-Mirage, SecurityGuard1-Mirage, SecurityGuard2-Mirage
+  
+  OU=IT
+      PC: ITServer-Mirage, ITPC-Mirage
+      Utilisateurs: ITAdmin-Mirage, ITSupport1-Mirage, ITSupport2-Mirage
+  
+  OU=Croupier
+      PC: CroupierPC-Mirage
+      Utilisateurs: Croupier1-Mirage, Croupier2-Mirage
+
+MGM Grand
+  
+  OU=Management
+      PC: ManagementPC-MGM
+      Utilisateurs: Benedict, Manager1-MGM, Manager2-MGM
+  
+  OU=VIP
+      PC: VIPPC-MGM
+      Utilisateurs: VIPManager-MGM, VIPAssistant-MGM
+  
+  OU=Sécurité
+      PC: SecurityPC-MGM
+      Utilisateurs: SecurityChief-MGM, SecurityGuard1-MGM, SecurityGuard2-MGM
+  
+  OU=IT
+      PC: ITServer-MGM, ITPC-MGM
+      Utilisateurs: ITAdmin-MGM, ITSupport1-MGM, ITSupport2-MGM
+  
+  OU=Croupier
+      PC: CroupierPC-MGM
+      Utilisateurs: Croupier1-MGM, Croupier2-MGM
+
+
+Groupes AD
+
+  Croupiers
+      Description: Groupe contenant les employés qui travaillent comme croupiers. Ils n'ont pas de droits particuliers.
+      Membres: Croupier1-Bellagio, Croupier2-Bellagio, Croupier1-Mirage, Croupier2-Mirage, Croupier1-MGM, Croupier2-MGM
+
+  Sécurité Casino Basique
+      Description: Groupe contenant les agents de sécurité avec des droits limités.
+      Membres: SecurityGuard1-Bellagio, SecurityGuard2-Bellagio, SecurityGuard1-Mirage, SecurityGuard2-Mirage, SecurityGuard1-MGM, SecurityGuard2-MGM
+
+  Sécurité Vidéo
+      Description: Groupe contenant les agents de sécurité responsables des caméras de surveillance et des systèmes de reconnaissance faciale.
+      Membres: SecurityChief-Bellagio, SecurityChief-Mirage, SecurityChief-MGM
+
+  Sécurité des Coffres
+      Description: Groupe contenant les agents de sécurité responsables des coffres-forts et des systèmes de gestion des accès.
+      Membres: SecurityChief-Bellagio, SecurityChief-Mirage, SecurityChief-MGM
+
+  Finance
+      Description: Groupe contenant les employés responsables des transactions financières et de la gestion des jetons de casino.
+      Membres: Manager1-Bellagio, Manager2-Bellagio, Manager1-Mirage, Manager2-Mirage, Manager1-MGM, Manager2-MGM
+
+  VIP
+      Description: Groupe contenant les employés responsables de la gestion des clients VIP et des suites de luxe.
+      Membres: VIPManager-Bellagio, VIPAssistant-Bellagio, VIPManager-Mirage, VIPAssistant-Mirage, VIPManager-MGM, VIPAssistant-MGM
+
+  IT
+      Description: Groupe contenant les employés de l'équipe IT responsables de la gestion du réseau et des systèmes.
+      Membres: ITAdmin-Bellagio, ITSupport1-Bellagio, ITSupport2-Bellagio, ITAdmin-Mirage, ITSupport1-Mirage, ITSupport2-Mirage, ITAdmin-MGM, ITSupport1-MGM, ITSupport2-MGM
+
+  Admin
+      Description: Compte administrateur de Terry Benedict.
+      Membres: Benedict
+
+
+            
+
 Tuto Exegol conteneur : https://youtu.be/7AI2rYDLIUs?si=uwSTkzRqh5wNxuXm
 
 Idées Attaques : 
