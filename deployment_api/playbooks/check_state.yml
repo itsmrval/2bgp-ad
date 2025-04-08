@@ -1,0 +1,40 @@
+# This playbook checks the state of VMs in Proxmox and verifies if they are running.
+# Needed variable:
+# - client_id
+
+- name: deploy_client
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - vars.yml
+
+  vars:
+    - ansible_python_interpreter: /opt/deployment_api/venv/bin/python
+
+  tasks:
+    - name: set_fact
+      import_tasks: tasks/set_fact.yml 
+
+    - name: Check VM State
+      community.general.proxmox_kvm:
+        api_user: "{{ proxmox_user }}"
+        api_password: "{{ proxmox_password }}"
+        api_host: "{{ proxmox_ip }}:8006"
+        node: "{{ proxmox_node }}"
+        vmid: "{{ client_id }}00{{ item.id }}"
+        state: current
+      with_items: "{{ templates }}"
+      register: vm_status
+      ignore_errors: yes
+
+    - name: Debug VM status 
+      debug:
+        var: vm_status
+
+    - name: Verify VMs exist and are running
+      fail:
+        msg: "VM {{ item.item.id }} does not exist or is not running"
+      when: 
+        - (item.failed is defined and item.failed) or 
+          (item.status is defined and item.status != 'running')
+      with_items: "{{ vm_status.results }}"

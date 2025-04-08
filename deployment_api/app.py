@@ -10,6 +10,7 @@ app = Flask(__name__)
 # config
 WG_PLAYBOOK_PATH = './playbooks/wireguard_client.yml'
 INF_PLAYBOOK_PATH = './playbooks/deploy_client.yml'
+CHECK_PLAYBOOK_PATH = './playbooks/check_state.yml'
 CONFIGS_DIR = './configs'
 
 os.makedirs(CONFIGS_DIR, exist_ok=True)
@@ -32,7 +33,7 @@ except Exception as e:
     print(f"Error loading configuration: {str(e)}")
     exit(1)
 
-@app.route('/inf', methods=['POST'])
+@app.route('/vms', methods=['POST'])
 def create_infrastructure():
     data = request.json
     
@@ -73,6 +74,37 @@ def create_infrastructure():
             'status': 'error',
             'message': str(e)
         }), 500
+    
+@app.route('/vms/<int:client_id>', methods=['GET'])
+def check_infrastructure(client_id):
+    try:
+        cmd = [
+            'ansible-playbook', 
+            CHECK_PLAYBOOK_PATH,
+            f'--extra-vars=client_id={client_id}'
+        ]
+        
+        result = subprocess.run(
+            cmd, 
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        
+        if result.returncode == 0:
+            return jsonify({'success': True})
+        else:
+            return jsonify({
+                'success': False,
+                'error': result.stderr
+            }), 500
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 
 @app.route('/wg', methods=['POST'])
 def generate_wireguard_client():

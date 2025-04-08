@@ -1,16 +1,19 @@
+# This playbook deploys VMs in Proxmox based on a template.
+# Needed variable:
+# - client_id
+
 - name: deploy_client
   hosts: localhost
   gather_facts: no
   vars_files:
     - vars.yml
 
+  vars:
+    - ansible_python_interpreter: /opt/deployment_api/venv/bin/python
+
   tasks:
-    - name: fact
-      set_fact:
-        templates:
-          - { id: 111 }
-          - { id: 112 }
-          - { id: 113 }
+    - name: set_fact
+      import_tasks: tasks/set_fact.yml 
 
     - name: creating_deploy
       community.general.proxmox_kvm:
@@ -41,3 +44,14 @@
       delay: 3
       with_items: "{{ deploy_jobs.results }}"
 
+    - name: starting
+      community.general.proxmox_kvm:
+        api_user: "{{ proxmox_user }}"
+        api_password: "{{ proxmox_password }}"
+        api_host: "{{ proxmox_ip }}:8006"
+        node: "{{ proxmox_node }}"
+        vmid: "{{ client_id }}00{{ item.item.id }}"
+        state: started
+      with_items: "{{ deploy_results.results }}"
+
+      

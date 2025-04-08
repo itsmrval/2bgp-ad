@@ -1,4 +1,4 @@
-proxmox_ip: ""
-proxmox_user: ""
-proxmox_password: ""
-proxmox_node: ""
+proxmox_ip: "192.168.48.184"
+proxmox_user: "2bgp@pve"
+proxmox_password: "password"
+proxmox_node: "pve-e48-eta4"

@@ -9,8 +9,8 @@
     iso_dir: "/var/lib/vz/template/iso"
     provision_iso_name: "winsrv2012-provision.iso"
     provision_dir: "/var/lib/vz/template/provision_winsrv"
-    vm_memory: 8192
-    vm_cores: 4
+    vm_memory: 1024
+    vm_cores: 1
     vm_sockets: 1
     drive_size_gb: 14
     format: "qcow2"
