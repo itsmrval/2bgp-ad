@@ -6,7 +6,7 @@ theme write: https://www.youtube.com/watch?v=FteCteGhnYY
 Infra:
 - 3 forêts (Bellagio, The Mirage, MGM Grand)
 - Domaines enfants (Bellagio: casino.bellagio.com Mirage: casino.mirage.com MGM Grand: casino.mgmgrand.com )
-- Pour les groupes dans les AD : Croupiers ( la ou un des equipiers est dedans (pas de droit) )  Sécurité casinon basique (Peu de droit) Sécurité vidéo (autre droit) sécurité des coffres ( beaucoup de droit mais pas admin admin) et le compte admin de Terry Beneditct
+- Pour les groupes dans les AD : Croupiers ( la ou un des equipiers est dedans (pas de droit) )  Sécurité casinon basique (Peu de droit) Sécurité vidéo (autre droit) sécurité des coffres ( beaucoup de droit mais pas admin admin) et le compte créateur de Terry Beneditct
 
 Tuto Exegol conteneur : https://youtu.be/7AI2rYDLIUs?si=uwSTkzRqh5wNxuXm
 
@@ -73,17 +73,13 @@ nmap -sn 192.168.1.0/24
 
 avec les IPs faire un nmap :
 
-Key ctf = 127 + ttl client 
+Key ctf = 127 + 2019
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Level 2 (Création de compte via exploitation d’un partage SMB mal configuré) :
 
-
-
-Un serveur Windows du domaine expose un partage SMB dont les permissions en écriture sont mal restreintes. Ce partage contient un dossier de scripts d'administration, utilisés par les équipes internes pour la maintenance. Par inadvertance, le partage est accessible aux utilisateurs non authentifiés ou avec des droits trop larges.
-
-
+Après avoir compris le réseau du casinon vous comprenez donc que leurs infrastructures est sur des windows server ttl 127. 
 
 
 
