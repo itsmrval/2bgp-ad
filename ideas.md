@@ -3,6 +3,8 @@ Ocean's Eleven
 theme song: https://youtu.be/sdSai09_jzc
 theme write: https://www.youtube.com/watch?v=FteCteGhnYY
 
+mindmap ORANGE : https://orange-cyberdefense.github.io/ocd-mindmaps/img/mindmap_ad_dark_classic_2025.03.excalidraw.svg
+
 Infra:
 - 3 forêts (Bellagio, The Mirage, MGM Grand)
 - Domaines enfants (Bellagio: casino.bellagio.com Mirage: casino.mirage.com MGM Grand: casino.mgmgrand.com )
