@@ -5,7 +5,11 @@ import SignupPages from './pages/auth/signup';
 import Intro from './pages/intro/intro';
 import MainPage from './pages/main/main';
 import TestPage from './pages/main/test';
+<<<<<<< Updated upstream
 import MissionPage from './pages/mission/mission';
+=======
+import Scoreboard from './pages/main/scoreboard';
+>>>>>>> Stashed changes
 
 
 function App() {
@@ -14,6 +18,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Intro />} />
                 <Route path="/login" element={<LoginPages />} />
+                <Route path="/scoreboard" element={<Scoreboard />} />
                 <Route path="/signup" element={<SignupPages />} />
                 <Route path="/main" element={<MainPage />} />
                 <Route path="/test" element={<TestPage />} />
