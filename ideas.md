@@ -67,7 +67,7 @@ En lançant une reconnaissance méticuleuse avec nmap, vous allez pouvoir cartog
 
 Attaque : 
 
-lancer un nmap pour connaitre les ip qui répondent 
+lancer un nmap pour que la personne connaissent son réseaux qui répondent 
 
 nmap -sn 192.168.1.0/24
 
