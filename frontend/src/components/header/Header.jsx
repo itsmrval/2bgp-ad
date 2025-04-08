@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import '../../assets/styles/header.css';
 import styled from 'styled-components';
 
@@ -87,6 +87,18 @@ const StyledWrapper = styled.div`
 `;
 
 const TransparentHeader = () => {
+  // Get current location from React Router
+  const location = useLocation();
+  const currentPath = location.pathname;
+  
+  // Function to determine if a link is active
+  const isActive = (path) => {
+    if (path === '/main' && (currentPath === '/' || currentPath === '/main')) {
+      return true; // Default to active for home page
+    }
+    return currentPath === path;
+  };
+
   return (
     <header className="transparent-header">
       <div className="logo">
@@ -94,9 +106,15 @@ const TransparentHeader = () => {
       </div>
       <nav className="main-nav">
         <ul>
-          <li><Link to="/main" style={{ textDecoration: 'none', color: 'inherit' }}>ACCUEIL</Link></li>
-          <li><Link to="/informations" style={{ textDecoration: 'none', color: 'inherit' }}>INFORMATIONS</Link></li>
-          <li><Link to="/scoreboard" style={{ textDecoration: 'none', color: 'inherit' }}>SCOREBOARD</Link></li>
+          <li className={isActive('/main') ? 'active' : ''}>
+            <Link to="/main" style={{ textDecoration: 'none', color: 'inherit' }}>ACCUEIL</Link>
+          </li>
+          <li className={isActive('/informations') ? 'active' : ''}>
+            <Link to="/informations" style={{ textDecoration: 'none', color: 'inherit' }}>INFORMATIONS</Link>
+          </li>
+          <li className={isActive('/scoreboard') ? 'active' : ''}>
+            <Link to="/scoreboard" style={{ textDecoration: 'none', color: 'inherit' }}>SCOREBOARD</Link>
+          </li>
         </ul>
       </nav>
       <div className="logout-container">
