@@ -98,35 +98,11 @@ Bellagio
 
 Groupes AD
 
-  Croupiers <br/>
-      Description: Groupe contenant les employés qui travaillent comme croupiers. Ils n'ont pas de droits particuliers. <br/>
-      Membres: Croupier1-Bellagio, Croupier2-Bellagio, Croupier1-Mirage, Croupier2-Mirage, Croupier1-MGM, Croupier2-MGM <br/>
+File Share Managers
+    Description : Groupe contenant les employés responsables de la gestion des partages de fichiers.
+    Membres : FileShareAdmin-Bellagio, FileShareAdmin-Mirage, FileShareAdmin-MGM
 
-  Sécurité Casino Basique <br/>
-      Description: Groupe contenant les agents de sécurité avec des droits limités. <br/>
-      Membres: SecurityGuard1-Bellagio, SecurityGuard2-Bellagio, SecurityGuard1-Mirage, SecurityGuard2-Mirage, SecurityGuard1-MGM, SecurityGuard2-MGM <br/>
-
-  Sécurité Vidéo <br/>
-      Description: Groupe contenant les agents de sécurité responsables des caméras de surveillance et des systèmes de reconnaissance faciale. <br/>
-      Membres: SecurityChief-Bellagio, SecurityChief-Mirage, SecurityChief-MGM <br/>
-
-  Sécurité des Coffres <br/>
-      Description: Groupe contenant les agents de sécurité responsables des coffres-forts et des systèmes de gestion des accès. <br/>
-      Membres: SecurityChief-Bellagio, SecurityChief-Mirage, SecurityChief-MGM <br/>
-
-  Finance <br/>
-      Description: Groupe contenant les employés responsables des transactions financières et de la gestion des jetons de casino. <br/>
-      Membres: Manager1-Bellagio, Manager2-Bellagio, Manager1-Mirage, Manager2-Mirage, Manager1-MGM, Manager2-MGM <br/>
-
-  VIP <br/>
-      Description: Groupe contenant les employés responsables de la gestion des clients VIP et des suites de luxe. <br/>
-      Membres: VIPManager-Bellagio, VIPAssistant-Bellagio, VIPManager-Mirage, VIPAssistant-Mirage, VIPManager-MGM, VIPAssistant-MGM <br/>
-
-  IT <br/>
-      Description: Groupe contenant les employés de l'équipe IT responsables de la gestion du réseau et des systèmes. <br/>
-      Membres: ITAdmin-Bellagio, ITSupport1-Bellagio, ITSupport2-Bellagio, ITAdmin-Mirage, ITSupport1-Mirage, ITSupport2-Mirage, ITAdmin-MGM, ITSupport1-MGM, ITSupport2-MGM <br/>
-
-  Admin <br/>
+  CEO <br/>
       Description: Compte administrateur de Terry Benedict. <br/>
       Membres: Benedict <br/>
 
