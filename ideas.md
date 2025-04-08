@@ -10,6 +10,8 @@ Infra:
 
 =================================================================================
 
+=================================================================================
+
 Domaines et Unités d'Organisation (OU)
 
 Domaines Enfants
@@ -23,109 +25,109 @@ Unités d'Organisation (OU)
 
 Bellagio
 
-  OU=Management
-      PC: ManagementPC-Bellagio
-      Utilisateurs: Benedict, Manager1-Bellagio, Manager2-Bellagio
+  OU=Management <br/>
+      PC: ManagementPC-Bellagio <br/>
+      Utilisateurs: Benedict, Manager1-Bellagio, Manager2-Bellagio <br/>
 
-  OU=VIP
-      PC: VIPPC-Bellagio
-      Utilisateurs: VIPManager-Bellagio, VIPAssistant-Bellagio
+  OU=VIP <br/>
+      PC: VIPPC-Bellagio <br/>
+      Utilisateurs: VIPManager-Bellagio, VIPAssistant-Bellagio <br/>
 
-  OU=Sécurité
-      PC: SecurityPC-Bellagio
-      Utilisateurs: SecurityChief-Bellagio, SecurityGuard1-Bellagio, SecurityGuard2-Bellagio
+  OU=Sécurité <br/>
+      PC: SecurityPC-Bellagio <br/>
+      Utilisateurs: SecurityChief-Bellagio, SecurityGuard1-Bellagio, SecurityGuard2-Bellagio <br/>
 
-  OU=IT
-      PC: ITServer-Bellagio, ITPC-Bellagio
-      Utilisateurs: ITAdmin-Bellagio, ITSupport1-Bellagio, ITSupport2-Bellagio
+  OU=IT <br/>
+      PC: ITServer-Bellagio, ITPC-Bellagio <br/>
+      Utilisateurs: ITAdmin-Bellagio, ITSupport1-Bellagio, ITSupport2-Bellagio <br/>
 
-  OU=Croupier
-      PC: CroupierPC-Bellagio
-      Utilisateurs: Croupier1-Bellagio, Croupier2-Bellagio
+  OU=Croupier <br/>
+      PC: CroupierPC-Bellagio <br/>
+      Utilisateurs: Croupier1-Bellagio, Croupier2-Bellagio <br/>
 
 **********************************************************************************************************************************************
 
 Mirage
 
-  OU=Management
-      PC: ManagementPC-Mirage
-      Utilisateurs: Benedict, Manager1-Mirage, Manager2-Mirage
+  OU=Management <br/>
+      PC: ManagementPC-Mirage <br/>
+      Utilisateurs: Benedict, Manager1-Mirage, Manager2-Mirage <br/>
 
-  OU=VIP
-      PC: VIPPC-Mirage
-      Utilisateurs: VIPManager-Mirage, VIPAssistant-Mirage
+  OU=VIP <br/>
+      PC: VIPPC-Mirage <br/>
+      Utilisateurs: VIPManager-Mirage, VIPAssistant-Mirage <br/>
 
-  OU=Sécurité
-      PC: SecurityPC-Mirage
-      Utilisateurs: SecurityChief-Mirage, SecurityGuard1-Mirage, SecurityGuard2-Mirage
+  OU=Sécurité <br/>
+      PC: SecurityPC-Mirage <br/>
+      Utilisateurs: SecurityChief-Mirage, SecurityGuard1-Mirage, SecurityGuard2-Mirage <br/>
 
-  OU=IT
-      PC: ITServer-Mirage, ITPC-Mirage
-      Utilisateurs: ITAdmin-Mirage, ITSupport1-Mirage, ITSupport2-Mirage
+  OU=IT <br/>
+      PC: ITServer-Mirage, ITPC-Mirage <br/>
+      Utilisateurs: ITAdmin-Mirage, ITSupport1-Mirage, ITSupport2-Mirage <br/>
 
-  OU=Croupier
-      PC: CroupierPC-Mirage
-      Utilisateurs: Croupier1-Mirage, Croupier2-Mirage
+  OU=Croupier <br/>
+      PC: CroupierPC-Mirage <br/>
+      Utilisateurs: Croupier1-Mirage, Croupier2-Mirage <br/>
 
 **********************************************************************************************************************************************
 
 MGM Grand
 
-  OU=Management
-      PC: ManagementPC-MGM
-      Utilisateurs: Benedict, Manager1-MGM, Manager2-MGM
+  OU=Management <br/>
+      PC: ManagementPC-MGM <br/>
+      Utilisateurs: Benedict, Manager1-MGM, Manager2-MGM <br/>
 
-  OU=VIP
-      PC: VIPPC-MGM
-      Utilisateurs: VIPManager-MGM, VIPAssistant-MGM
+  OU=VIP <br/>
+      PC: VIPPC-MGM <br/>
+      Utilisateurs: VIPManager-MGM, VIPAssistant-MGM <br/>
 
-  OU=Sécurité
-      PC: SecurityPC-MGM
-      Utilisateurs: SecurityChief-MGM, SecurityGuard1-MGM, SecurityGuard2-MGM
+  OU=Sécurité <br/>
+      PC: SecurityPC-MGM <br/>
+      Utilisateurs: SecurityChief-MGM, SecurityGuard1-MGM, SecurityGuard2-MGM <br/>
 
-  OU=IT
-      PC: ITServer-MGM, ITPC-MGM
-      Utilisateurs: ITAdmin-MGM, ITSupport1-MGM, ITSupport2-MGM
+  OU=IT <br/>
+      PC: ITServer-MGM, ITPC-MGM <br/>
+      Utilisateurs: ITAdmin-MGM, ITSupport1-MGM, ITSupport2-MGM <br/>
 
-  OU=Croupier
-      PC: CroupierPC-MGM
-      Utilisateurs: Croupier1-MGM, Croupier2-MGM
+  OU=Croupier <br/>
+      PC: CroupierPC-MGM <br/>
+      Utilisateurs: Croupier1-MGM, Croupier2-MGM <br/>
 
 **********************************************************************************************************************************************
 
 Groupes AD
 
-  Croupiers
-      Description: Groupe contenant les employés qui travaillent comme croupiers. Ils n'ont pas de droits particuliers.
-      Membres: Croupier1-Bellagio, Croupier2-Bellagio, Croupier1-Mirage, Croupier2-Mirage, Croupier1-MGM, Croupier2-MGM
+  Croupiers <br/>
+      Description: Groupe contenant les employés qui travaillent comme croupiers. Ils n'ont pas de droits particuliers. <br/>
+      Membres: Croupier1-Bellagio, Croupier2-Bellagio, Croupier1-Mirage, Croupier2-Mirage, Croupier1-MGM, Croupier2-MGM <br/>
 
-  Sécurité Casino Basique
-      Description: Groupe contenant les agents de sécurité avec des droits limités.
-      Membres: SecurityGuard1-Bellagio, SecurityGuard2-Bellagio, SecurityGuard1-Mirage, SecurityGuard2-Mirage, SecurityGuard1-MGM, SecurityGuard2-MGM
+  Sécurité Casino Basique <br/>
+      Description: Groupe contenant les agents de sécurité avec des droits limités. <br/>
+      Membres: SecurityGuard1-Bellagio, SecurityGuard2-Bellagio, SecurityGuard1-Mirage, SecurityGuard2-Mirage, SecurityGuard1-MGM, SecurityGuard2-MGM <br/>
 
-  Sécurité Vidéo
-      Description: Groupe contenant les agents de sécurité responsables des caméras de surveillance et des systèmes de reconnaissance faciale.
-      Membres: SecurityChief-Bellagio, SecurityChief-Mirage, SecurityChief-MGM
+  Sécurité Vidéo <br/>
+      Description: Groupe contenant les agents de sécurité responsables des caméras de surveillance et des systèmes de reconnaissance faciale. <br/>
+      Membres: SecurityChief-Bellagio, SecurityChief-Mirage, SecurityChief-MGM <br/>
 
-  Sécurité des Coffres
-      Description: Groupe contenant les agents de sécurité responsables des coffres-forts et des systèmes de gestion des accès.
-      Membres: SecurityChief-Bellagio, SecurityChief-Mirage, SecurityChief-MGM
+  Sécurité des Coffres <br/>
+      Description: Groupe contenant les agents de sécurité responsables des coffres-forts et des systèmes de gestion des accès. <br/>
+      Membres: SecurityChief-Bellagio, SecurityChief-Mirage, SecurityChief-MGM <br/>
 
-  Finance
-      Description: Groupe contenant les employés responsables des transactions financières et de la gestion des jetons de casino.
-      Membres: Manager1-Bellagio, Manager2-Bellagio, Manager1-Mirage, Manager2-Mirage, Manager1-MGM, Manager2-MGM
+  Finance <br/>
+      Description: Groupe contenant les employés responsables des transactions financières et de la gestion des jetons de casino. <br/>
+      Membres: Manager1-Bellagio, Manager2-Bellagio, Manager1-Mirage, Manager2-Mirage, Manager1-MGM, Manager2-MGM <br/>
 
-  VIP
-      Description: Groupe contenant les employés responsables de la gestion des clients VIP et des suites de luxe.
-      Membres: VIPManager-Bellagio, VIPAssistant-Bellagio, VIPManager-Mirage, VIPAssistant-Mirage, VIPManager-MGM, VIPAssistant-MGM
+  VIP <br/>
+      Description: Groupe contenant les employés responsables de la gestion des clients VIP et des suites de luxe. <br/>
+      Membres: VIPManager-Bellagio, VIPAssistant-Bellagio, VIPManager-Mirage, VIPAssistant-Mirage, VIPManager-MGM, VIPAssistant-MGM <br/>
 
-  IT
-      Description: Groupe contenant les employés de l'équipe IT responsables de la gestion du réseau et des systèmes.
-      Membres: ITAdmin-Bellagio, ITSupport1-Bellagio, ITSupport2-Bellagio, ITAdmin-Mirage, ITSupport1-Mirage, ITSupport2-Mirage, ITAdmin-MGM, ITSupport1-MGM, ITSupport2-MGM
+  IT <br/>
+      Description: Groupe contenant les employés de l'équipe IT responsables de la gestion du réseau et des systèmes. <br/>
+      Membres: ITAdmin-Bellagio, ITSupport1-Bellagio, ITSupport2-Bellagio, ITAdmin-Mirage, ITSupport1-Mirage, ITSupport2-Mirage, ITAdmin-MGM, ITSupport1-MGM, ITSupport2-MGM <br/>
 
-  Admin
-      Description: Compte administrateur de Terry Benedict.
-      Membres: Benedict
+  Admin <br/>
+      Description: Compte administrateur de Terry Benedict. <br/>
+      Membres: Benedict <br/>
 
             
 
