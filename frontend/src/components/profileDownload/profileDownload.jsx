@@ -16,11 +16,11 @@ const ProfileDownload = () => {
                 </div>
                 
                 <div className="download-intro">
-                    <p>[Ici doit aller la phrase de présentation]</p>
+                    <p>Texte présentation doit aller ici</p>
                 </div>
                 
                 <div className="download-body">
-                    <p>[Ici doit aller la phrase d'introduction]</p>
+                    <p>Texte introduction doit aller ici</p>
                     
                     <div className="os-selection">
                         <div className="os-card" onClick={() => handleDownload('Windows')}>
@@ -44,7 +44,7 @@ const ProfileDownload = () => {
                     
                     <div className="instructions">
                         <h3>Instructions</h3>
-                        <p>[Ici doit aller la phrase de tutoriel]</p>
+                        <p>Texte tutoriel doit aller ici</p>
                         <ol>
                             <li>Étape 1</li>
                             <li>Étape 2</li>

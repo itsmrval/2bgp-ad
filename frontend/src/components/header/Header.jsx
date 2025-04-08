@@ -109,8 +109,8 @@ const TransparentHeader = () => {
           <li className={isActive('/main') ? 'active' : ''}>
             <Link to="/main" style={{ textDecoration: 'none', color: 'inherit' }}>ACCUEIL</Link>
           </li>
-          <li className={isActive('/informations') ? 'active' : ''}>
-            <Link to="/informations" style={{ textDecoration: 'none', color: 'inherit' }}>INFORMATIONS</Link>
+          <li className={isActive('/about') ? 'active' : ''}>
+            <Link to="/about" style={{ textDecoration: 'none', color: 'inherit' }}>INFORMATIONS</Link>
           </li>
           <li className={isActive('/scoreboard') ? 'active' : ''}>
             <Link to="/scoreboard" style={{ textDecoration: 'none', color: 'inherit' }}>SCOREBOARD</Link>
