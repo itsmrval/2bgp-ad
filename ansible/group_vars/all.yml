@@ -11,9 +11,9 @@ core_storage: "local"
 template_storage: "local"
 template_name: "ubuntu-24.04-standard"
 
-template_win_1: "11100"
-template_win_2: "11200"
-template_win_3: "11300"
+template_win_1: "111"
+template_win_2: "112"
+template_win_3: "113"
 
 iso_virtio_drivers: "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.189-1/virtio-win.iso"
 iso_virtio_drivers_name: "virtio-win.iso"
