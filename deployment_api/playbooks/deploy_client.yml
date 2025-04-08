@@ -25,7 +25,7 @@
         newid: "{{ client_id }}00{{ item.id }}"
         name: "vm-{{ client_id }}-{{ item.id }}"
         node: "{{ proxmox_node }}"
-        storage: "local"
+        storage: "{{ vm_storage }}"
         format: raw
         timeout: 600
       with_items: "{{ templates }}"

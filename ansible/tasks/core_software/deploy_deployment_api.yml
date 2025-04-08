@@ -33,6 +33,7 @@
       proxmox_user: "{{ ansible_pve_api_user }}"
       proxmox_password: "{{ ansible_pve_api_password }}"
       proxmox_node: "{{ ansible_hostname }}"
+      vm_storage: "{{ vm_storage }}"
     mode: '0644'
 
 - name: create_systemd
