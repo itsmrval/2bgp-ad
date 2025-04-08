@@ -6,6 +6,7 @@ theme write: https://www.youtube.com/watch?v=FteCteGhnYY
 Infra:
 - 3 forêts (Bellagio, The Mirage, MGM Grand)
 - Domaines enfants (Bellagio: casino.bellagio.com Mirage: casino.mirage.com MGM Grand: casino.mgmgrand.com )
+- Pour les groupes dans les AD : Croupiers ( la ou un des equipiers est dedans (pas de droit) )  Sécurité casinon basique (Peu de droit) Sécurité vidéo (autre droit) sécurité des coffres ( beaucoup de droit mais pas admin admin) et le compte admin de Terry Beneditct
 
 Tuto Exegol conteneur : https://youtu.be/7AI2rYDLIUs?si=uwSTkzRqh5wNxuXm
 
@@ -57,9 +58,12 @@ Level 1 (Reconnaissance NMAP) :
 
 Script pour histoire du niveau :
 
-Votre équipe a tenté de pénétrer dans les coulisses IT du casino pour subtiliser un compte AD stratégique et en savoir plus sur le réseau, mais vos efforts se sont heurtés à un mur de sécurité imprévu. Les défenses internes se sont révélées plus solides que prévu, rendant l'accès direct aux comptes critiques impossible par des moyens conventionnels. 
+Votre équipe est déjà infiltrée dans le casino, mais pour que le casse commence, vous devez d’abord pénétrer leur environnement informatique. 
 
-Cependant, l'équipe à réussi après quelques verres à soudoyer une travailleur de l'équipe IT une plage d'IP ... . En lançant une reconnaissance méticuleuse à l'aide de nmap, vous allez pouvoir cartographier le réseau du casino et identifier les services exposés.
+Votre mission, si vous l’acceptez, consiste à identifier les types de serveurs présents sur leur réseau ainsi que les ports ouverts.
+
+Cependant, après quelques verres bien placés, l’équipe a réussi à soudoyer un membre du service IT, obtenant ainsi une plage d’adresses IP…
+En lançant une reconnaissance méticuleuse avec nmap, vous allez pouvoir cartographier le réseau du casino et identifier les services exposés.
 
 Attaque : 
 
@@ -69,9 +73,7 @@ nmap -sn 192.168.1.0/24
 
 avec les IPs faire un nmap :
 
-
-On peut dire que la key pour le CTF c'est les numéros des ports additionés pour pouvoir passé au prochain niveau. 
-
+Key ctf = 127 + ports actif sur les réseaux. 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
