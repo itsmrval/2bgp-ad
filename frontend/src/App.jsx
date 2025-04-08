@@ -5,11 +5,11 @@ import SignupPages from './pages/auth/signup';
 import Intro from './pages/intro/intro';
 import MainPage from './pages/main/main';
 import TestPage from './pages/main/test';
-<<<<<<< Updated upstream
+
 import MissionPage from './pages/mission/mission';
-=======
+
 import Scoreboard from './pages/main/scoreboard';
->>>>>>> Stashed changes
+
 
 
 function App() {

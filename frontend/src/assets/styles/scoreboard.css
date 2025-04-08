@@ -1,0 +1,391 @@
+/* Reset and base styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    margin-top: 20%;
+    min-height: 100vh;
+    width: 90%;
+  }
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Helvetica-Inserat', Helvetica, Arial, sans-serif;
+    background-color: #f5f5f7;
+    overflow-x: hidden;
+    overflow-y: auto !important; /* Allow normal scrolling */
+    /* Hide scrollbar while keeping functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer and Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+body::-webkit-scrollbar, 
+html::-webkit-scrollbar {
+    display: none;
+}
+
+/* Main layout styles */
+.page-wrapper {
+    min-height: 90vh;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-container {
+    height: auto;
+    position: static;
+
+    width: 100%;
+    /* Add padding to page container */
+}
+
+.scoreboard-main-content {
+    flex: 1;
+    padding: 0px 1rem 2rem 1rem; /* top right bottom left */
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align at the top instead of center */
+    padding-top: 40px; /* Reduced from 120px since we added padding to page-container */
+    padding-bottom: 2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin: 0; /* Remove large margins */
+    width: 100%;
+    position: relative; /* Add position relative */
+    z-index: 1; /* Ensure it's below the header */
+}
+
+.scoreboard-container-centered {
+    width: 100%;
+    max-width: 1400px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    height: auto;
+}
+
+.scoreboard-content {
+    width: 100%;
+}
+
+/* Masquer les sections de titre */
+.scoreboard-header-section {
+    display: none;
+}
+
+/* Table styling */
+.scoreboard-table-container {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+    margin-bottom: 0;
+}
+
+.scoreboard-table-header {
+    display: flex;
+    background-color: #222;
+    color: white;
+    padding: 1rem;
+    border-bottom: 2px solid #ff0000;
+    font-weight: bold;
+    align-items: center; /* Aligne verticalement les éléments */
+    height: 60px; /* Hauteur fixe pour le header */
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.scoreboard-table-body {
+    width: 100%;
+    max-height: 70vh; /* Set maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.scoreboard-table-body::-webkit-scrollbar {
+    display: none;
+}
+
+/* Row styling */
+.team-row {
+    display: flex;
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    align-items: center; /* Aligne verticalement les éléments */
+}
+  
+.team-row:nth-child(even) {
+    background-color: #f0f0f0;
+}
+  
+.team-row:hover {
+    background-color: #e9e9e9;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Column styling */
+.rank-column {
+    flex: 0 0 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+}
+  
+.team-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+}
+  
+.chips-column {
+    flex: 0 0 200px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 1.5rem;
+    color: white; /* Changement de couleur pour Casino Chips */
+    padding-right: 1.5rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Ajout d'une ombre pour la lisibilité */
+}
+
+/* Header text color specific for chips column */
+.scoreboard-table-header .chips-column {
+    color: white;
+}
+
+/* Value chip color */
+.chips-value {
+    font-family: monospace;
+    font-weight: bold;
+    color: #ff0000;
+}
+
+/* Rank styling */
+.rank-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ff0000;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Team details styling */
+.team-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #222;
+}
+  
+.team-members {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+  
+.member {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+}
+  
+.member-name {
+    color: #444;
+}
+  
+.member-chips {
+    margin-left: 5px;
+    color: #ff0000;
+    font-weight: bold;
+}
+
+/* Animation */
+@keyframes titleAppear-left-to-right {
+    0% {
+        background-size: 4px 4px;
+        opacity: 0;
+        clip-path: inset(0 100% 0 0);
+    }
+    100% {
+        background-size: 8px 8px;
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+/* Media queries for responsiveness */
+
+@media (max-width: 1300px) {
+   
+    .scoreboard-container-centered {
+        max-width: 95%;
+    }
+
+    .page-container {
+        height: auto;
+        position: static;
+    
+        width: 100%;
+        /* Add padding to page container */
+    }
+    
+    .main-content {
+        padding-top: 110px; /* Adjusted */
+    }
+}
+
+
+@media (max-width: 992px) {
+   
+    .scoreboard-container-centered {
+        max-width: 95%;
+    }
+
+    .page-container {
+        height: auto;
+        position: static;
+    
+        width: 100%;
+        margin-top: 40%;
+        /* Add padding to page container */
+    }
+    
+    .main-content {
+        padding-top: 110px; /* Adjusted */
+    }
+
+    .scoreboard-main-content {
+        padding-top: 110px;
+    }
+    
+    .scoreboard-table-body {
+        max-height: 65vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .team-row {
+        flex-direction: column;
+        padding: 1rem;
+    }
+  
+    .rank-column, .chips-column {
+        justify-content: flex-start;
+        margin-bottom: 0.5rem;
+    }
+    
+    .rank-column {
+        align-self: flex-start;
+    }
+  
+    .chips-column {
+        font-size: 1.25rem;
+        padding-right: 0;
+        margin-top: 1rem;
+        align-self: flex-end;
+    }
+    
+    .scoreboard-table-header {
+        display: none;
+    }
+    
+    .scoreboard-container-centered {
+        padding: 1rem;
+    }
+    
+    .main-content {
+        padding-top: 100px; /* Adjusted for mobile */
+        padding-bottom: 1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .page-container {
+        
+        padding-top: 0; /* Adjust for smaller header on mobile */
+    }
+
+    .scoreboard-main-content {
+        padding-top: 100px;
+        padding-bottom: 1rem;
+    }
+    
+    .scoreboard-table-body {
+        max-height: 60vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding-top: 90px; /* Adjusted */
+        padding-bottom: 0.5rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    
+    .team-name {
+        font-size: 1.3rem;
+    }
+    
+    .team-members {
+        margin-top: 0.5rem;
+    }
+    
+    .member {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+    
+    .scoreboard-container-centered {
+        padding: 0.75rem;
+    }
+    
+    .page-container {
+        padding-top: 0; /* Adjust for smallest screens */
+    }
+
+    .scoreboard-main-content {
+        padding-top: 90px;
+        padding-bottom: 0.5rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    
+    .scoreboard-table-body {
+        max-height: 55vh;
+    }
+}
