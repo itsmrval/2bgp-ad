@@ -24,7 +24,7 @@ Unités d'Organisation (OU)
 Bellagio
   
   OU=Management
-      PC: ManagementPC-Bellagio
+      PC: ManagementPC-Bellagio <br/>
       Utilisateurs: Benedict, Manager1-Bellagio, Manager2-Bellagio
   
   OU=VIP
