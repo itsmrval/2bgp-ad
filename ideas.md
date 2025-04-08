@@ -22,48 +22,47 @@ Unités d'Organisation (OU)
 **********************************************************************************************************************************************
 
 Bellagio
-  
+
   OU=Management
-      PC: ManagementPC-Bellagio <br/>
+      PC: ManagementPC-Bellagio
       Utilisateurs: Benedict, Manager1-Bellagio, Manager2-Bellagio
-  
+
   OU=VIP
       PC: VIPPC-Bellagio
       Utilisateurs: VIPManager-Bellagio, VIPAssistant-Bellagio
-  
+
   OU=Sécurité
       PC: SecurityPC-Bellagio
       Utilisateurs: SecurityChief-Bellagio, SecurityGuard1-Bellagio, SecurityGuard2-Bellagio
-  
+
   OU=IT
       PC: ITServer-Bellagio, ITPC-Bellagio
       Utilisateurs: ITAdmin-Bellagio, ITSupport1-Bellagio, ITSupport2-Bellagio
-  
+
   OU=Croupier
       PC: CroupierPC-Bellagio
       Utilisateurs: Croupier1-Bellagio, Croupier2-Bellagio
-      
 
 **********************************************************************************************************************************************
-    
+
 Mirage
 
   OU=Management
       PC: ManagementPC-Mirage
       Utilisateurs: Benedict, Manager1-Mirage, Manager2-Mirage
-  
+
   OU=VIP
       PC: VIPPC-Mirage
       Utilisateurs: VIPManager-Mirage, VIPAssistant-Mirage
-  
+
   OU=Sécurité
       PC: SecurityPC-Mirage
       Utilisateurs: SecurityChief-Mirage, SecurityGuard1-Mirage, SecurityGuard2-Mirage
-  
+
   OU=IT
       PC: ITServer-Mirage, ITPC-Mirage
       Utilisateurs: ITAdmin-Mirage, ITSupport1-Mirage, ITSupport2-Mirage
-  
+
   OU=Croupier
       PC: CroupierPC-Mirage
       Utilisateurs: Croupier1-Mirage, Croupier2-Mirage
@@ -71,27 +70,26 @@ Mirage
 **********************************************************************************************************************************************
 
 MGM Grand
-  
+
   OU=Management
       PC: ManagementPC-MGM
       Utilisateurs: Benedict, Manager1-MGM, Manager2-MGM
-  
+
   OU=VIP
       PC: VIPPC-MGM
       Utilisateurs: VIPManager-MGM, VIPAssistant-MGM
-  
+
   OU=Sécurité
       PC: SecurityPC-MGM
       Utilisateurs: SecurityChief-MGM, SecurityGuard1-MGM, SecurityGuard2-MGM
-  
+
   OU=IT
       PC: ITServer-MGM, ITPC-MGM
       Utilisateurs: ITAdmin-MGM, ITSupport1-MGM, ITSupport2-MGM
-  
+
   OU=Croupier
       PC: CroupierPC-MGM
       Utilisateurs: Croupier1-MGM, Croupier2-MGM
-
 
 **********************************************************************************************************************************************
 
@@ -128,7 +126,6 @@ Groupes AD
   Admin
       Description: Compte administrateur de Terry Benedict.
       Membres: Benedict
-
 
             
 
