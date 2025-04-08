@@ -8,22 +8,23 @@ const ScoreboardPage = () => {
     // Force scroll to top when component mounts
     React.useEffect(() => {
         window.scrollTo(0, 0);
-        
+
         // Reset body styles to ensure proper display
         document.body.style.margin = '0';
         document.body.style.padding = '0';
         document.body.style.width = '100%';
     }, []);
-    
+
     return (
-        <div className="page-wrapper">
-            <Header />
-            <main className="scoreboard-main-content">
-                <div className="scoreboard-container-centered">
-                    <Scoreboard />
-                </div>
-            </main>
-            <Footer />
+        <div>
+            {/* Header area */}
+            <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000 }}>
+                <Header />
+            </div>
+            <Scoreboard />
+            <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000 }}>
+                <Footer />
+            </div>
         </div>
     );
 };
