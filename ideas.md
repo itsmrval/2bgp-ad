@@ -8,7 +8,7 @@ Infra:
 - Domaines enfants (Bellagio: casino.bellagio.com Mirage: casino.mirage.com MGM Grand: casino.mgmgrand.com )
 - Pour les groupes dans les AD : Croupiers ( la ou un des equipiers est dedans (pas de droit) )  Sécurité casinon basique (Peu de droit) Sécurité vidéo (autre droit) sécurité des coffres ( beaucoup de droit mais pas admin admin) et le compte créateur de Terry Beneditct
 
-Domaines et Unités d'Organisation (OU)
+=================================================================================
 
 Domaines et Unités d'Organisation (OU)
 
@@ -18,6 +18,8 @@ Domaines Enfants
     MGM Grand: casino.mgmgrand.com
 
 Unités d'Organisation (OU)
+
+**********************************************************************************************************************************************
 
 Bellagio
   
@@ -40,6 +42,9 @@ Bellagio
   OU=Croupier
       PC: CroupierPC-Bellagio
       Utilisateurs: Croupier1-Bellagio, Croupier2-Bellagio
+      
+
+**********************************************************************************************************************************************
     
 Mirage
 
@@ -63,6 +68,8 @@ Mirage
       PC: CroupierPC-Mirage
       Utilisateurs: Croupier1-Mirage, Croupier2-Mirage
 
+**********************************************************************************************************************************************
+
 MGM Grand
   
   OU=Management
@@ -85,6 +92,8 @@ MGM Grand
       PC: CroupierPC-MGM
       Utilisateurs: Croupier1-MGM, Croupier2-MGM
 
+
+**********************************************************************************************************************************************
 
 Groupes AD
 
