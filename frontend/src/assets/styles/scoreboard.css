@@ -42,8 +42,8 @@ body, html {
 
 .scoreboard-table-header {
     display: flex;
-    background-color: #222;
-    color: white;
+    background-color: whitesmoke;
+    color: red;
     padding: 0 1rem;
     border-bottom: 2px solid #ff0000;
     font-weight: bold;
@@ -149,6 +149,7 @@ body, html {
 
 .member-name {
     color: #444;
+    margin: 0;
 }
 
 .member-chips {
