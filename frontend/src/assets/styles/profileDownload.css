@@ -1,0 +1,113 @@
+.profile-download-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh; /* Réduit à 70vh au lieu de 80vh */
+    background-color: #ffffff;
+    padding: 50px 20px; /* Padding réduit */
+}
+
+.download-card {
+    border: 2px solid red; /* Changé #0066cc en rouge */
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 95%; /* Augmenté de 90% à 95% */
+    max-width: 900px; /* Augmenté de 800px à 900px */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.download-header {
+    background-color: red; /* Changé #0066cc en rouge */
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.download-intro {
+    padding: 20px;
+    text-align: center;
+    font-size: 1.1em;
+    border-bottom: 1px solid #eee;
+}
+
+.download-body {
+    padding: 30px;
+    color: black;
+    font-size: 1em;
+}
+
+.os-selection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.os-card {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 220px; /* Augmenté de 200px à 220px */
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.os-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.os-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.os-name {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.download-button {
+    background-color: red; /* Changé #0066cc en rouge */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: inherit; /* Utilise la même police que le reste du contenu */
+    font-size: 1em; /* Taille de police ajustée */
+}
+
+.download-button:hover {
+    background-color: darkred; /* Changé #0055aa en darkred */
+}
+
+.instructions {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border-left: 4px solid red; /* Changé #0066cc en rouge */
+}
+
+.instructions h3 {
+    margin-top: 0;
+    color: red; /* Changé #0066cc en rouge */
+}
+
+.instructions ol {
+    padding-left: 20px;
+}
+
+.instructions li {
+    margin-bottom: 8px;
+}
