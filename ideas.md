@@ -20,30 +20,33 @@ Domaines Enfants
     MGM Grand: casino.mgmgrand.com
 
 Unités d'Organisation (OU)
+=================================================================================
+
+MGM Grand
+
+  OU=Management <br/>
+      PC: ManagementPC-MGM <br/>
+      Utilisateurs: Benedict, Manager1-MGM, Manager2-MGM <br/>
+
+  OU=VIP <br/>
+      PC: VIPPC-MGM <br/>
+      Utilisateurs: VIPManager-MGM, VIPAssistant-MGM <br/>
+
+  OU=Sécurité <br/>
+      PC: SecurityPC-MGM <br/>
+      Utilisateurs: SecurityChief-MGM, SecurityGuard1-MGM, SecurityGuard2-MGM <br/>
+
+  OU=IT <br/>
+      PC: ITServer-MGM, ITPC-MGM <br/>
+      Utilisateurs: ITAdmin-MGM, ITSupport1-MGM, ITSupport2-MGM <br/>
+
+  OU=Croupier <br/>
+      PC: CroupierPC-MGM <br/>
+      Utilisateurs: Croupier1-MGM, Croupier2-MGM <br/>
 
 **********************************************************************************************************************************************
 
-Bellagio
 
-  OU=Management <br/>
-      PC: ManagementPC-Bellagio <br/>
-      Utilisateurs: Benedict, Manager1-Bellagio, Manager2-Bellagio <br/>
-
-  OU=VIP <br/>
-      PC: VIPPC-Bellagio <br/>
-      Utilisateurs: VIPManager-Bellagio, VIPAssistant-Bellagio <br/>
-
-  OU=Sécurité <br/>
-      PC: SecurityPC-Bellagio <br/>
-      Utilisateurs: SecurityChief-Bellagio, SecurityGuard1-Bellagio, SecurityGuard2-Bellagio <br/>
-
-  OU=IT <br/>
-      PC: ITServer-Bellagio, ITPC-Bellagio <br/>
-      Utilisateurs: ITAdmin-Bellagio, ITSupport1-Bellagio, ITSupport2-Bellagio <br/>
-
-  OU=Croupier <br/>
-      PC: CroupierPC-Bellagio <br/>
-      Utilisateurs: Croupier1-Bellagio, Croupier2-Bellagio <br/>
 
 **********************************************************************************************************************************************
 
@@ -71,29 +74,30 @@ Mirage
 
 **********************************************************************************************************************************************
 
-MGM Grand
+Bellagio
 
   OU=Management <br/>
-      PC: ManagementPC-MGM <br/>
-      Utilisateurs: Benedict, Manager1-MGM, Manager2-MGM <br/>
+      PC: ManagementPC-Bellagio <br/>
+      Utilisateurs: Benedict, Manager1-Bellagio, Manager2-Bellagio <br/>
 
   OU=VIP <br/>
-      PC: VIPPC-MGM <br/>
-      Utilisateurs: VIPManager-MGM, VIPAssistant-MGM <br/>
+      PC: VIPPC-Bellagio <br/>
+      Utilisateurs: VIPManager-Bellagio, VIPAssistant-Bellagio <br/>
 
   OU=Sécurité <br/>
-      PC: SecurityPC-MGM <br/>
-      Utilisateurs: SecurityChief-MGM, SecurityGuard1-MGM, SecurityGuard2-MGM <br/>
+      PC: SecurityPC-Bellagio <br/>
+      Utilisateurs: SecurityChief-Bellagio, SecurityGuard1-Bellagio, SecurityGuard2-Bellagio <br/>
 
   OU=IT <br/>
-      PC: ITServer-MGM, ITPC-MGM <br/>
-      Utilisateurs: ITAdmin-MGM, ITSupport1-MGM, ITSupport2-MGM <br/>
+      PC: ITServer-Bellagio, ITPC-Bellagio <br/>
+      Utilisateurs: ITAdmin-Bellagio, ITSupport1-Bellagio, ITSupport2-Bellagio <br/>
 
   OU=Croupier <br/>
-      PC: CroupierPC-MGM <br/>
-      Utilisateurs: Croupier1-MGM, Croupier2-MGM <br/>
+      PC: CroupierPC-Bellagio <br/>
+      Utilisateurs: Croupier1-Bellagio, Croupier2-Bellagio <br/>
 
 **********************************************************************************************************************************************
+
 
 Groupes AD
 
