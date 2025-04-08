@@ -34,8 +34,8 @@
     --hostname "{{ container_name }}" 
     --cores "{{ container_cores }}" 
     --memory "{{ container_memory }}" 
-    --storage "{{ template_storage }}"
-    --rootfs {{ template_storage }}:{{ container_size }}
+    --storage "{{ core_storage }}"
+    --rootfs {{ ct_storage }}:{{ container_size }}
     --net0 name=eth0,bridge="{{ sdn_corenet_name }}",ip="{{ container_ip }}/24,gw={{ sdn_corenet_gateway }}",firewall=1
     --onboot 1
     --ssh-public-keys /tmp/ssh_key_"{{ container_id }}".pub

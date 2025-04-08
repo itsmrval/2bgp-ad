@@ -5,6 +5,9 @@ sdn_corenet_name: "corenet"
 sdn_corenet_network: "172.16.0.0/24"
 sdn_corenet_gateway: "172.16.0.254"
 
+vm_storage: "local"
+core_storage: "local"
+
 template_storage: "local"
 template_name: "ubuntu-24.04-standard"
 

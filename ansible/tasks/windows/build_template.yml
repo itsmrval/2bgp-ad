@@ -1,14 +1,9 @@
 - name: define_variables
   set_fact:
     vms:
-      - { vm_id: "{{ template_win_1 }}", vm_name: "build-01", storage_name: "local" }
-      - { vm_id: "{{ template_win_2 }}", vm_name: "build-02", storage_name: "local" }
-      - { vm_id: "{{ template_win_3}}", vm_name: "build-03", storage_name: "local" }
-    iso_file: "winsrv2019.iso"
-    storage_name: "local"
-    iso_dir: "/var/lib/vz/template/iso"
-    provision_iso_name: "winsrv2019-provision.iso"
-    provision_dir: "/var/lib/vz/template/provision_winsrv"
+      - { vm_id: "{{ template_win_1 }}", vm_name: "build-01", storage_name: "{{ vm_storage }}" }
+      - { vm_id: "{{ template_win_2 }}", vm_name: "build-02", storage_name: "{{ vm_storage }}" }
+      - { vm_id: "{{ template_win_3}}", vm_name: "build-03", storage_name: "{{ vm_storage }}" }
     vm_memory: 1024
     vm_cores: 1
     vm_sockets: 1
