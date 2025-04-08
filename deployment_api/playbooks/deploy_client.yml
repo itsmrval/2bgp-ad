@@ -20,15 +20,13 @@
         api_user: "{{ proxmox_user }}"
         api_password: "{{ proxmox_password }}"
         api_host: "{{ proxmox_ip }}:8006"
-        node: "{{ proxmox_node }}"
-        vmid:  "{{ item.id }}"
-        clone: "{{ item.id }}"
+        clone: "vm-{{ client_id }}-{{ item.id }}"
+        vmid: "{{ item.id }}"
         newid: "{{ client_id }}00{{ item.id }}"
         name: "vm-{{ client_id }}-{{ item.id }}"
-        full: yes
-        net:
-          net0: "e1000=,bridge=cust{{ client_id }}"
-        state: present
+        node: "{{ proxmox_node }}"
+        storage: "local"
+        format: raw
         timeout: 600
       with_items: "{{ templates }}"
       async: 1200
