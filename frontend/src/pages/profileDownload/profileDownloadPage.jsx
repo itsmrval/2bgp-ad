@@ -12,7 +12,7 @@ const ProfileDownloadPage = () => {
             </div>
             
             {/* Main content area */}
-            <div style={{ marginTop: '0px', marginBottom: '0px' }}>
+            <div style={{ marginTop: '60px', marginBottom: '0px' }}>
                 <ProfileDownload />
             </div>
             

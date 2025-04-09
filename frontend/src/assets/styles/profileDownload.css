@@ -1,20 +1,34 @@
+/* Add these styles at the top of the file */
+body, html {
+    overflow: hidden;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+body::-webkit-scrollbar, 
+html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
 .profile-download-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 70vh; /* Réduit à 70vh au lieu de 80vh */
+    min-height: 70vh;
     background-color: #ffffff;
-    padding: 50px 20px; /* Padding réduit */
+    padding: 50px 20px;
+    overflow: hidden; /* Prevent scrolling in this container */
 }
 
+/* For the download card, in case it has scrollable content */
 .download-card {
-    border: 2px solid red; /* Changé #0066cc en rouge */
+    border: 2px solid red;
     border-radius: 10px;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 95%; /* Augmenté de 90% à 95% */
-    max-width: 900px; /* Augmenté de 800px à 900px */
-    overflow: hidden;
+    width: 95%;
+    max-width: 900px;
+    overflow: hidden; /* Changed from default overflow behavior */
     display: flex;
     flex-direction: column;
 }

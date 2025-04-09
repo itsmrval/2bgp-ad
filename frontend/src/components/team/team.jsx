@@ -47,7 +47,7 @@ const Team = () => {
     return (
         <div className="team-container">
             <div className="team-header">
-                <h2>Notre Équipe</h2>
+                <h2>The MasterMinds</h2>
                 <p>Texte de présentation doit aller ici</p>
             </div>
             
