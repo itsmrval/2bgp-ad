@@ -14,20 +14,20 @@ CONFIGS_DIR = './configs'
 
 os.makedirs(CONFIGS_DIR, exist_ok=True)
 
-# get content from proxmox_ip from ./playbooks/vars.yml
+# get content from public_ip from ./playbooks/vars.yml
 print('Loading configuration...')
 try:
     with open('./playbooks/vars.yml', 'r') as f:
         lines = f.readlines()
-        proxmox_ip = ''
+        public_ip = ''
         for line in lines:
-            if 'proxmox_ip' in line:
-                proxmox_ip = line.split(':')[1].strip()
-                proxmox_ip = re.sub(r'\"', '', proxmox_ip)
+            if 'public_ip' in line:
+                public_ip = line.split(':')[1].strip()
+                public_ip = re.sub(r'\"', '', public_ip)
                 break
-        if not proxmox_ip:
-            raise ValueError('proxmox_ip not found in vars.yml')
-    print(f'Using PVE IP {proxmox_ip}')
+        if not public_ip:
+            raise ValueError('public_ip not found in vars.yml')
+    print(f'Using Public IP {public_ip}')
 except Exception as e:
     print(f"Error loading configuration: {str(e)}")
     exit(1)
@@ -173,7 +173,7 @@ def create_client(client_id):
         'private_key': private_key,
         'public_key': public_key,
         'server_public_key': server_public_key,
-        'public_address': proxmox_ip
+        'public_address': public_ip
     }
     
     with open(filepath, 'w') as f:
@@ -204,7 +204,7 @@ DNS = 1.1.1.1, 8.8.8.8
 
 [Peer]
 PublicKey = {client_data['server_public_key']}
-Endpoint = {proxmox_ip}:51{client_id}
+Endpoint = {public_ip}:51{client_id}
 AllowedIPs = 10.{client_id}.0.0/16,172.17.{client_id}.1/32
 PersistentKeepalive = 5
 """

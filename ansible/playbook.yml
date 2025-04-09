@@ -35,14 +35,6 @@
         sdn_network: "10.100.0.0/16"
         sdn_gateway: "10.100.0.254"
         sdn_cust: true
-      
-    # Apply iptables rules for WireGuard
-    - name: setup_iptable
-      import_tasks: tasks/proxmox/setup_forward.yml
-      vars:
-        dest_ip: "{{ container_deployment_ip }}"
-        port: "511-1000"
-        protocol: "udp"
 
     # Download the template 
     - name: download_template
@@ -115,6 +107,7 @@
         container_ip: "{{ container_web_ip }}"
         container_size: 8
         enable_tun: true
+        enable_public: true
 
     # Dynamically add the web container to inventory with SSH args
     - name: add_web_container_to_inventory
@@ -136,9 +129,24 @@
       register: ssh_web_result
       until: ssh_web_result is succeeded
 
+    # Apply iptables rules for WireGuard
+    - name: setup_iptable
+      import_tasks: tasks/proxmox/setup_forward.yml
+      vars:
+        dest_ip: "{{ container_deployment_ip }}"
+        port_start: 500
+        port_end: 600
+        protocol: "udp"
+      delegate_to: "{{ container_web_ip }}" 
+
     # Install docker on the Web container
     - name: install_docker
       import_tasks: tasks/core_software/install_docker.yml
+      delegate_to: "{{ container_web_ip }}"
+
+    # Install containers on the Web container
+    - name: deploy_web_containers
+      import_tasks: tasks/core_software/deploy_web_containers.yml
       delegate_to: "{{ container_web_ip }}"
 
   ### PREPARING WINDOWS TEMPLATES ###

@@ -8,6 +8,7 @@
 # container_ip
 # container_size
 # enable_tun (optional)
+# enable_public (optional)
 
 - name: check_container
   shell: pct list | grep -q "{{ container_id }}"
@@ -37,6 +38,9 @@
     --storage "{{ core_storage }}"
     --rootfs {{ core_storage }}:{{ container_size }}
     --net0 name=eth0,bridge="{{ sdn_corenet_name }}",ip="{{ container_ip }}/24,gw={{ sdn_corenet_gateway }}",firewall=1
+    {% if enable_public is defined %}
+    --net1 name=eth1,bridge="{{ public_ct_adapter }}",ip="{{ public_ct_ip }}{{ public_ct_subnet }}"
+    {% endif %}
     --onboot 1
     --ssh-public-keys /tmp/ssh_key_"{{ container_id }}".pub
     -unprivileged 1

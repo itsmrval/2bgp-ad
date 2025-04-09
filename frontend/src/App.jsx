@@ -8,10 +8,7 @@ import TestPage from './pages/main/test';
 import ProfileDownloadPage from "./pages/profileDownload/profileDownloadPage";
 import MissionPage from './pages/mission/mission';
 import AboutPage from './pages/about/aboutPage';  // Nouvelle importation
-
 import Scoreboard from './pages/main/scoreboard';
-
-
 
 function App() {
     return (

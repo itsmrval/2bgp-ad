@@ -29,6 +29,7 @@
   copy:
     dest: /opt/deployment_api/playbooks/vars.yml
     content: |
+      public_ip: "{{ public_ct_ip }}"
       proxmox_ip: "{{ ansible_default_ipv4.address }}"
       proxmox_user: "{{ ansible_pve_api_user }}"
       proxmox_password: "{{ ansible_pve_api_password }}"

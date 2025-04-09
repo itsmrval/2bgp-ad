@@ -1,26 +1,44 @@
 ---
 proxmox_node: "{{ inventory_hostname }}"
 
+# Define public IPv4 address and network interface for the public access
+public_ct_ip: "192.168.48.200"
+public_ct_subnet: "/21"
+public_ct_adapter: "vmbr0"
+
+# Define the storage settings for the Proxmox node
+vm_storage: "local"
+core_storage: "local"
+template_storage: "local"
+
+# Define multiple secrets
+web_mongo_password: "password"
+web_jwt_password: "password"
+web_admin_deploy_token: "password"
+ansible_pve_api_password: "password"
+
+# Define the web settings (optional)
+ansible_pve_api_user: "2bgp@pve"
+ansible_pve_api_group: "2bgp" 
+
+# Define the SDN network settings (optional)
 sdn_corenet_name: "corenet"
 sdn_corenet_network: "172.16.0.0/24"
 sdn_corenet_gateway: "172.16.0.254"
 
-vm_storage: "local"
-core_storage: "local"
-
-template_storage: "local"
+# Define the template settings (optional)
 template_name: "ubuntu-24.04-standard"
-
 template_win_1: "111"
 template_win_2: "112"
 template_win_3: "113"
 
+# Define the ISO image settings (optional)
 iso_virtio_drivers: "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.189-1/virtio-win.iso"
 iso_virtio_drivers_name: "virtio-win.iso"
-
 iso_winserv2019: "https://go.microsoft.com/fwlink/p/?LinkID=2195167&clcid=0x409&culture=en-us&country=US"
 iso_winserv2019_name: "winsrv2019.iso"
 
+# Define the core settings (optional)
 container_deployment_id: 2000
 container_deployment_name: "core-deployment"
 container_deployment_memory: 1024
@@ -32,11 +50,3 @@ container_web_name: "core-web"
 container_web_memory: 1024
 container_web_cores: 1
 container_web_ip: "172.16.0.2"
-
-ansible_pve_api_user: "2bgp@pve"
-ansible_pve_api_group: "2bgp"
-ansible_pve_api_password: "password"
-
-web_mongo_password: "password"
-web_jwt_password: "password"
-web_admin_deploy_token: "password"

@@ -1,34 +1,43 @@
 ### Required variables:
 # dest_ip
-# port (single port or range)
+# port_start
+# port_end
 # protocol
 
 - name: apply_bash
   ansible.builtin.shell: |
-    DEST_IP="{{ dest_ip }}"
-    PORT_RANGE="{{ port }}"
-    PROTOCOL="{{ protocol | default('udp') }}"
+    #!/bin/bash
 
-    # Check if port range contains '-'
-    if [[ "$PORT_RANGE" == *"-"* ]]; then
-        START_PORT=$(echo "$PORT_RANGE" | cut -d'-' -f1)
-        END_PORT=$(echo "$PORT_RANGE" | cut -d'-' -f2)
-        for ((PORT=START_PORT; PORT<=END_PORT; PORT++)); do
-            echo "Forwarding $PROTOCOL traffic on port $PORT to $DEST_IP:$PORT"
-            iptables -t nat -A PREROUTING -p "$PROTOCOL" --dport "$PORT" -j DNAT --to-destination "$DEST_IP:$PORT"
-            iptables -A FORWARD -p "$PROTOCOL" -d "$DEST_IP" --dport "$PORT" -j ACCEPT
-        done
-    else
-        # Single port case
-        echo "Forwarding $PROTOCOL traffic on port $PORT_RANGE to $DEST_IP:$PORT_RANGE"
-        iptables -t nat -A PREROUTING -p "$PROTOCOL" --dport "$PORT_RANGE" -j DNAT --to-destination "$DEST_IP:$PORT_RANGE"
-        iptables -A FORWARD -p "$PROTOCOL" -d "$DEST_IP" --dport "$PORT_RANGE" -j ACCEPT
-    fi
+    TARGET_IP="{{ dest_ip }}"
+    START_PORT="{{ port_start }}"
+    END_PORT="{{ port_end }}"
+    PROTOCOL="{{ protocol }}"
 
-    # Enable NAT for outbound traffic
-    iptables -t nat -A POSTROUTING -j MASQUERADE
+    sudo iptables -F
+    sudo iptables -X
+    sudo iptables -t nat -F
+    sudo iptables -t nat -X
+    sudo iptables -t mangle -F
+    sudo iptables -t mangle -X
+    sudo iptables -P INPUT ACCEPT
+    sudo iptables -P FORWARD ACCEPT
+    sudo iptables -P OUTPUT ACCEPT
 
-    # Save iptables rules
+    for port in $(seq $START_PORT $END_PORT); do
+        sudo iptables -A INPUT -p $PROTOCOL --dport $port -j ACCEPT
+        sudo iptables -A OUTPUT -p $PROTOCOL --sport $port -j ACCEPT
+    done
+
+    for port in $(seq $START_PORT $END_PORT); do
+        sudo iptables -t nat -A PREROUTING -p $PROTOCOL --dport $port -j DNAT --to-destination $TARGET_IP:$port
+        sudo iptables -t nat -A POSTROUTING -d $TARGET_IP -p $PROTOCOL --dport $port -j MASQUERADE
+    done
+
+    for port in $(seq $START_PORT $END_PORT); do
+        sudo iptables -A FORWARD -p $PROTOCOL -d $TARGET_IP --dport $port -j ACCEPT
+        sudo iptables -A FORWARD -p $PROTOCOL -s $TARGET_IP --sport $port -j ACCEPT
+    done
+
     iptables-save
   args:
     executable: /bin/bash

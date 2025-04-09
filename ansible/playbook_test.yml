@@ -14,45 +14,7 @@
         ansible_ssh_private_key_file: "./assets/ssh_key/id_rsa"
         ansible_user: root
 
-
     - name: install_docker
       import_tasks: tasks/core_software/install_docker.yml
       delegate_to: "{{ container_web_ip }}"
           
-    - name: copy_docker_compose
-      copy:
-        src: ../dist/
-        dest: /opt/2bgp-ad/
-        remote_src: no
-        mode: '0644'
-      delegate_to: "{{ container_web_ip }}"
-
-    - name: copy_app_files
-      copy:
-        src: ../backend/
-        dest: /opt/2bgp-ad/backend/
-        remote_src: no
-        mode: '0644'
-      delegate_to: "{{ container_web_ip }}"
-
-    - name: create_backend_env_file
-      copy:
-        dest: /opt/2bgp-ad/config/backend.env
-        content: |
-          PORT=3000
-          MONGODB_URI=mongodb://2bgp-ad:{{ web_mongo_password }}@mongodb/?retryWrites=true&w=majority
-          JWT_SECRET={{ web_jwt_password}}
-          ADMIN_SYSTEM_TOKEN={{ web_admin_deploy_token}}
-        mode: '0644'
-      delegate_to: "{{ container_web_ip }}"
-
-    - name: create_mongodb_env_file
-      copy:
-        dest: /opt/2bgp-ad/config/mongodb.env
-        content: |
-          PORT=3000
-          MONGODB_URI=mongodb://2bgp-ad:{{ web_mongo_password }}@mongodb/?retryWrites=true&w=majority
-          JWT_SECRET={{ web_jwt_password}}
-          ADMIN_SYSTEM_TOKEN={{ web_admin_deploy_token}}
-        mode: '0644'
-      delegate_to: "{{ container_web_ip }}"
