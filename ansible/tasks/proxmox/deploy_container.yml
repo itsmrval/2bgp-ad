@@ -39,6 +39,7 @@
     --net0 name=eth0,bridge="{{ sdn_corenet_name }}",ip="{{ container_ip }}/24,gw={{ sdn_corenet_gateway }}",firewall=1
     --onboot 1
     --ssh-public-keys /tmp/ssh_key_"{{ container_id }}".pub
+    -unprivileged 1
   when: container_exists.rc != 0
 
 - name: remove_pubkey

@@ -36,3 +36,7 @@ container_web_ip: "172.16.0.2"
 ansible_pve_api_user: "2bgp@pve"
 ansible_pve_api_group: "2bgp"
 ansible_pve_api_password: "password"
+
+web_mongo_password: "password"
+web_jwt_password: "password"
+web_admin_deploy_token: "password"

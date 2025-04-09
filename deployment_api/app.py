@@ -3,7 +3,6 @@ import os
 import subprocess
 import json
 import re
-import uuid
 
 app = Flask(__name__)
 
@@ -215,26 +214,5 @@ PersistentKeepalive = 5
     except Exception as e:
         return jsonify({'error': f'Error generating client config: {str(e)}'}), 500
 
-# Optional: Add a route to list all available clients
-@app.route('/wg/clients', methods=['GET'])
-def list_clients():
-    try:
-        clients = []
-        for filename in os.listdir(CONFIGS_DIR):
-            if filename.startswith('client_') and filename.endswith('.json'):
-                client_id = filename.replace('client_', '').replace('.json', '')
-                clients.append(int(client_id))
-        
-        return jsonify({
-            'status': 'success',
-            'clients': sorted(clients)
-        })
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'message': str(e)
-        }), 500
-
 if __name__ == '__main__':
-    # Add debug=True to get more info on errors
     app.run(host='0.0.0.0', port=5000, debug=True)

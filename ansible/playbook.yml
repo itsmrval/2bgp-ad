@@ -136,6 +136,11 @@
       register: ssh_web_result
       until: ssh_web_result is succeeded
 
+    # Install docker on the Web container
+    - name: install_docker
+      import_tasks: tasks/core_software/install_docker.yml
+      delegate_to: "{{ container_web_ip }}"
+
   ### PREPARING WINDOWS TEMPLATES ###
     - name: prepare_windows_template
       import_tasks: tasks/windows/prepare_template.yml
