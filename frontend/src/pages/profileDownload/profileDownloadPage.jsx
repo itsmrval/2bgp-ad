@@ -12,14 +12,10 @@ const ProfileDownloadPage = () => {
             </div>
             
             {/* Main content area */}
-            <div style={{ marginTop: '60px', marginBottom: '60px' }}>
+            <div style={{ marginTop: '0px', marginBottom: '0px' }}>
                 <ProfileDownload />
             </div>
             
-            {/* Footer area */}
-            <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000 }}>
-                <Footer />
-            </div>
         </div>
     );
 };
