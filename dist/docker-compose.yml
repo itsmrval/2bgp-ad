@@ -16,6 +16,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      network: host
     container_name: backend
     env_file:
       - config/backend.env
@@ -30,6 +31,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      network: host
     container_name: frontend
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80"]
