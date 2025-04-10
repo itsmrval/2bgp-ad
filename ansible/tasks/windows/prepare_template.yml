@@ -112,6 +112,15 @@
     owner: root
     group: root
 
+- name: copy all powershell scripts 
+  copy:
+    src: "{{ item }}"
+    dest: "/mnt/provision/{{ item | basename }}"
+    owner: root
+    group: root
+  with_fileglob:
+    - "{{ playbook_dir }}/assets/windows/*.ps1"
+
 - name: mount_virtio_drivers_iso
   command: mount -o loop,ro /var/lib/vz/template/iso/{{ iso_virtio_drivers_name }} /mnt/virtio
   become: yes
