@@ -1,6 +1,7 @@
 import React from 'react';
 import Team from '../../components/team/team.jsx';
 import Header from '../../components/header/Header.jsx';
+import InProgress from '../../components/animation/inProgress.jsx';
 import Footer from '../../components/footer/Footer.jsx';
 
 const AboutPage = () => {

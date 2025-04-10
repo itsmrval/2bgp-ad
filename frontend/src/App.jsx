@@ -7,6 +7,7 @@ import MainPage from './pages/main/main';
 import TestPage from './pages/main/test';
 import ProfileDownloadPage from "./pages/profileDownload/profileDownloadPage";
 import MissionPage from './pages/mission/mission';
+import LoadingPage from './pages/animation/Loading';
 import AboutPage from './pages/about/aboutPage';  // Nouvelle importation
 import Scoreboard from './pages/main/scoreboard';
 
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/main" element={<MainPage />} />
                 <Route path="/test" element={<TestPage />} />
                 <Route path="/mission" element={<MissionPage />} />
+                <Route path="/loading" element={<LoadingPage />} />
                 <Route path="/about" element={<AboutPage />} />  {/* Nouvelle route */}
                 {/* Redirect all other paths to the login page */}
                 <Route path="*" element={<Navigate to="/login" />} />
