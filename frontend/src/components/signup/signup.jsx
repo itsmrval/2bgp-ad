@@ -1,28 +1,27 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../assets/styles/test.css';
+import useAuth from '../../api/auth/useAuth';
 
 function Signup() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
 
-    const handleSubmit = (e) => {
+    const { register, loading, error } = useAuth();
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Basic validation
-        if (password !== confirmPassword) {
-            alert("Passwords don't match!");
-            return;
+        try {
+            await register(username, password);
+            navigate('/intro'); 
+        } catch (err) {
+            console.error("Erreur lors de l'inscription :", err);
         }
-
-        console.log('Signup with:', username, password);
-        // Add signup logic here
     };
 
     return (
         <div className="login-container">
-            {/* Section de gauche – fond noir avec le symbole $ */}
             <div className="login-left">
                 <div className="circle-container">
                     <div className="circle-inner">
@@ -32,10 +31,10 @@ function Signup() {
                 </div>
             </div>
 
-            {/* Section de droite – fond gris clair avec le texte BELLAGIO */}
             <div className="login-right">
                 <form className="form" onSubmit={handleSubmit}>
                     <p className="form-title">Join Ocean's Team</p>
+
                     <div className="input-container">
                         <input
                             placeholder="Enter username"
@@ -44,12 +43,6 @@ function Signup() {
                             onChange={(e) => setUsername(e.target.value)}
                             required
                         />
-                        <span>
-                            <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <circle cx="12" cy="7" r="4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                        </span>
                     </div>
                     <div className="input-container">
                         <input
@@ -59,31 +52,14 @@ function Signup() {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
-                        <span>
-                            <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
-                                <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
-                            </svg>
-                        </span>
                     </div>
-                    <div className="input-container">
-                        <input
-                            placeholder="Confirm password"
-                            type="password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                        />
-                        <span>
-                            <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
-                                <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
-                            </svg>
-                        </span>
-                    </div>
-                    <button className="submit" type="submit">
-                        Sign up
+
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+
+                    <button className="submit" type="submit" disabled={loading}>
+                        {loading ? 'Signing up...' : 'Sign up'}
                     </button>
+
                     <p className="signup-link">
                         Already have an account?
                         <Link to="/login">Log in</Link>

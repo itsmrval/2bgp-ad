@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 // URL de base de l'API
-const API_URL = 'http://localhost:3008'; // Ajuste selon ton port
+const API_URL = 'http://192.168.48.200/api'; // Ajuste selon ton port
 
 const useAuth = () => {
   const [user, setUser] = useState(null);
@@ -21,7 +21,7 @@ const useAuth = () => {
     
     try {
       // Appel à l'API d'inscription
-      const response = await axios.post(`${API_URL}/register`, {
+      const response = await axios.post(`${API_URL}/auth/register`, {
         username,
         password
       });
@@ -33,6 +33,7 @@ const useAuth = () => {
       setUser(response.data.user);
       
       setLoading(false);
+
       return response.data;
     } catch (err) {
       setError(err.response?.data?.error || 'Une erreur est survenue');
@@ -53,7 +54,7 @@ const useAuth = () => {
     
     try {
       // Appel à l'API de connexion
-      const response = await axios.post(`${API_URL}/login`, {
+      const response = await axios.post(`${API_URL}/auth/login`, {
         username,
         password
       });
