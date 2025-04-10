@@ -26,6 +26,18 @@ services:
       retries: 3
       start_period: 3s
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 2s
+      timeout: 5s
+      retries: 3
+      start_period: 3s
+
   mongodb:
     platform: linux/x86_64
     image: mongo:4.4.6

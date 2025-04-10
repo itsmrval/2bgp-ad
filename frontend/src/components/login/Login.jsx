@@ -36,8 +36,7 @@ function Login() {
             <div className="login-right">
                 <form className="form" onSubmit={handleSubmit}>
                     <p className="form-title">Join Ocean's Team</p>
-
-                    {error && <p className="error-message">{error}</p>} {/* Affichage erreur */}
+                    {error && <p className="error-message">{error}</p>} 
                     
                     <div className="input-container">
                         <input 
