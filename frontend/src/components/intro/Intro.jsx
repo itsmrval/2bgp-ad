@@ -123,8 +123,8 @@ const Intro = () => {
                 return () => clearTimeout(nextTimer);
             } else {
                 const redirectTimer = setTimeout(() => {
-                    navigate('/login');
-                }, 4000); // Redirection après 4 secondes
+                    navigate('/');
+                }, 4000);
 
                 return () => clearTimeout(redirectTimer);
             }

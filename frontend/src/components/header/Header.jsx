@@ -1,12 +1,61 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import '../../assets/styles/header.css';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import '../../assets/styles/header.css';
+import useAuth from '../../api/auth/useAuth';
 
-const LogoutButton = () => {
+
+const TransparentHeader = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { logout } = useAuth();
+
+  const currentPath = location.pathname;
+
+  const isActive = (path) => {
+    if (path === '/main' && (currentPath === '/' || currentPath === '/main')) {
+      return true;
+    }
+    return currentPath === path;
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  return (
+    <header className="transparent-header">
+      <div className="logo">
+        <img src={require('../../assets/logo/logo.png')} alt="2BGP Logo" />
+      </div>
+
+      <nav className="main-nav">
+        <ul>
+          <li className={isActive('/') ? 'active' : ''}>
+            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>Accueil</Link>
+          </li>
+          <li className={isActive('/scoreboard') ? 'active' : ''}>
+            <Link to="/scoreboard" style={{ textDecoration: 'none', color: 'inherit' }}>Scoreboard</Link>
+          </li>
+          <li className={isActive('/about') ? 'active' : ''}>
+            <Link to="/about" style={{ textDecoration: 'none', color: 'inherit' }}>Informations</Link>
+          </li>
+        </ul>
+      </nav>
+
+      <div className="logout-container">
+        <LogoutButton handleLogout={handleLogout} />
+      </div>
+    </header>
+  );
+};
+
+const LogoutButton = ({ handleLogout }) => {
   return (
     <StyledWrapper>
-      <button className="Btn">
+      <button className="Btn" onClick={handleLogout}>
         <div className="sign">
           <svg viewBox="0 0 512 512">
             <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
@@ -16,7 +65,7 @@ const LogoutButton = () => {
       </button>
     </StyledWrapper>
   );
-}
+};
 
 const StyledWrapper = styled.div`
   .Btn {
@@ -85,43 +134,5 @@ const StyledWrapper = styled.div`
     transform: translate(2px ,2px);
   }
 `;
-
-const TransparentHeader = () => {
-  // Get current location from React Router
-  const location = useLocation();
-  const currentPath = location.pathname;
-  
-  // Function to determine if a link is active
-  const isActive = (path) => {
-    if (path === '/main' && (currentPath === '/' || currentPath === '/main')) {
-      return true; // Default to active for home page
-    }
-    return currentPath === path;
-  };
-
-  return (
-    <header className="transparent-header">
-      <div className="logo">
-        <img src={require('../../assets/logo/logo.png')} alt="2BGP Logo" />
-      </div>
-      <nav className="main-nav">
-        <ul>
-          <li className={isActive('/main') ? 'active' : ''}>
-            <Link to="/main" style={{ textDecoration: 'none', color: 'inherit' }}>ACCUEIL</Link>
-          </li>
-          <li className={isActive('/about') ? 'active' : ''}>
-            <Link to="/about" style={{ textDecoration: 'none', color: 'inherit' }}>INFORMATIONS</Link>
-          </li>
-          <li className={isActive('/scoreboard') ? 'active' : ''}>
-            <Link to="/scoreboard" style={{ textDecoration: 'none', color: 'inherit' }}>SCOREBOARD</Link>
-          </li>
-        </ul>
-      </nav>
-      <div className="logout-container">
-        <LogoutButton />
-      </div>
-    </header>
-  );
-};
 
 export default TransparentHeader;
