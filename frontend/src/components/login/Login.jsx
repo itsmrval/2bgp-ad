@@ -22,58 +22,40 @@ function Login() {
 
     return (
         <div className="login-container">
-            {/* Section gauche */}
-            <div className="login-left">
-                <div className="circle-container">
-                    <div className="circle-inner">
-                        <span>$</span>
-                    </div>
-                    <div className="circle-dotted"></div>
+            <form className="form" onSubmit={handleSubmit}>
+                <h1 className="form-title">Join Ocean's Team</h1>
+                
+                {error && <p className="error-message">{error}</p>} 
+                
+                <div className="input-container">
+                    <input 
+                        placeholder="Username"
+                        type="text"
+                        value={identifier}
+                        onChange={(e) => setIdentifier(e.target.value)}
+                        required
+                    />
                 </div>
-            </div>
+                
+                <div className="input-container">
+                    <input
+                        placeholder="Enter password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
 
-            {/* Section droite */}
-            <div className="login-right">
-                <form className="form" onSubmit={handleSubmit}>
-                    <p className="form-title">Join Ocean's Team</p>
-                    {error && <p className="error-message">{error}</p>} 
-                    
-                    <div className="input-container">
-                        <input 
-                            placeholder="Username"
-                            type="text"
-                            value={identifier}
-                            onChange={(e) => setIdentifier(e.target.value)}
-                            required
-                        />
-                        <span>
-                            {/* Icon */}
-                        </span>
-                    </div>
-                    
-                    <div className="input-container">
-                        <input
-                            placeholder="Enter password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                        <span>
-                            {/* Icon */}
-                        </span>
-                    </div>
+                <button className="submit" type="submit" disabled={loading}>
+                    {loading ? 'Loading...' : 'Sign in'}
+                </button>
 
-                    <button className="submit" type="submit" disabled={loading}>
-                        {loading ? 'Loading...' : 'Sign in'}
-                    </button>
-
-                    <p className="signup-link">
-                        No account?
-                        <Link to="/signup">Sign up</Link>
-                    </p>
-                </form>
-            </div>
+                <p className="signup-link">
+                    No account?
+                    <Link to="/signup">Sign up</Link>
+                </p>
+            </form>
         </div>
     );
 }

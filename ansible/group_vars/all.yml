@@ -41,12 +41,12 @@ iso_winserv2019_name: "winsrv2019.iso"
 # Define the core settings (optional)
 container_deployment_id: 2000
 container_deployment_name: "core-deployment"
-container_deployment_memory: 1024
-container_deployment_cores: 1
+container_deployment_memory: 4096
+container_deployment_cores: 2
 container_deployment_ip: "172.16.0.1"
 
 container_web_id: 2001
 container_web_name: "core-web"
-container_web_memory: 1024
-container_web_cores: 1
+container_web_memory: 4096
+container_web_cores: 2
 container_web_ip: "172.16.0.2"
