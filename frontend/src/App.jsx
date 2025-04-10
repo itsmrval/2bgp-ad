@@ -16,11 +16,13 @@ function App() {
     return (
         <Router>
             <Routes>
+                {/* Protected route */}
                 <Route path="/" element={
                     <ProtectedRoute>
                         <MainPage />
                     </ProtectedRoute>
                 } />                
+                {/* route non protégée */}
                 <Route path="/intro" element={<Intro />} />
                 <Route path="/login" element={<LoginPages />} />
                 <Route path="/signup" element={<SignupPages />} />
