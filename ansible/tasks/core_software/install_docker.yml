@@ -19,8 +19,13 @@
 
 - name: add_repo
   apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu focal stable
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
     state: present
+    filename: docker
+
+- name: apt_update_cache
+  apt:
+    update_cache: yes
 
 - name: install_docker
   import_tasks: ./apt_install.yml
