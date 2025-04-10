@@ -5,10 +5,17 @@
     remote_src: no
     mode: '0644'
 
-- name: copy_app_files
+- name: copy_backend_files
   copy:
     src: ../backend/
     dest: /opt/2bgp-ad/backend/
+    remote_src: no
+    mode: '0644'
+
+- name: copy_frontend_files
+  copy:
+    src: ../frontend/
+    dest: /opt/2bgp-ad/frontend/
     remote_src: no
     mode: '0644'
 
@@ -36,4 +43,5 @@
   args:
     chdir: /opt/2bgp-ad/
   register: compose_output
+  timeout: 3000
   until: compose_output is succeeded

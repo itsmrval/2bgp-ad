@@ -22,7 +22,6 @@ function App() {
                         <MainPage />
                     </ProtectedRoute>
                 } />                
-                {/* route non protégée */}
                 <Route path="/intro" element={<Intro />} />
                 <Route path="/login" element={<LoginPages />} />
                 <Route path="/signup" element={<SignupPages />} />
@@ -45,11 +44,6 @@ function App() {
                 } />
 
                 <Route path="*" element={<Navigate to="/" />} />
-                <Route path="/mission" element={<MissionPage />} />
-                <Route path="/loading" element={<LoadingPage />} />
-                <Route path="/about" element={<AboutPage />} />  {/* Nouvelle route */}
-                {/* Redirect all other paths to the login page */}
-                <Route path="*" element={<Navigate to="/login" />} />
             </Routes>
         </Router>
     );
