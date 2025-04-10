@@ -8,7 +8,6 @@ import MainPage from './pages/main/main';
 import ProfileDownloadPage from "./pages/profileDownload/profileDownloadPage";
 import MissionPage from './pages/mission/mission';
 import LoadingPage from './pages/animation/Loading';
-import AboutPage from './pages/about/aboutPage';  // Nouvelle importation
 import AboutPage from './pages/about/aboutPage';
 import Scoreboard from './pages/main/scoreboard';
 import ProtectedRoute from "./context/ProtectedRoute"; 
@@ -44,7 +43,6 @@ function App() {
 
                 <Route path="*" element={<Navigate to="/" />} />
                 <Route path="/main" element={<MainPage />} />
-                <Route path="/test" element={<TestPage />} />
                 <Route path="/mission" element={<MissionPage />} />
                 <Route path="/loading" element={<LoadingPage />} />
                 <Route path="/about" element={<AboutPage />} />  {/* Nouvelle route */}
