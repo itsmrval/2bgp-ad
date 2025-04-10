@@ -10,17 +10,18 @@ import MissionPage from './pages/mission/mission';
 import LoadingPage from './pages/animation/Loading';
 import AboutPage from './pages/about/aboutPage';
 import Scoreboard from './pages/main/scoreboard';
-import ProtectedRoute from "./context/ProtectedRoute"; 
+import ProtectedRoute from "./context/ProtectedRoute";
 
 function App() {
     return (
         <Router>
             <Routes>
-            <Route path="/" element={
+                <Route path="/" element={
                     <ProtectedRoute>
                         <MainPage />
                     </ProtectedRoute>
-                } />                <Route path="/intro" element={<Intro />} />
+                } />                
+                <Route path="/intro" element={<Intro />} />
                 <Route path="/login" element={<LoginPages />} />
                 <Route path="/signup" element={<SignupPages />} />
                 <Route path="/about" element={<AboutPage />} />
