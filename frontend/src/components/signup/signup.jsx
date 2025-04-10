@@ -22,50 +22,39 @@ function Signup() {
 
     return (
         <div className="login-container">
-            <div className="login-left">
-                <div className="circle-container">
-                    <div className="circle-inner">
-                        <span>$</span>
-                    </div>
-                    <div className="circle-dotted"></div>
+            <form className="form" onSubmit={handleSubmit}>
+                <p className="form-title">Join Ocean's Team</p>
+
+                <div className="input-container">
+                    <input
+                        placeholder="Enter username"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
                 </div>
-            </div>
+                <div className="input-container">
+                    <input
+                        placeholder="Enter password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
 
-            <div className="login-right">
-                <form className="form" onSubmit={handleSubmit}>
-                    <p className="form-title">Join Ocean's Team</p>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
 
-                    <div className="input-container">
-                        <input
-                            placeholder="Enter username"
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="input-container">
-                        <input
-                            placeholder="Enter password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
+                <button className="submit" type="submit" disabled={loading}>
+                    {loading ? 'Signing up...' : 'Sign up'}
+                </button>
 
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
-
-                    <button className="submit" type="submit" disabled={loading}>
-                        {loading ? 'Signing up...' : 'Sign up'}
-                    </button>
-
-                    <p className="signup-link">
-                        Already have an account?
-                        <Link to="/login">Log in</Link>
-                    </p>
-                </form>
-            </div>
+                <p className="signup-link">
+                    Already have an account?
+                    <Link to="/login">Log in</Link>
+                </p>
+            </form>
         </div>
     );
 }
