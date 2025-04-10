@@ -36,3 +36,5 @@ foreach ($ou in $ous) {
 Write-Host "Configuration terminée pour $organizationName." -ForegroundColor Green
 
 Unregister-ScheduledTask -TaskName "ExecuteADSetup" -Confirm:$false
+
+New-Item -Path "C:\deployfull.txt" -ItemType File -Force | Out-Null

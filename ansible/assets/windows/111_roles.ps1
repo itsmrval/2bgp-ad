@@ -23,6 +23,8 @@ Register-ScheduledTask -Action $action -Trigger $trigger -Principal $principal -
 # 7. Vérifier
 Get-ScheduledTask -TaskName $taskName | Format-List *
 
+Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
+
 # Importer le module Active Directory
 Import-Module ActiveDirectory
 

@@ -2,8 +2,8 @@
   set_fact:
     vms:
       - { vm_id: "{{ template_win_1 }}", vm_name: "build-01", storage_name: "{{ vm_storage }}" }
-      - { vm_id: "{{ template_win_2 }}", vm_name: "build-02", storage_name: "{{ vm_storage }}" }
-      - { vm_id: "{{ template_win_3}}", vm_name: "build-03", storage_name: "{{ vm_storage }}" }
+      # - { vm_id: "{{ template_win_2 }}", vm_name: "build-02", storage_name: "{{ vm_storage }}" }
+      # - { vm_id: "{{ template_win_3}}", vm_name: "build-03", storage_name: "{{ vm_storage }}" }
     vm_memory: 4096
     vm_cores: 4
     vm_sockets: 1
@@ -24,6 +24,7 @@
     --ide2 file=local:iso/Windows_Server_Auto.iso,media=cdrom
     --scsihw virtio-scsi-pci
     --sata0 {{ item.storage_name }}:{{ drive_size_gb }},format={{ format }}
+    --net0 model=e1000e,bridge=vmbr0
     --ostype {{ vm_os_type }}
     --agent {{ agent }}
     --boot order=ide2
@@ -40,7 +41,7 @@
     qm guest exec {{ item.vm_id }} -- powershell.exe -Command "Get-Content 'C:\Windows\Setup\State\State.ini'"
   register: installation_complete
   until: installation_complete.stdout is search('ImageState=IMAGE_STATE_COMPLETE')
-  retries: 120
+  retries: 200
   delay: 10
   with_items: "{{ vms }}"
 
@@ -52,9 +53,27 @@
   delay: 10
   with_items: "{{ vms }}"
 
+- name: execute_script on vmid
+  shell: 'qm guest exec {{ item.vm_id }} "powershell.exe" "D:\\{{ item.vm_id }}_roles.ps1"'
+  register: script_result
+  until: script_result.rc == 0
+  retries: 5
+  delay: 10
+  with_items: "{{ vms }}"
+
+- name: Verify deployment success marker
+  shell: "qm guest exec {{ item.vm_id }} -- powershell.exe -Command \"Test-Path 'C:\\deployfull.txt'\""
+  register: deploy_status
+  until: 
+    - "'True' in deploy_status.stdout"
+    - "deploy_status.rc == 0"
+  retries: 300
+  delay: 10
+  with_items: "{{ vms }}"
+
 - name: shutdown_vms
   command: "qm shutdown {{ item.vm_id }}"
-  when: item.vm_id in vm_creation.results | map(attribute='item.vm_id') | list
+  when: item.vm_id in vms | map(attribute='vm_id') | list
   register: shutdown_result
   ignore_errors: yes
   with_items: "{{ vms }}"
