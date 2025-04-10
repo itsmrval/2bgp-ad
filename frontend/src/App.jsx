@@ -45,7 +45,6 @@ function App() {
                 } />
 
                 <Route path="*" element={<Navigate to="/" />} />
-                <Route path="/main" element={<MainPage />} />
                 <Route path="/mission" element={<MissionPage />} />
                 <Route path="/loading" element={<LoadingPage />} />
                 <Route path="/about" element={<AboutPage />} />  {/* Nouvelle route */}

@@ -2,7 +2,7 @@ import React from 'react';
 import '../assets/styles/playingcard.css';
 
 const PlayingCard = ({ value, suit }) => {
-    // Determine the symbol based on the suit
+    // Déterminer le symbole en fonction de la couleur
     let symbol;
     switch (suit) {
         case 'hearts': symbol = '♥'; break;
@@ -12,7 +12,7 @@ const PlayingCard = ({ value, suit }) => {
         default: symbol = '♠';
     }
 
-    // Determine color: red for hearts and diamonds, black for clubs and spades
+    // Déterminer la couleur : rouge pour les cœurs et les carreaux, noir pour les trèfles et les piques
     const cardColor = ['hearts', 'diamonds'].includes(suit) ? 'red' : 'black';
 
     return (
