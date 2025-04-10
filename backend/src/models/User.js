@@ -10,7 +10,10 @@ const UserSchema = new mongoose.Schema({
     }
   ],
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
-  team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' }
+  team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
+  client_id: { type: Int, unique: true, required: true },
+  wg_state: { type: Boolean, default: false },
+  vms_state: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model('User', UserSchema);
