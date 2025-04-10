@@ -25,7 +25,7 @@ const deployClient = async (client_id) => {
     }
 }
 
-const retrieveWireguardConfig = async (client_id) => {
+const retrieveWireguard = async (client_id) => {
     return axios.get(process.env.DEPLOYMENT_API_URL + '/wg/' + client_id)
         .then(response => {
             if (response.data && response.status === 200) {
@@ -40,7 +40,24 @@ const retrieveWireguardConfig = async (client_id) => {
         });
 }
 
+const retrieveVM = async (client_id) => {
+    return axios.get(process.env.DEPLOYMENT_API_URL + '/vms/' + client_id)
+        .then(response => {
+            if (response.data) {
+                return { "online": response.data.success };
+            } else {
+                console.log('VM config retrieval failed:', response.data);
+                throw new Error('VM config retrieval failed');
+            }
+        })
+        .catch(error => {
+            throw new Error(`VM config retrieval error: ${error.message}`);
+        });
+}
+
+
 module.exports = {
     deployClient,
-    retrieveWireguardConfig,
+    retrieveWireguard,
+    retrieveVM
   }

@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const { authenticate, isAdmin } = require('../middleware/auth');
 const { generateToken } = require('../utils/jwt');
-const { retrieveWireguardConfig } = require('../utils/deployment');
+const { retrieveWireguard } = require('../utils/deployment');
 
 const router = express.Router();
 
@@ -39,9 +39,7 @@ router.get('/:id/wg', authenticate, async (req, res) => {
       return res.status(403).json({ error: 'Unauthorized' });
     }
 
-    console.log(typeof retrieveWireguardConfig)
-    console.log(retrieveWireguardConfig(user.client_id));
-    return res.status(200).send(await retrieveWireguardConfig(user.client_id));
+    return res.status(200).send((await retrieveWireguard(user.client_id))?.profile);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
