@@ -23,7 +23,9 @@ function Signup() {
     return (
         <div className="login-container">
             <form className="form" onSubmit={handleSubmit}>
-                <p className="form-title">Join Ocean's Team</p>
+                <h1 className="form-title">Join Ocean's Team</h1>
+
+                {error && <p className="error-message">{error}</p>}
 
                 <div className="input-container">
                     <input
@@ -43,8 +45,6 @@ function Signup() {
                         required
                     />
                 </div>
-
-                {error && <p style={{ color: 'red' }}>{error}</p>}
 
                 <button className="submit" type="submit" disabled={loading}>
                     {loading ? 'Signing up...' : 'Sign up'}

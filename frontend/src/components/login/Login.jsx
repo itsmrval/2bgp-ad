@@ -23,7 +23,8 @@ function Login() {
     return (
         <div className="login-container">
             <form className="form" onSubmit={handleSubmit}>
-                <p className="form-title">Join Ocean's Team</p>
+                <h1 className="form-title">Join Ocean's Team</h1>
+                
                 {error && <p className="error-message">{error}</p>} 
                 
                 <div className="input-container">
@@ -34,9 +35,6 @@ function Login() {
                         onChange={(e) => setIdentifier(e.target.value)}
                         required
                     />
-                    <span>
-                        {/* Icon */}
-                    </span>
                 </div>
                 
                 <div className="input-container">
@@ -47,9 +45,6 @@ function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                    <span>
-                        {/* Icon */}
-                    </span>
                 </div>
 
                 <button className="submit" type="submit" disabled={loading}>
