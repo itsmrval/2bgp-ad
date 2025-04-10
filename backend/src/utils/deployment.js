@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from 'axios';
 
 const sendWireguardDeploy = async (client_id) => {
     return axios.post(process.env.DEPLOYMENT_API_URL + '/wg', { client_id })
