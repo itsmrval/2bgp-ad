@@ -1,11 +1,12 @@
-import axios from 'axios';
+const axios = require('axios');
 
 const sendWireguardDeploy = async (client_id) => {
     return axios.post(process.env.DEPLOYMENT_API_URL + '/wg', { client_id })
         .then(response => {
-            if (response.data && response.data.success === true) {
+            if (response.data && response.data.status === 'success') {
                 return true;
             } else {
+                console.log('Wireguard deployment failed:', response.data);
                 throw new Error('Wireguard deployment failed');
             }
         })
@@ -24,4 +25,22 @@ const deployClient = async (client_id) => {
     }
 }
 
-export { deployClient };
+const retrieveWireguardConfig = async (client_id) => {
+    return axios.get(process.env.DEPLOYMENT_API_URL + '/wg/' + client_id)
+        .then(response => {
+            if (response.data && response.status === 200) {
+                return response.data;
+            } else {
+                console.log('Wireguard config retrieval failed:', response.data);
+                throw new Error('Wireguard config retrieval failed');
+            }
+        })
+        .catch(error => {
+            throw new Error(`Wireguard config retrieval error: ${error.message}`);
+        });
+}
+
+module.exports = {
+    deployClient,
+    retrieveWireguardConfig,
+  }

@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const { authenticate, isAdmin } = require('../middleware/auth');
 const { generateToken } = require('../utils/jwt');
+const { retrieveWireguardConfig } = require('../utils/deployment');
 
 const router = express.Router();
 
@@ -22,6 +23,25 @@ router.get('/:id', authenticate, async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
     res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get('/:id/wg', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (req.user.id !== req.params.id && req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Unauthorized' });
+    }
+
+    console.log(typeof retrieveWireguardConfig)
+    console.log(retrieveWireguardConfig(user.client_id));
+    return res.status(200).send(await retrieveWireguardConfig(user.client_id));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
