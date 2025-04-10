@@ -90,13 +90,8 @@ def check_infrastructure(client_id):
             text=True
         )
         
-        if result.returncode == 0:
-            return jsonify({'success': True})
-        else:
-            return jsonify({
-                'success': False,
-                'error': result.stderr
-            }), 500
+        return jsonify({'success': (result.returncode == 0)})
+
 
     except Exception as e:
         return jsonify({
@@ -161,7 +156,6 @@ def create_client(client_id):
     filename = f'client_{client_id}.json'
     filepath = os.path.join(CONFIGS_DIR, filename)
     
-    # Check if client already exists
     if os.path.exists(filepath):
         return jsonify({
             'status': 'error',
@@ -197,6 +191,13 @@ def get_client_config(client_id):
         with open(filepath, 'r') as f:
             client_data = json.load(f)
         
+        ip = f'172.17.{client_id}.2'
+        try:
+            result = subprocess.run(['ping', '-c', '1', '-W', '1', ip], stdout=subprocess.DEVNULL)
+            is_online = result.returncode == 0
+        except Exception:
+            is_online = False
+        
         config_content = f"""[Interface]
 PrivateKey = {client_data['private_key']}
 Address = 172.17.{client_id}.2/30
@@ -209,7 +210,10 @@ AllowedIPs = 10.{client_id}.0.0/16,172.17.{client_id}.1/32
 PersistentKeepalive = 5
 """
         
-        return config_content, 200, {'Content-Type': 'text/plain', 'Content-Disposition': f'attachment; filename=client_{client_id}.conf'}
+        return jsonify({
+            'profile': config_content,
+            'online': is_online
+        }), 200
     
     except Exception as e:
         return jsonify({'error': f'Error generating client config: {str(e)}'}), 500

@@ -1,0 +1,101 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36" version="26.1.1">
+  <diagram name="Page-1" id="ek3LjBKf0lxrftnBTrhq">
+    <mxGraphModel dx="1737" dy="847" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="y4_2CePGbfhLBfLfn938-30" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="-130" y="210" width="680" height="450" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-27" value="&lt;font style=&quot;color: rgb(102, 178, 255);&quot;&gt;SDN Core&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="230" y="240" width="300" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-9" value="&lt;font style=&quot;color: rgb(255, 51, 51);&quot;&gt;SDN CustX&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="-110" y="390" width="300" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-2" value="Windows Server&lt;div&gt;VM X00111&lt;/div&gt;" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;strokeWidth=1;align=center;outlineConnect=0;dashed=0;outlineConnect=0;shape=mxgraph.aws3d.dataServer;strokeColor=#5E5E5E;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="-90" y="410" width="58.01" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-5" value="Windows Server&lt;div&gt;VM X00112&lt;/div&gt;" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;strokeWidth=1;align=center;outlineConnect=0;dashed=0;outlineConnect=0;shape=mxgraph.aws3d.dataServer;strokeColor=#5E5E5E;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="10" y="410" width="58.01" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-6" value="Windows Server&lt;div&gt;VM X00113&lt;/div&gt;" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;strokeWidth=1;align=center;outlineConnect=0;dashed=0;outlineConnect=0;shape=mxgraph.aws3d.dataServer;strokeColor=#5E5E5E;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="105.49000000000001" y="410" width="58.01" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-7" value="Windows Desktop&lt;div&gt;&lt;span style=&quot;background-color: rgb(251, 251, 251);&quot;&gt;VM X00114&lt;/span&gt;&lt;/div&gt;" style="image;points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image=img/lib/allied_telesis/computer_and_terminals/Server_Desktop.svg;" vertex="1" parent="1">
+          <mxGeometry x="-55" y="510" width="55.22" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-8" value="Windows Desktop&lt;div&gt;&lt;span style=&quot;background-color: rgb(251, 251, 251);&quot;&gt;VM X00115&lt;/span&gt;&lt;/div&gt;" style="image;points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image=img/lib/allied_telesis/computer_and_terminals/Server_Desktop.svg;" vertex="1" parent="1">
+          <mxGeometry x="79.99999999999999" y="510" width="55.22" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-10" value="&lt;font style=&quot;color: rgb(255, 128, 0);&quot;&gt;SDN CustY&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="230" y="390" width="300" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-11" value="Windows Server&lt;div&gt;VM Y00111&lt;/div&gt;" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;strokeWidth=1;align=center;outlineConnect=0;dashed=0;outlineConnect=0;shape=mxgraph.aws3d.dataServer;strokeColor=#5E5E5E;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="250" y="410" width="58.01" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-12" value="Windows Server&lt;div&gt;VM Y00112&lt;/div&gt;" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;strokeWidth=1;align=center;outlineConnect=0;dashed=0;outlineConnect=0;shape=mxgraph.aws3d.dataServer;strokeColor=#5E5E5E;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="350" y="410" width="58.01" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-13" value="Windows Server&lt;div&gt;VM Y00113&lt;/div&gt;" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;strokeWidth=1;align=center;outlineConnect=0;dashed=0;outlineConnect=0;shape=mxgraph.aws3d.dataServer;strokeColor=#5E5E5E;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="445.49" y="410" width="58.01" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-14" value="Windows Desktop&lt;div&gt;&lt;span style=&quot;background-color: rgb(251, 251, 251);&quot;&gt;VM Y00114&lt;/span&gt;&lt;/div&gt;" style="image;points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image=img/lib/allied_telesis/computer_and_terminals/Server_Desktop.svg;" vertex="1" parent="1">
+          <mxGeometry x="280" y="510" width="55.22" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-15" value="Windows Desktop&lt;div&gt;&lt;span style=&quot;background-color: rgb(251, 251, 251);&quot;&gt;VM Y00115&lt;/span&gt;&lt;/div&gt;" style="image;points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image=img/lib/allied_telesis/computer_and_terminals/Server_Desktop.svg;" vertex="1" parent="1">
+          <mxGeometry x="420" y="510" width="55.22" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-16" value="Web services&lt;div&gt;CT 2001&lt;/div&gt;" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;strokeWidth=1;align=center;outlineConnect=0;dashed=0;outlineConnect=0;shape=mxgraph.aws3d.dataServer;strokeColor=#5E5E5E;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="445.49" y="260" width="58.01" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-17" value="Deployment services&lt;div&gt;CT 2000&lt;/div&gt;" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;strokeWidth=1;align=center;outlineConnect=0;dashed=0;outlineConnect=0;shape=mxgraph.aws3d.dataServer;strokeColor=#5E5E5E;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="260" y="260" width="58.01" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-28" value="" style="shape=link;html=1;rounded=0;exitX=0.939;exitY=-0.003;exitDx=0;exitDy=0;exitPerimeter=0;fillColor=#f8cecc;strokeColor=#b85450;" edge="1" parent="1" source="y4_2CePGbfhLBfLfn938-9">
+          <mxGeometry width="100" relative="1" as="geometry">
+            <mxPoint x="105.49000000000001" y="350" as="sourcePoint" />
+            <mxPoint x="250" y="270" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="172" y="270" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-29" value="" style="shape=link;html=1;rounded=0;fillColor=#fff2cc;strokeColor=#d6b656;exitX=0.008;exitY=0.161;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="y4_2CePGbfhLBfLfn938-10">
+          <mxGeometry width="100" relative="1" as="geometry">
+            <mxPoint x="210" y="450" as="sourcePoint" />
+            <mxPoint x="250.49" y="290" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="210" y="430" />
+              <mxPoint x="210" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-33" value="Proxmox host" style="sketch=0;verticalLabelPosition=bottom;sketch=0;aspect=fixed;html=1;verticalAlign=top;strokeColor=none;fillColor=#000000;align=center;outlineConnect=0;pointerEvents=1;shape=mxgraph.citrix2.hypervisor_xenserver;" vertex="1" parent="1">
+          <mxGeometry x="-105" y="229" width="50" height="30.995" as="geometry" />
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-35" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=1;exitX=0.187;exitY=-0.016;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-85.8900000000001" y="218.24" as="sourcePoint" />
+            <mxPoint x="100" y="110" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-86" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-36" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=1;exitX=0.187;exitY=-0.016;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="470" y="248" as="sourcePoint" />
+            <mxPoint x="240" y="110" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="470" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="y4_2CePGbfhLBfLfn938-37" value="Public NET" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="105" y="70" width="125" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

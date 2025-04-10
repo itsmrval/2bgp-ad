@@ -20,6 +20,7 @@
       MONGODB_URI=mongodb://2bgp-ad:{{ web_mongo_password }}@mongodb/?retryWrites=true&w=majority
       JWT_SECRET={{ web_jwt_password}}
       ADMIN_SYSTEM_TOKEN={{ web_admin_deploy_token}}
+      DEPLOYMENT_API_URL=http://{{ container_deployment_ip }}:5000
     mode: '0644'
 
 - name: create_mongodb_env_file

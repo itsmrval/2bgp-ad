@@ -1,4 +1,17 @@
 services:
+
+  haproxy:
+    platform: linux/x86_64
+    container_name: haproxy
+    image: haproxy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+      - ./config/cert.pem:/usr/local/etc/haproxy/cert.pem
+    restart: unless-stopped
+
   backend:
     build:
       context: ./backend
