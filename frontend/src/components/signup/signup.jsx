@@ -23,13 +23,13 @@ function Signup() {
     return (
         <div className="login-container">
             <form className="form" onSubmit={handleSubmit}>
-                <h1 className="form-title">Join Ocean's Team</h1>
+                <h1 className="form-title">Inscription à la plateforme</h1>
 
                 {error && <p className="error-message">{error}</p>}
 
                 <div className="input-container">
                     <input
-                        placeholder="Enter username"
+                        placeholder="Choisir un nom d'utilisateur"
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
@@ -38,7 +38,7 @@ function Signup() {
                 </div>
                 <div className="input-container">
                     <input
-                        placeholder="Enter password"
+                        placeholder="Entrer un mot de passe"
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -47,12 +47,12 @@ function Signup() {
                 </div>
 
                 <button className="submit" type="submit" disabled={loading}>
-                    {loading ? 'Signing up...' : 'Sign up'}
+                    {loading ? 'Inscription..' : 'Créer un compte'}
                 </button>
 
                 <p className="signup-link">
-                    Already have an account?
-                    <Link to="/login">Log in</Link>
+                    Vous disposez déjà d'un compte ?
+                    <Link to="/login">Connectez-vous</Link>
                 </p>
             </form>
         </div>
