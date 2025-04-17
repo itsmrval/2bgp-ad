@@ -2,8 +2,8 @@
   set_fact:
     vms:
       - { vm_id: "{{ template_win_1 }}", vm_name: "build-01", storage_name: "{{ vm_storage }}" }
-      # - { vm_id: "{{ template_win_2 }}", vm_name: "build-02", storage_name: "{{ vm_storage }}" }
-      # - { vm_id: "{{ template_win_3}}", vm_name: "build-03", storage_name: "{{ vm_storage }}" }
+      - { vm_id: "{{ template_win_2 }}", vm_name: "build-02", storage_name: "{{ vm_storage }}" }
+      - { vm_id: "{{ template_win_3}}", vm_name: "build-03", storage_name: "{{ vm_storage }}" }
     vm_memory: 4096
     vm_cores: 4
     vm_sockets: 1

@@ -3,6 +3,6 @@ all:
     proxmox:
       hosts:
         # Specify proxmox node name
-        pve-e48-eta4:
-          ansible_host: 192.168.48.184
+        pve-2bgp:
+          ansible_host: 192.168.254.1
           ansible_user: root
