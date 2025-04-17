@@ -37,9 +37,9 @@
     --memory "{{ container_memory }}" 
     --storage "{{ core_storage }}"
     --rootfs {{ core_storage }}:{{ container_size }}
-    --net0 name=eth0,bridge="{{ sdn_corenet_name }}",ip="{{ container_ip }}/24,gw={{ sdn_corenet_gateway }}",firewall=1{% if container_mac is defined and container_mac|length > 0 %},hwaddr="{{ container_mac }}"{% endif %}
+    --net0 name=eth0,bridge="{{ sdn_corenet_name }}",ip="{{ container_ip }}/24,gw={{ sdn_corenet_gateway }}",firewall=1
     {% if enable_public is defined %}
-    --net1 name=eth1,bridge="{{ public_ct_adapter }}",ip="{{ public_ct_ip }}{{ public_ct_subnet }}"
+    --net1 name=eth1,bridge="{{ public_ct_adapter }}",ip="{{ public_ct_ip }}{{ public_ct_subnet }}"{% if public_ct_mac is defined and public_ct_mac|length > 0 %},hwaddr="{{ public_ct_mac }}"{% endif %}
     {% endif %}
     --onboot 1
     --ssh-public-keys /tmp/ssh_key_"{{ container_id }}".pub
