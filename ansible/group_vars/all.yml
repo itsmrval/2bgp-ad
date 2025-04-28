@@ -32,11 +32,20 @@ template_win_1: "111"
 template_win_2: "112"
 template_win_3: "113"
 
+
+template_win_4: "211"
+template_win_5: "212"
+template_win_6: "213"
+
+
 # Define the ISO image settings (optional)
 iso_virtio_drivers: "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.189-1/virtio-win.iso"
 iso_virtio_drivers_name: "virtio-win.iso"
 iso_winserv2019: "https://go.microsoft.com/fwlink/p/?LinkID=2195167&clcid=0x409&culture=en-us&country=US"
 iso_winserv2019_name: "winsrv2019.iso"
+
+iso_winclient: "https://go.microsoft.com/fwlink/p/?LinkID=2195404&clcid=0x409&culture=en-us&country=US"
+iso_winclient_name: "winclient.iso"
 
 # Define the core settings (optional)
 container_deployment_id: 2000

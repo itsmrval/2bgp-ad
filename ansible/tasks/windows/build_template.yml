@@ -12,6 +12,24 @@
     vm_os_type: "win8"
     agent: 1
     node: "{{ inventory_hostname }}"
+  when: role_type=="server"
+
+
+- name: define_variables
+  set_fact:
+    vms:
+      - { vm_id: "{{ template_win_4 }}", vm_name: "build-04", storage_name: "{{ vm_storage }}" }
+      # - { vm_id: "{{ template_win_5 }}", vm_name: "build-05", storage_name: "{{ vm_storage }}" }
+      # - { vm_id: "{{ template_win_6 }}", vm_name: "build-06", storage_name: "{{ vm_storage }}" }
+    vm_memory: 2048
+    vm_cores: 2
+    vm_sockets: 1
+    drive_size_gb: 14
+    format: "qcow2"
+    vm_os_type: "win8"
+    agent: 1
+    node: "{{ inventory_hostname }}"
+  when: role_type=="client"
 
 
 - name: create_vm
@@ -60,6 +78,7 @@
   retries: 5
   delay: 10
   with_items: "{{ vms }}"
+  when: role_type=="server"
 
 - name: Verify deployment success marker
   shell: "qm guest exec {{ item.vm_id }} -- powershell.exe -Command \"Test-Path 'C:\\deployfull.txt'\""
@@ -70,6 +89,7 @@
   retries: 300
   delay: 10
   with_items: "{{ vms }}"
+  when: role_type=="server"
 
 - name: shutdown_vms
   command: "qm shutdown {{ item.vm_id }}"
@@ -84,6 +104,10 @@
   until: vm_status.stdout | trim == "stopped"
   retries: 30
   delay: 10
+  with_items: "{{ vms }}"
+
+- name: unmount_iso
+  command: "qm set {{ item.vm_id }} --delete ide2"
   with_items: "{{ vms }}"
 
 - name: creating_template

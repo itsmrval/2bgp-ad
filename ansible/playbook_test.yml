@@ -1,0 +1,29 @@
+---
+- name: init_playbook
+  hosts: all
+  gather_facts: yes
+  become: yes
+  tasks:
+
+  ### SETUP ANSIBLE ###
+
+  ### PREPARING WINDOWS TEMPLATES ###
+    - name: prepare_windows_template
+      import_tasks: tasks/windows/prepare_template.yml
+      vars:
+        role_type: "server"
+
+    - name: build_windows_template
+      import_tasks: tasks/windows/build_template.yml
+      vars:
+        role_type: "server"
+
+    - name: prepare_windows_client_template
+      import_tasks: tasks/windows/prepare_template.yml
+      vars:
+        role_type: "client"
+
+    - name: build_windows_client_template
+      import_tasks: tasks/windows/build_template.yml
+      vars:
+        role_type: "client"

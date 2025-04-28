@@ -9,11 +9,26 @@
     template_exists_1: "{{ '{{ template_win_1 }}' in qm_list_output.stdout }}"
     template_exists_2: "{{ '{{ template_win_2 }}' in qm_list_output.stdout }}"
     template_exists_3: "{{ '{{ template_win_3 }}' in qm_list_output.stdout }}"
+  when: role_type=="server"
+
+- name: set_facts
+  ansible.builtin.set_fact:
+    template_exists_1: "{{ '{{ template_win_4 }}' in qm_list_output.stdout }}"
+    template_exists_2: "{{ '{{ template_win_5 }}' in qm_list_output.stdout }}"
+    template_exists_3: "{{ '{{ template_win_6 }}' in qm_list_output.stdout }}"
+  when: role_type=="client"
 
 - name: check_windows_iso_exists
   stat:
     path: "/var/lib/vz/template/iso/{{ iso_winserv2019_name }}"
   register: windows_iso_stat
+  when: role_type=="server"
+
+- name: check_windows_iso_exists
+  stat:
+    path: "/var/lib/vz/template/iso/{{ iso_winclient_name }}"
+  register: windows_iso_stat
+  when: role_type=="client"
 
 - name: check_virtio_iso_exists
   stat:
@@ -34,7 +49,21 @@
     "{{ iso_winserv2019 }}"
   args:
     creates: "/var/lib/vz/template/iso/{{ iso_winserv2019_name }}"
-  when: not windows_iso_stat.stat.exists
+  when:
+    - role_type == "server"
+    - not windows_iso_stat.stat.exists | default(true)
+
+- name: download_winclient_iso
+  command: >
+    aria2c -x 16 -s 16 -k 1M 
+    -d "/var/lib/vz/template/iso/" 
+    -o "{{ iso_winclient_name }}"
+    "{{ iso_winclient }}"
+  args:
+    creates: "/var/lib/vz/template/iso/{{ iso_winclient_name }}"
+  when:
+    - role_type == "client"
+    - not windows_iso_stat.stat.exists | default(true)
 
 - name: download_virtio_drivers_iso
   command: >
@@ -155,6 +184,16 @@
     dest: "/mnt/provision/autounattend.xml"
     owner: root
     group: root
+  when: role_type=="server"
+
+- name: copy_xml
+  copy:
+    src: "{{ playbook_dir }}/assets/windows/clientautounattend.xml"
+    dest: "/mnt/provision/autounattend.xml"
+    owner: root
+    group: root
+  when: role_type=="client"
+
 
 - name: create_iso
   command: >
