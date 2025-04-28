@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-
-// URL de base de l'API
-const API_URL = process.env.REACT_APP_API_URL || 'config_error';
+import { API_URL } from "../../config";
 
 const useAuth = () => {
   const [user, setUser] = useState(null);
