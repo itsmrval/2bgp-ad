@@ -33,6 +33,8 @@ services:
       dockerfile: Dockerfile
       network: host
     container_name: frontend
+    env_file:
+      - config/frontend.env
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80"]
       interval: 2s

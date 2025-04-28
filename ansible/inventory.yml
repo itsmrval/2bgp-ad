@@ -3,6 +3,6 @@ all:
     proxmox:
       hosts:
         # Specify proxmox node name
-        pve-2bgp:
-          ansible_host: 192.168.254.1
+        sd-164057:
+          ansible_host: sd-164057.dedibox.fr
           ansible_user: root

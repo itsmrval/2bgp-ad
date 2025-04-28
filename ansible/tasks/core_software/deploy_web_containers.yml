@@ -37,6 +37,13 @@
       DEPLOYMENT_API_URL=http://{{ container_deployment_ip }}:5000
     mode: '0644'
 
+- name: create_frontend_env_file
+  copy:
+    dest: /opt/2bgp-ad/config/frontend.env
+    content: |
+      REACT_APP_API_URL=http://{{ public_ct_hostname }}/api
+    mode: '0644'
+
 - name: create_mongodb_env_file
   copy:
     dest: /opt/2bgp-ad/config/mongodb.env
