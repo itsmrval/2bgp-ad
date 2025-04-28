@@ -77,7 +77,6 @@
   register: shutdown_result
   ignore_errors: yes
   with_items: "{{ vms }}"
-  when: role_type=="server"
 
 - name: Verify deployment success marker
   shell: "qm guest exec {{ item.vm_id }} -- powershell.exe -Command \"Test-Path 'C:\\deployfull.txt'\""
@@ -88,7 +87,7 @@
   retries: 300
   delay: 10
   with_items: "{{ vms }}"
-  when: role_type=="server"
+
 
 - name: shutdown_vms
   command: "qm shutdown {{ item.vm_id }}"
