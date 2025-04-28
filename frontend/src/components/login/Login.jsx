@@ -23,13 +23,13 @@ function Login() {
     return (
         <div className="login-container">
             <form className="form" onSubmit={handleSubmit}>
-                <h1 className="form-title">Join Ocean's Team</h1>
+                <h1 className="form-title">Connexion à votre compte</h1>
                 
                 {error && <p className="error-message">{error}</p>} 
                 
                 <div className="input-container">
                     <input 
-                        placeholder="Username"
+                        placeholder="Nom d'utilisateur"
                         type="text"
                         value={identifier}
                         onChange={(e) => setIdentifier(e.target.value)}
@@ -39,7 +39,7 @@ function Login() {
                 
                 <div className="input-container">
                     <input
-                        placeholder="Enter password"
+                        placeholder="Mot de passe"
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -48,12 +48,11 @@ function Login() {
                 </div>
 
                 <button className="submit" type="submit" disabled={loading}>
-                    {loading ? 'Loading...' : 'Sign in'}
+                    {loading ? 'Connexion en cours..' : 'Se connecter au compte'}
                 </button>
 
                 <p className="signup-link">
-                    No account?
-                    <Link to="/signup">Sign up</Link>
+                    Nouveau dans l'aventure ?<Link to="/signup">Créer un compte ici</Link>
                 </p>
             </form>
         </div>

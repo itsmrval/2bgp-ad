@@ -2,8 +2,10 @@
 proxmox_node: "{{ inventory_hostname }}"
 
 # Define public IPv4 address and network interface for the public access
-public_ct_ip: "192.168.48.200"
-public_ct_subnet: "/21"
+public_ct_ip: "51.158.25.9"
+public_ct_hostname: ""
+public_ct_mac: "52:54:00:00:e3:3c"
+public_ct_subnet: "/32"
 public_ct_adapter: "vmbr0"
 
 # Define the storage settings for the Proxmox node

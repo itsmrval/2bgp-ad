@@ -3,6 +3,6 @@ all:
     proxmox:
       hosts:
         # Specify proxmox node name
-        pve-e48-eta4:
-          ansible_host: 192.168.48.184
+        sd-164057:
+          ansible_host: sd-164057.dedibox.fr
           ansible_user: root

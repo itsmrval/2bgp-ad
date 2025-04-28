@@ -64,7 +64,7 @@
     margin-right: 1rem;
     cursor: pointer;
     color: rgb(0, 0, 0);
-    font-size: 25px; /* Augmenté de 1.125rem à 1.5rem */
+    font-size: 21px; /* Augmenté de 1.125rem à 1.5rem */
     transition: color 0.3s ease;
 }
 

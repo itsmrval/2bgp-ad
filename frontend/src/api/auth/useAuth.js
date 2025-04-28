@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-
-// URL de base de l'API
-const API_URL = 'http://192.168.48.200/api'; // Ajuste selon ton port
+import { API_URL } from "../../config";
 
 const useAuth = () => {
   const [user, setUser] = useState(null);

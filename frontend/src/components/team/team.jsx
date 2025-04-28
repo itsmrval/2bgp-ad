@@ -6,32 +6,27 @@ const Team = () => {
     // Données des membres de l'équipe
     const teamMembers = [
         {
-            name: "Membre 1",
+            name: "Valentin PUCCETTI",
             bio: "Texte descriptif doit aller ici",
-            email: "membre1@example.com",
-            linkedin: "https://linkedin.com/in/membre1",
-            github: "https://github.com/membre1"
+            email: "contact@valentinp.fr",
+            linkedin: "https://linkedin.com/in/valentin-p",
+            github: "https://github.com/itsmrval"
         },
         {
-            name: "Membre 2", 
+            name: "Corentin BONNEAU", 
             bio: "Texte descriptif doit aller ici",
-            email: "membre2@example.com",
-            linkedin: "https://linkedin.com/in/membre2",
-            github: "https://github.com/membre2"
+            linkedin: "https://linkedin.com/in/bonneau-corentin",
         },
         {
-            name: "Membre 3",
+            name: "François GOYA LONGO",
             bio: "Texte descriptif doit aller ici",
             email: "membre3@example.com",
-            linkedin: "https://linkedin.com/in/membre3",
-            github: "https://github.com/membre3"
+            linkedin: "https://linkedin.com/in/fran%c3%a7ois-goya-longo-84574227b",
         },
         {
-            name: "Membre 4",
+            name: "Mathieu BERSIN",
             bio: "Texte descriptif doit aller ici",
-            email: "membre4@example.com",
-            linkedin: "https://linkedin.com/in/membre4",
-            github: "https://github.com/membre4"
+            linkedin: "https://linkedin.com/in/mathieu-bersin-367270269",
         }
     ];
     
@@ -47,8 +42,8 @@ const Team = () => {
     return (
         <div className="team-container">
             <div className="team-header">
-                <h2>The MasterMinds</h2>
-                <p>Texte de présentation doit aller ici</p>
+                <h2>À propos du projet</h2>
+                <p>2bgp-ctf est une plateforme de capture du drapeau (CTF) conçue pour aider les étudiants à apprendre et à mettre en pratique les compétences en matière de cybersécurité à travers une série de défis.</p>
             </div>
             
             <div className="team-members-list">

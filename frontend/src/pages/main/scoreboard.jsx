@@ -9,7 +9,6 @@ const ScoreboardPage = () => {
     React.useEffect(() => {
         window.scrollTo(0, 0);
 
-        // Reset body styles to ensure proper display
         document.body.style.margin = '0';
         document.body.style.padding = '0';
         document.body.style.width = '100%';

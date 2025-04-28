@@ -8,7 +8,7 @@
 body, html {
   height: 100%;
   width: 100%;
-  overflow: hidden; /* Prevent scrolling */
+  overflow: hidden;
   font-family: 'Arial', sans-serif;
 }
 
@@ -19,7 +19,7 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('../../assets/img/roulette.jpg'); /* Update this path to your actual image */
+  background-image: url('../../assets/img/roulette.jpg'); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -27,7 +27,7 @@ body, html {
   position: relative;
 }
 
-/* Create overlay for better text readability */
+/* Overlay for readability */
 .login-container::before {
   content: '';
   position: absolute;
@@ -39,7 +39,7 @@ body, html {
   z-index: 1;
 }
 
-/* Stylish glass card with enhanced effect */
+/* Glass card */
 .form {
   position: relative;
   z-index: 2;
@@ -59,7 +59,7 @@ body, html {
   overflow: hidden;
 }
 
-/* Form title styling */
+/* Form title */
 .form-title {
   font-size: 1.8rem;
   font-weight: 600;
@@ -70,7 +70,7 @@ body, html {
   letter-spacing: 1px;
 }
 
-/* Input container styling */
+/* Input container */
 .input-container {
   position: relative;
   display: flex;
@@ -81,10 +81,10 @@ body, html {
 }
 
 .input-container:focus-within {
-  border-bottom-color: #00d4ff;
+  border-bottom-color: rgb(255, 0, 0);
 }
 
-/* Input styling */
+/* Inputs */
 .input-container input {
   flex: 1;
   background: transparent;
@@ -99,11 +99,11 @@ body, html {
   color: rgba(255, 255, 255, 0.6);
 }
 
-/* Submit button styling */
+/* Submit button */
 .submit {
   width: 100%;
   padding: 14px;
-  background: linear-gradient(135deg, #004d7f, #00a6ff);
+  background: linear-gradient(135deg, rgb(139, 0, 0), rgb(255, 0, 0));
   color: white;
   border: none;
   border-radius: 30px;
@@ -114,7 +114,7 @@ body, html {
   align-items: center;
   gap: 10px;
   transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(0, 166, 255, 0.3);
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
   position: relative;
   overflow: hidden;
   margin-top: 25px;
@@ -128,7 +128,7 @@ body, html {
   right: -2px;
   bottom: -2px;
   z-index: -1;
-  background: linear-gradient(45deg, #004d7f, #00a6ff, #004d7f);
+  background: linear-gradient(45deg, rgb(139, 0, 0), rgb(255, 0, 0), rgb(139, 0, 0));
   background-size: 300%;
   border-radius: 32px;
   animation: glowing 3s linear infinite;
@@ -136,14 +136,14 @@ body, html {
 
 .submit:hover {
   transform: translateY(-3px);
-  box-shadow: 0 7px 20px rgba(0, 166, 255, 0.4);
+  box-shadow: 0 7px 20px rgba(255, 0, 0, 0.4);
 }
 
 .submit:active {
   transform: translateY(-1px);
 }
 
-/* Signup link styling */
+/* Signup link */
 .signup-link {
   text-align: center;
   margin-top: 25px;
@@ -156,17 +156,17 @@ body, html {
 }
 
 .signup-link a {
-  color: #00d4ff;
+  color: rgb(255, 0, 0);
   text-decoration: none;
   font-weight: bold;
   transition: all 0.3s ease;
 }
 
 .signup-link a:hover {
-  text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+  text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
 }
 
-/* Animation keyframes */
+/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -178,7 +178,7 @@ body, html {
   100% { background-position: 0 0; }
 }
 
-/* Error message styling */
+/* Error Message */
 .error-message {
   color: #ff5252;
   text-align: center;
@@ -186,7 +186,7 @@ body, html {
   font-size: 0.9rem;
 }
 
-/* Mobile responsiveness */
+/* Responsive */
 @media (max-width: 580px) {
   .form {
     padding: 25px 20px;
