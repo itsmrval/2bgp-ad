@@ -15,10 +15,26 @@ const sendWireguardDeploy = async (client_id) => {
         });
 };
 
+const sendVMDeploy = async (client_id) => {
+    return axios.post(process.env.DEPLOYMENT_API_URL + '/vms', { client_id })
+        .then(response => {
+            if (response.data && response.data.status === 'success') {
+                return true;
+            } else {
+                console.log('VMs deployment failed:', response.data);
+                throw new Error('VMs deployment failed');
+            }
+        })
+        .catch(error => {
+            throw new Error(`VMs deployment error: ${error.message}`);
+        });
+};
+
 const deployClient = async (client_id) => {
     try {
-        const result = await sendWireguardDeploy(client_id);
-        return result;
+        await sendWireguardDeploy(client_id);
+        await sendVMDeploy(client_id);
+        return true;
     } catch (error) {
         console.error('Deployment error:', error);
         throw error;

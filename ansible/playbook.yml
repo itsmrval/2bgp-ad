@@ -129,16 +129,6 @@
       register: ssh_web_result
       until: ssh_web_result is succeeded
 
-    # Apply iptables rules for WireGuard
-    - name: setup_iptable
-      import_tasks: tasks/proxmox/setup_forward.yml
-      vars:
-        dest_ip: "{{ container_deployment_ip }}"
-        port_start: 500
-        port_end: 600
-        protocol: "udp"
-      delegate_to: "{{ container_web_ip }}" 
-
     # Install docker on the Web container
     - name: install_docker
       import_tasks: tasks/core_software/install_docker.yml
@@ -148,6 +138,16 @@
     - name: deploy_web_containers
       import_tasks: tasks/core_software/deploy_web_containers.yml
       delegate_to: "{{ container_web_ip }}"
+
+    # Apply iptables rules for WireGuard
+    - name: setup_iptable
+      import_tasks: tasks/proxmox/setup_forward.yml
+      vars:
+        dest_ip: "{{ container_deployment_ip }}"
+        port_start: 500
+        port_end: 600
+        protocol: "udp"
+      delegate_to: "{{ container_web_ip }}" 
 
   ### PREPARING WINDOWS TEMPLATES ###
     - name: prepare_windows_template
