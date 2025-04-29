@@ -152,6 +152,8 @@
   ### PREPARING WINDOWS TEMPLATES ###
     - name: prepare_windows_template
       import_tasks: tasks/windows/prepare_template.yml
+      vars:
+        role_type: "server"
 
     - name: build_windows_template
       import_tasks: tasks/windows/build_template.yml
