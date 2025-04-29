@@ -1,9 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import PlayingCard from './PlayingCard';
+import { useNavigate } from 'react-router-dom';
+import OceansLogo from '../assets/img/OCEAN’S 11.png'; // Import the logo
 
 const BlackjackTable = ({ playedCards }) => {
-    return (
-        <div className="flex flex-wrap gap-4 p-4 bg-green-800 rounded-lg relative w-full h-[500px]">
+    return (  <div className="flex flex-wrap gap-4 p-4 bg-green-800 rounded-lg relative w-full h-[500px]">
+    {/* Ocean's 11 Logo */}
+    <img
+      src={OceansLogo}
+      alt="Ocean's 11"
+      className="absolute z-10"
+      style={{ 
+        maxWidth: '1000px',
+        maxHeight: '800px',
+        position: 'absolute', 
+        top: '80px', 
+        left: '50%', 
+        transform: 'translateX(-50%)'
+      }}
+    /> 
             {[...Array(13)].map((_, index) => {
                 // Use percentage values for responsive positioning
                 let leftPos, topPos;
@@ -51,6 +66,7 @@ const BlackjackTable = ({ playedCards }) => {
     );
 };
 
+
 const CardWrapper = ({ card, style, onClick, hoverEffect }) => {
     const [isHovered, setIsHovered] = useState(false);
 
@@ -95,6 +111,8 @@ const CardWrapper = ({ card, style, onClick, hoverEffect }) => {
 };
 
 const Test = () => {
+    const navigate = useNavigate();
+    
     // Card data
     const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
     const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
@@ -165,6 +183,11 @@ const Test = () => {
         setHand(updatedHand);
 
         setPlayedCards([...playedCards, { ...card, slotIndex }]);
+        
+        // Navigate to /mission after the card animation completes (300ms)
+        setTimeout(() => {
+            navigate('/mission');
+        }, 400); // Slightly longer than the transition time to ensure it completes
     };
 
     useEffect(() => {

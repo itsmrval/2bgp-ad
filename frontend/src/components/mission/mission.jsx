@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../assets/styles/mission.css';
 
 const TITLE = "Objectif de la mission";
@@ -12,6 +13,12 @@ const MissionCard = ({
     points = POINTS,
     successRate = SUCCESS_RATE
 }) => {
+    const navigate = useNavigate();
+
+    const handleBackClick = () => {
+        navigate('/'); // Navigate to the home/default page
+    };
+
     return (
         <div className="mission-app-body">
             <div className="card">
@@ -31,7 +38,7 @@ const MissionCard = ({
                 <div className="card-body">
                     <p className="card-text">{content}</p>
                 </div>
-                <div className="arrow-left"></div>
+                <div className="arrow-left" onClick={handleBackClick} style={{ cursor: 'pointer' }}></div>
             </div>
         </div>
     );
