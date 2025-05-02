@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import '../../assets/styles/header.css';
-import useAuth from '../../api/auth/useAuth';
+import {useAuth} from '../../api/auth/useAuth';
 
 
 const TransparentHeader = () => {

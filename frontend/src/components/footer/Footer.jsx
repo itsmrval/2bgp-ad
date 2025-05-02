@@ -2,25 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 export default function Footer() {
     const [isConnected, setIsConnected] = useState(true);
-    const [connectionTime, setConnectionTime] = useState(0);
-    
-    // Update connection time every second
-    useEffect(() => {
-        const timer = setInterval(() => {
-            if (isConnected) {
-                setConnectionTime(prevTime => prevTime + 1);
-            }
-        }, 1000);
-        
-        return () => clearInterval(timer);
-    }, [isConnected]);
-    
-    // Format time as mm:ss
-    const formatTime = (seconds) => {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    };
     
     return (
         <div
@@ -97,19 +78,9 @@ export default function Footer() {
                                 whiteSpace: 'nowrap',
                                 marginLeft: '0px'
                             }}>
-                                {isConnected ? 'Connected' : 'Not Connected'}
+                                {isConnected ? 'Connected' : 'Disconnected'}
                             </span>
                         </div>
-                        <span style={{
-                            fontSize: '12px',
-                            fontFamily: "'Helvetica-Inserat', Helvetica, Arial, sans-serif",
-                            position: 'absolute',
-                            top: '16px',
-                            left: '-24px',
-                            textAlign: 'center'
-                        }}>
-                            {formatTime(connectionTime)}
-                        </span>
                     </div>
                 </div>
             </div>

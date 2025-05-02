@@ -1,96 +1,126 @@
-import { useState } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { API_URL } from "../../config";
 
-const useAuth = () => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+// Create a context
+const AuthContext = createContext();
 
-  /**
-   * Fonction d'inscription qui appelle l'API backend
-   * @param {string} username - Nom d'utilisateur
-   * @param {string} password - Mot de passe
-   * @returns {Promise} - Résultat de l'opération
-   */
+// AuthProvider component to wrap around the app
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [wgState, setWgState] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    const storedWgState = localStorage.getItem('wg_state');
+  
+    if (storedUser) setUser(JSON.parse(storedUser));
+    if (storedWgState !== null) {
+      setWgState(storedWgState === "true" || storedWgState === true);
+    }
+  
+    setLoading(false);
+  }, []);
+  
+
+  // Function to update state in localStorage and trigger custom event
+  const updateLocalStorage = (key, value) => {
+    localStorage.setItem(key, value);
+    window.dispatchEvent(new Event('localStorageChange'));
+  };
+
+  // Register function
   const register = async (username, password) => {
     setLoading(true);
     setError(null);
-    
     try {
-      // Appel à l'API d'inscription
-      const response = await axios.post(`${API_URL}/auth/register`, {
-        username,
-        password
-      });
-      
-      // Stockage du token dans le localStorage
-      localStorage.setItem('token', response.data.token);
-      
-      // Mise à jour de l'état utilisateur
+      const response = await axios.post(`${API_URL}/auth/register`, { username, password });
+      updateLocalStorage('token', response.data.token);
+      updateLocalStorage('user', JSON.stringify(response.data.user));
       setUser(response.data.user);
-      
       setLoading(false);
-
-      return response.data;
     } catch (err) {
-      setError(err.response?.data?.error || 'Une erreur est survenue');
+      setError(err.response?.data?.error || 'Registration failed');
       setLoading(false);
       throw err;
     }
   };
 
-  /**
-   * Fonction de connexion qui appelle l'API backend
-   * @param {string} username - Nom d'utilisateur
-   * @param {string} password - Mot de passe
-   * @returns {Promise} - Résultat de l'opération
-   */
+  // Login function
   const login = async (username, password) => {
     setLoading(true);
     setError(null);
-    
     try {
-      // Appel à l'API de connexion
-      const response = await axios.post(`${API_URL}/auth/login`, {
-        username,
-        password
-      });
-      
-      // Stockage du token dans le localStorage
-      localStorage.setItem('token', response.data.token);
-      
-      // Mise à jour de l'état utilisateur
+      const response = await axios.post(`${API_URL}/auth/login`, { username, password });
+      updateLocalStorage('token', response.data.token);
+      updateLocalStorage('user', JSON.stringify(response.data.user));
       setUser(response.data.user);
-      
       setLoading(false);
-      return response.data;
     } catch (err) {
-      setError(err.response?.data?.error || 'Une erreur est survenue');
+      setError(err.response?.data?.error || 'Login failed');
       setLoading(false);
       throw err;
     }
   };
 
-  /**
-   * Fonction de déconnexion
-   */
+  // Logout function
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('wg_state');
+    window.dispatchEvent(new Event('localStorageChange'));
     setUser(null);
+    setWgState(null);
   };
 
-  /**
-   * Vérifie si l'utilisateur est connecté en vérifiant le localStorage
-   */
-  return {
-    user,
-    loading,
-    error,
-    register,
-    login,
-    logout,
-  };
+  // Polling for wg_state from backend
+  useEffect(() => {
+    let interval;
+    const fetchWgState = async () => {
+      if (!user) return;
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${API_URL}/users/${user.id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const newWgState = response.data.wg_state;
+        if (newWgState !== wgState) {
+          setWgState(newWgState);
+          updateLocalStorage('wg_state', newWgState);
+        }
+      } catch (err) {
+        console.error('Error fetching wg_state:', err);
+      }
+    };
+
+    if (user) {
+      fetchWgState();
+      interval = setInterval(fetchWgState, 3000);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [user, wgState]);
+
+  return (
+    <AuthContext.Provider value={{
+      user,
+      loading,
+      error,
+      wgState,
+      register,
+      login,
+      logout,
+    }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-export default useAuth;
+// Custom hook to use the AuthContext
+export const useAuth = () => {
+  return useContext(AuthContext);
+};

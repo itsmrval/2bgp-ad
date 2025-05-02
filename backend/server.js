@@ -50,7 +50,7 @@ async function backgroundLoop() {
   } catch (err) {
       console.error('Error in background loop:', err);
   } finally {
-      setTimeout(backgroundLoop, 10000);
+      setTimeout(backgroundLoop, 5000);
   }
 }
 

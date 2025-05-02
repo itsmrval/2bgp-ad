@@ -184,10 +184,7 @@ const Test = () => {
 
         setPlayedCards([...playedCards, { ...card, slotIndex }]);
         
-        // Navigate to /mission after the card animation completes (300ms)
-        setTimeout(() => {
-            navigate('/mission');
-        }, 400); // Slightly longer than the transition time to ensure it completes
+        navigate('/mission')
     };
 
     useEffect(() => {
