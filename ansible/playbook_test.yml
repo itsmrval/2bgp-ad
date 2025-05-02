@@ -18,12 +18,12 @@
       vars:
         role_type: "server"
 
-    - name: prepare_windows_client_template
-      import_tasks: tasks/windows/prepare_template.yml
-      vars:
-        role_type: "client"
+    # - name: prepare_windows_client_template
+    #   import_tasks: tasks/windows/prepare_template.yml
+    #   vars:
+    #     role_type: "client"
 
-    - name: build_windows_client_template
-      import_tasks: tasks/windows/build_template.yml
-      vars:
-        role_type: "client"
+    # - name: build_windows_client_template
+    #   import_tasks: tasks/windows/build_template.yml
+    #   vars:
+    #     role_type: "client"
