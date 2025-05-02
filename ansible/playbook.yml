@@ -150,10 +150,22 @@
       delegate_to: "{{ container_web_ip }}" 
 
   ### PREPARING WINDOWS TEMPLATES ###
-    - name: prepare_windows_template
+    - name: server_prepare_windows_template
       import_tasks: tasks/windows/prepare_template.yml
       vars:
         role_type: "server"
 
-    - name: build_windows_template
+    - name: server_build_windows_template
       import_tasks: tasks/windows/build_template.yml
+      vars:
+        role_type: "server"
+
+    - name: client_prepare_windows_template
+      import_tasks: tasks/windows/prepare_template.yml
+      vars:
+        role_type: "client"
+
+    - name: client_build_windows_template
+      import_tasks: tasks/windows/build_template.yml
+      vars:
+        role_type: "client"
