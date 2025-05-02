@@ -12,6 +12,7 @@ import MissionPage from './pages/mission/mission';
 import AboutPage from './pages/about/aboutPage';
 import Scoreboard from './pages/main/scoreboard';
 import ProtectedRoute from "./context/ProtectedRoute";
+import InProgress from "./components/animation/inProgress";
 
 function App() {
     return (
@@ -29,6 +30,9 @@ function App() {
                     <Route path="/signup" element={<SignupPages />} />
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/scoreboard" element={<Scoreboard />} />
+                    <Route path="/loading" element={<InProgress />} />
+                    
+                    {/* Protected routes */}
 
                     <Route path="/mission" element={
                         <ProtectedRoute>
