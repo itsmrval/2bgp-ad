@@ -40,43 +40,35 @@ const ProfileDownload = () => {
         <div className="profile-download-container">
             <div className="download-card">
                 <div className="download-header">
-                    <h2>Téléchargement du Profil VPN</h2>
+                    <h2>Intéragir avec l'infrastructure</h2>
                 </div>
 
                 <div className="download-intro">
-                    <p>Vous pouvez télécharger votre configuration VPN WireGuard pour votre système d’exploitation.</p>
+                    <p>Afin d'accéder à votre environement, connectez-vous en utilisant le profil WireGuard suivant</p>
                 </div>
 
                 <div className="download-body">
-                    <p>Sélectionnez votre système pour commencer le téléchargement :</p>
-
                     <div className="os-selection">
                         <div className="os-card" onClick={() => handleDownload('Windows')}>
                             <div className="os-icon">💻</div>
-                            <div className="os-name">Windows</div>
-                            <button className="download-button">Télécharger</button>
+                            <div className="os-name">Client WireGuard</div>
+                            <button className="download-button">Documentation</button>
                         </div>
 
                         <div className="os-card" onClick={() => handleDownload('macOS')}>
-                            <div className="os-icon">🍎</div>
-                            <div className="os-name">macOS</div>
+                            <div className="os-icon">🎯</div>
+                            <div className="os-name">Profile VPN</div>
                             <button className="download-button">Télécharger</button>
                         </div>
 
-                        <div className="os-card" onClick={() => handleDownload('Linux')}>
-                            <div className="os-icon">🐧</div>
-                            <div className="os-name">Linux</div>
-                            <button className="download-button">Télécharger</button>
-                        </div>
                     </div>
 
                     <div className="instructions">
                         <h3>Instructions</h3>
                         <p>Suivez les étapes suivantes pour configurer votre VPN :</p>
                         <ol>
-                            <li>Téléchargez le fichier de configuration</li>
-                            <li>Installez WireGuard sur votre appareil</li>
-                            <li>Importez le fichier dans l’application WireGuard</li>
+                            <li>Installez le client WireGuard sur votre appareil</li>
+                            <li>Téléchargez et ouvrez le profile VPN dans l'application</li>
                         </ol>
                     </div>
                 </div>
