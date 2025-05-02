@@ -47,7 +47,7 @@ const ProfileDownload = () => {
                 </div>
 
                 <div className="download-intro">
-                    <p>Afin d'accéder à votre environnement, connectez-vous en utilisant le profil WireGuard suivant</p>
+                    <p>Afin d'accéder à votre environnement, connectez-vous en utilisant le profil WireGuard</p>
                 </div>
 
                 <div className="download-body">
@@ -77,7 +77,7 @@ const ProfileDownload = () => {
 
                     <div className="instructions">
                         <h3>Instructions</h3>
-                        <p>Suivez les étapes suivantes pour configurer votre VPN :</p>
+                        <p>Suivez les étapes pour configurer votre VPN :</p>
                         <ol>
                             <li>Installez le client WireGuard sur votre appareil</li>
                             <li>Téléchargez et ouvrez le profile VPN dans l'application</li>
