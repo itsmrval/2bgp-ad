@@ -36,7 +36,7 @@
     --name {{ item.vm_name }}
     --sockets {{ vm_sockets }}
     --cores {{ vm_cores }}
-    --memory {{ vm_memory }}Windows_Client_Auto
+    --memory {{ vm_memory }}
     --ide2 file=local:iso/Windows_Server_Auto.iso,media=cdrom
     --scsihw virtio-scsi-pci
     --sata0 {{ item.storage_name }}:{{ drive_size_gb }},format={{ format }}
