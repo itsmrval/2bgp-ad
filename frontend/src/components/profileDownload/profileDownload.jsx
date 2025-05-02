@@ -40,7 +40,7 @@ const ProfileDownload = () => {
         <div className="profile-download-container">
             <div className="download-card">
                 <div className="download-header">
-                    <h2>Intéragir avec l'infrastructure</h2>
+                    <h2>Vous n'êtes pas connecté</h2>
                 </div>
 
                 <div className="download-intro">
