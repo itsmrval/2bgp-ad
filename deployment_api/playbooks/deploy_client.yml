@@ -1,7 +1,3 @@
-# This playbook deploys VMs in Proxmox based on a template.
-# Needed variable:
-# - client_id
-
 - name: deploy_client
   hosts: localhost
   gather_facts: no
@@ -9,13 +5,13 @@
     - vars.yml
 
   vars:
-    - ansible_python_interpreter: /opt/deployment_api/venv/bin/python
+    ansible_python_interpreter: /opt/deployment_api/venv/bin/python
 
   tasks:
-    - name: set_fact
-      import_tasks: tasks/set_fact.yml 
+    - name: Load deployment variables
+      import_tasks: tasks/set_fact.yml
 
-    - name: creating_deploy
+    - name: Clone VMs asynchronously
       community.general.proxmox_kvm:
         api_user: "{{ proxmox_user }}"
         api_password: "{{ proxmox_password }}"
@@ -28,7 +24,29 @@
         storage: "{{ vm_storage }}"
         format: raw
         timeout: 600
-      with_items: "{{ templates }}"
+      loop: "{{ templates }}"
       async: 1200
       poll: 0
       register: deploy_jobs
+
+    - name: Wait for VM clones to finish
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      register: deploy_results
+      until: deploy_results.finished
+      retries: 60
+      delay: 5
+      loop: "{{ deploy_jobs.results }}"
+
+    - name: Start cloned VMs in background
+      community.general.proxmox_kvm:
+        api_user: "{{ proxmox_user }}"
+        api_password: "{{ proxmox_password }}"
+        api_host: "{{ proxmox_ip }}:8006"
+        vmid: "{{ item.invocation.module_args.newid }}"
+        node: "{{ proxmox_node }}"
+        state: started
+        timeout: 180
+      loop: "{{ deploy_results.results }}"
+      async: 300
+      poll: 0

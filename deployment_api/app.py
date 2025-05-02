@@ -3,6 +3,8 @@ import os
 import subprocess
 import json
 import re
+import threading
+
 
 app = Flask(__name__)
 
@@ -41,38 +43,32 @@ def create_infrastructure():
     
     client_id = data['client_id']
     
-    try:
-        cmd = [
-            'ansible-playbook', 
-            INF_PLAYBOOK_PATH,
-            f'--extra-vars=client_id={client_id}'
-        ]
-        
-        result = subprocess.run(
-            cmd, 
-            stdout=subprocess.PIPE, 
-            stderr=subprocess.PIPE,
-            text=True
-        )
-        
-        if result.returncode != 0:
-            return jsonify({
-                'status': 'error',
-                'message': 'Ansible playbook execution failed',
-                'error': result.stderr
-            }), 500
-        
-        return jsonify({
-            'status': 'success',
-            'client_id': client_id,
-            'message': 'Infrastructure generated successfully'
-        })
-        
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'message': str(e)
-        }), 500
+    def run_playbook(client_id):
+        try:
+            cmd = [
+                'ansible-playbook', 
+                INF_PLAYBOOK_PATH,
+                f'--extra-vars=client_id={client_id}'
+            ]
+            
+            result = subprocess.Popen(
+                cmd, 
+                stdout=subprocess.PIPE, 
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            result.communicate()
+            
+        except Exception as e:
+            print(f"Error running playbook for client {client_id}: {e}")
+
+    threading.Thread(target=run_playbook, args=(client_id,)).start()
+    
+    return jsonify({
+        'status': 'success',
+        'client_id': client_id,
+        'message': 'Infrastructure generated successfully'
+    })
     
 @app.route('/vms/<int:client_id>', methods=['GET'])
 def check_infrastructure(client_id):
