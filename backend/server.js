@@ -17,7 +17,6 @@ app.use('/auth', require('./src/routes/auth'));
 app.use('/users', require('./src/routes/users'));
 app.use('/levels', require('./src/routes/levels'));
 app.use('/points', require('./src/routes/points'));
-app.use('/teams', require('./src/routes/teams'));
 
 const PORT = process.env.PORT || 3000;
 
