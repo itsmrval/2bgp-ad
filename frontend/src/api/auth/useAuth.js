@@ -87,6 +87,21 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  // Scoreboard retrieve
+  const getPoints = async () => {
+    setError(null);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API_URL}/points`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data
+    } catch (err) {
+      setError(err.response?.data?.error || 'Points retrieve fail');
+      throw err;
+    }
+  }
+
   useEffect(() => {
     let interval;
     const fetchWgState = async () => {
@@ -125,7 +140,8 @@ export const AuthProvider = ({ children }) => {
       register,
       login,
       logout,
-      getProfile
+      getProfile,
+      getPoints
     }}>
       {children}
     </AuthContext.Provider>

@@ -1,68 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../assets/styles/scoreboard.css';
+import { useAuth } from '../../api/auth/useAuth';
 
 const Scoreboard = () => {
-  // Plus d'équipes pour tester le défilement
-  const mockTeams = [
-    {
-      name: "Danny",
-      rank: 1,
-      total_points: 12500000,
-      members: [
-        { username: "Points acquis:", points: 5500000 },
-      ]
-    },
-    {
-      name: "Casino",
-      rank: 2,
-      total_points: 8750000,
-      members: [
-        { username: "Points acquis:", points: 5500000 },
-      ]
-    },
-    {
-      name: "The",
-      rank: 3,
-      total_points: 6300000,
-      members: [
-        { username: "Points acquis:", points: 5500000 },
-      ]
-    },
-    {
-      name: "Night Foxes",
-      rank: 4,
-      total_points: 4200000,
-      members: [
-        { username: "Points acquis:", points: 5500000 },
-      ]
-    },
-    {
-      name: "Bellagio Bandits",
-      rank: 5,
-      total_points: 2800000,
-      members: [
-        { username: "Points acquis:", points: 5500000 },
-      ]
-    },
-    {
-      name: "Bank Robbers",
-      rank: 6,
-      total_points: 2400000,
-      members: [
-        { username: "Points acquis:", points: 5500000 },
+  const { getPoints } = useAuth();
+  const [teams, setTeams] = useState([]);
 
-      ]
-    },
-    {
-      name: "Vegas Vipers",
-      rank: 7,
-      total_points: 2100000,
-      members: [
-        { username: "Points acquis:", points: 5500000 },
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getPoints();
+        setTeams(response);
+      } catch (error) {
+        console.error("Error fetching teams:", error);
+      }
+    };
 
-      ]
-    }
-  ];
+    fetchData();
+  }, [getPoints]);
 
   return (
     <div className="scoreboard-content">
@@ -79,18 +34,18 @@ const Scoreboard = () => {
         </div>
 
         <div className="scoreboard-table-body">
-          {mockTeams.map((team) => (
-            <div key={team.name} className="team-row">
+          {teams.map((team) => (
+            <div key={team.rank} className="team-row">
               <div className="rank-column">
                 <div className="rank-circle">{team.rank}</div>
               </div>
               <div className="team-column">
-                <div className="team-name">{team.name}</div>
+                <div className="team-name">{team.username}</div>
                 <div className="team-members">
-                  {team.members.map((member) => (
-                    <div key={member.username} className="member">
-                      <span className="member-name">{member.username}</span>
-                      <span className="member-chips">{member.points.toLocaleString()} chips</span>
+                  {team.achieved_levels.map((level, index) => (
+                    <div key={index} className="member">
+                      <span className="member-name">Niveau {index + 1}</span>
+                      <span className="member-chips">{level.points ? level.points.toLocaleString() : "0"} chips</span> {/* Assuming each level has a 'points' field */}
                     </div>
                   ))}
                 </div>
