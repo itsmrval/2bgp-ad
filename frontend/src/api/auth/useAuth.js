@@ -2,10 +2,8 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { API_URL } from "../../config";
 
-// Create a context
 const AuthContext = createContext();
 
-// AuthProvider component to wrap around the app
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,7 +23,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
   
 
-  // Function to update state in localStorage and trigger custom event
   const updateLocalStorage = (key, value) => {
     localStorage.setItem(key, value);
     window.dispatchEvent(new Event('localStorageChange'));
@@ -75,7 +72,21 @@ export const AuthProvider = ({ children }) => {
     setWgState(null);
   };
 
-  // Polling for wg_state from backend
+  // WG retrieve
+  const getProfile = async () => {
+    setError(null);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API_URL}/users/${user.id}/wg`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data
+    } catch (err) {
+      setError(err.response?.data?.error || 'Profile retrieve fail');
+      throw err;
+    }
+  }
+
   useEffect(() => {
     let interval;
     const fetchWgState = async () => {
@@ -114,13 +125,13 @@ export const AuthProvider = ({ children }) => {
       register,
       login,
       logout,
+      getProfile
     }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Custom hook to use the AuthContext
 export const useAuth = () => {
   return useContext(AuthContext);
 };
