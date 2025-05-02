@@ -194,7 +194,6 @@
     group: root
   when: role_type=="client"
 
-
 - name: create_iso
   command: >
     genisoimage -o /var/lib/vz/template/iso/Windows_Server_Auto.iso
@@ -204,3 +203,15 @@
     -allow-limited-size /mnt/provision/
   become: yes
   register: iso_created
+  when: role_type=="server"
+
+- name: create_iso
+  command: >
+    genisoimage -o /var/lib/vz/template/iso/Windows_Client_Auto.iso
+    -b boot/etfsboot.com -no-emul-boot -boot-load-size 8 -iso-level 3
+    -relaxed-filenames -allow-lowercase -allow-multidot -udf -J -joliet-long
+    -eltorito-alt-boot -e boot/boot.sdi -no-emul-boot -V "WinSrv_Auto"
+    -allow-limited-size /mnt/provision/
+  become: yes
+  register: iso_created
+  when: role_type=="client"
