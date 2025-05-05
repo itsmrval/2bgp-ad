@@ -9,17 +9,34 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [wgState, setWgState] = useState(null);
+  const [vmsState, setVmsState] = useState(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const storedWgState = localStorage.getItem('wg_state');
+    const storedVmsState = localStorage.getItem('vms_state');
   
     if (storedUser) setUser(JSON.parse(storedUser));
     if (storedWgState !== null) {
       setWgState(storedWgState === "true" || storedWgState === true);
     }
+    if (storedVmsState !== null) {
+      setVmsState(storedVmsState === "true" || storedVmsState === true);
+    }
   
     setLoading(false);
+    
+    const handleLocalStorageChange = () => {
+      const devModeChanged = localStorage.getItem('dev') === "true";
+      if (devModeChanged !== (localStorage.getItem('dev') === "true")) {
+        setLoading(loading => !loading);
+      }
+    };
+    
+    window.addEventListener('localStorageChange', handleLocalStorageChange);
+    return () => {
+      window.removeEventListener('localStorageChange', handleLocalStorageChange);
+    };
   }, []);
   
 
@@ -27,6 +44,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem(key, value);
     window.dispatchEvent(new Event('localStorageChange'));
   };
+
 
   // Register function
   const register = async (username, password) => {
@@ -67,9 +85,11 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('wg_state');
+    localStorage.removeItem('vms_state');
     window.dispatchEvent(new Event('localStorageChange'));
     setUser(null);
     setWgState(null);
+    setVmsState(null);
   };
 
   // WG retrieve
@@ -104,32 +124,41 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     let interval;
-    const fetchWgState = async () => {
+    const fetchUserStates = async () => {
       if (!user) return;
       try {
         const token = localStorage.getItem('token');
         const response = await axios.get(`${API_URL}/users/${user.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        
         const newWgState = response.data.wg_state;
         if (newWgState !== wgState) {
           setWgState(newWgState);
           updateLocalStorage('wg_state', newWgState);
         }
+        
+        const newVmsState = response.data.vms_state;
+        if (newVmsState !== vmsState) {
+          setVmsState(newVmsState);
+          updateLocalStorage('vms_state', newVmsState);
+        }
       } catch (err) {
-        console.error('Error fetching wg_state:', err);
+        console.error('Error fetching user states:', err);
       }
     };
 
-    if (user) {
-      fetchWgState();
-      interval = setInterval(fetchWgState, 3000);
+    const devMode = localStorage.getItem('dev') === "true";
+    
+    if (user && !devMode) {
+      fetchUserStates();
+      interval = setInterval(fetchUserStates, 3000);
     }
 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [user, wgState]);
+  }, [user, wgState, vmsState]);
 
   return (
     <AuthContext.Provider value={{
@@ -137,6 +166,7 @@ export const AuthProvider = ({ children }) => {
       loading,
       error,
       wgState,
+      vmsState,
       register,
       login,
       logout,

@@ -6,7 +6,6 @@
 
   vars:
     ansible_python_interpreter: /opt/deployment_api/venv/bin/python
-    # Parse username and realm from proxmox_user (format: username@realm)
     proxmox_username: "{{ proxmox_user.split('@')[0] }}"
     proxmox_realm: "{{ proxmox_user.split('@')[1] }}"
 
