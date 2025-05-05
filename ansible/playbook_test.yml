@@ -8,11 +8,11 @@
   ### SETUP ANSIBLE ###
 
   ### PREPARING WINDOWS TEMPLATES ###
-    # - name: prepare_windows_template
-    #   import_tasks: tasks/windows/prepare_server.yml
+    - name: prepare_windows_template
+      import_tasks: tasks/windows/prepare_server.yml
 
-    # - name: build_windows_template
-    #   import_tasks: tasks/windows/build_server.yml
+    - name: build_windows_template
+      import_tasks: tasks/windows/build_server.yml
 
     - name: prepare_windows_client_template
       import_tasks: tasks/windows/prepare_client.yml

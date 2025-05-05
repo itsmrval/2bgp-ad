@@ -163,7 +163,7 @@
 - name: copy_xml
   copy:
     src: "{{ playbook_dir }}/assets/windows/clientautounattend.xml"
-    dest: "/mnt/provision/clientautounattend.xml"
+    dest: "/mnt/provision/autounattend.xml"
     owner: root
     group: root
 

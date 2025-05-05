@@ -1,7 +1,7 @@
 - name: define_variables
   set_fact:
     vms:
-      - { vm_id: "{{ template_win_4 }}", vm_name: "build-04", storage_name: "{{ vm_storage }}" }
+      # - { vm_id: "{{ template_win_4 }}", vm_name: "build-04", storage_name: "{{ vm_storage }}" }
       - { vm_id: "{{ template_win_5 }}", vm_name: "build-05", storage_name: "{{ vm_storage }}" }
     vm_memory: 4096
     vm_cores: 4
@@ -34,6 +34,14 @@
   with_items: "{{ vms }}"
   when: item.vm_id in vm_creation.results | map(attribute='item.vm_id') | list
 
+- name: waiting_agent
+  shell: "qm agent {{ item.vm_id }} ping"
+  register: agent_result
+  until: agent_result.rc == 0
+  retries: 300
+  delay: 10
+  with_items: "{{ vms }}"
+
 - name: waiting_install
   command: >
     qm guest exec {{ item.vm_id }} -- powershell.exe -Command "Get-Content 'C:\Windows\Setup\State\State.ini'"
@@ -43,41 +51,33 @@
   delay: 10
   with_items: "{{ vms }}"
 
-- name: waiting_agent
-  shell: "qm agent {{ item.vm_id }} ping"
-  register: agent_result
-  until: agent_result.rc == 0
-  retries: 60
-  delay: 10
-  with_items: "{{ vms }}"
+# - name: shutdown_vms
+#   command: "qm shutdown {{ item.vm_id }}"
+#   when: item.vm_id in vms | map(attribute='vm_id') | list
+#   register: shutdown_result
+#   ignore_errors: yes
+#   with_items: "{{ vms }}"
 
-- name: shutdown_vms
-  command: "qm shutdown {{ item.vm_id }}"
-  when: item.vm_id in vms | map(attribute='vm_id') | list
-  register: shutdown_result
-  ignore_errors: yes
-  with_items: "{{ vms }}"
+# - name: verify vm is stopped
+#   shell: "qm list | grep '^ *{{ item.vm_id }}' | awk '{print $3}'"
+#   register: vm_status
+#   until: vm_status.stdout | trim == "stopped"
+#   retries: 30
+#   delay: 10
+#   with_items: "{{ vms }}"
 
-- name: verify vm is stopped
-  shell: "qm list | grep '^ *{{ item.vm_id }}' | awk '{print $3}'"
-  register: vm_status
-  until: vm_status.stdout | trim == "stopped"
-  retries: 30
-  delay: 10
-  with_items: "{{ vms }}"
+# - name: unmount_iso
+#   command: "qm set {{ item.vm_id }} --delete ide2"
+#   with_items: "{{ vms }}"
 
-- name: unmount_iso
-  command: "qm set {{ item.vm_id }} --delete ide2"
-  with_items: "{{ vms }}"
+# - name: creating_template
+#   command: "qm template {{ item.vm_id }}"
+#   with_items: "{{ vms }}"
 
-- name: creating_template
-  command: "qm template {{ item.vm_id }}"
-  with_items: "{{ vms }}"
+# - name: enable_firewall
+#   command: "pvesh set /nodes/{{ node }}/qemu/{{ item.vm_id }}/firewall/options -enable true"
+#   with_items: "{{ vms }}"
 
-- name: enable_firewall
-  command: "pvesh set /nodes/{{ node }}/qemu/{{ item.vm_id }}/firewall/options -enable true"
-  with_items: "{{ vms }}"
-
-- name: done
-  debug:
-    msg: "Template build for servers"
+# - name: done
+#   debug:
+#     msg: "Template build for servers"
