@@ -1,0 +1,199 @@
+# Description: This tasks will create a new SDN zone, vnet, and subnet using Proxmox API.
+
+# Check if SDN zone exists
+- name: Check if SDN zone exists
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/sdn/zones"
+    method: GET
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    validate_certs: false
+    status_code: 200
+  register: zones_response
+
+- name: Set zone exists fact
+  set_fact:
+    zone_exists: "{{ ('cust' + client_id) in (zones_response.json.data | map(attribute='zone') | list) }}"
+
+# Create SDN zone if it doesn't exist
+- name: Create SDN zone
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/sdn/zones"
+    method: POST
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    body_format: form-urlencoded
+    body:
+      zone: "cust{{ client_id }}"
+      type: "simple"
+    validate_certs: false
+    status_code: 200
+  register: zone_created
+  when: not zone_exists
+  failed_when: false
+
+# Check if VNET exists
+- name: Check if VNET exists
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/sdn/vnets"
+    method: GET
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    validate_certs: false
+    status_code: 200
+  register: vnets_response
+
+- name: Set vnet exists fact
+  set_fact:
+    vnet_exists: "{{ ('cust' + client_id) in (vnets_response.json.data | map(attribute='vnet') | list) }}"
+
+# Create VNET if it doesn't exist or if zone was just created
+- name: Create VNET
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/sdn/vnets"
+    method: POST
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    body_format: form-urlencoded
+    body:
+      zone: "cust{{ client_id }}"
+      vnet: "cust{{ client_id }}"
+    validate_certs: false
+    status_code: 200
+  register: vnet_created
+  when: not vnet_exists or (zone_created is defined and zone_created.changed)
+  failed_when: false
+
+# Check if subnet exists
+- name: Check if subnet exists
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/sdn/vnets/cust{{ client_id }}/subnets"
+    method: GET
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    validate_certs: false
+    status_code: 200
+  register: subnets_response
+  failed_when: false
+
+- name: Set subnet exists fact
+  set_fact:
+    subnet_exists: "{{ subnets_response.status == 200 and ('10.' + client_id + '.0.0/16') in (subnets_response.json.data | map(attribute='subnet') | list | default([])) }}"
+  failed_when: false
+
+# Create subnet if it doesn't exist or if vnet/zone was just created
+- name: Create subnet
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/sdn/vnets/cust{{ client_id }}/subnets"
+    method: POST
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    body_format: form-urlencoded
+    body:
+      subnet: "10.{{ client_id }}.0.0/16"
+      type: "subnet"
+      gateway: "10.{{ client_id }}.0.254"
+      snat: 1
+    validate_certs: false
+    status_code: 200
+  register: subnet_created
+  when: not subnet_exists or (vnet_created is defined and vnet_created.changed) or (zone_created is defined and zone_created.changed)
+  failed_when: false
+
+# Apply SDN changes
+- name: Apply SDN changes
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/sdn/apply"
+    method: POST
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    validate_certs: false
+    status_code: 200
+  when: (zone_created is defined and zone_created.changed) or (vnet_created is defined and vnet_created.changed) or (subnet_created is defined and subnet_created.changed)
+
+# Check if security group exists
+- name: Check if security group exists
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/firewall/groups"
+    method: GET
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    validate_certs: false
+    status_code: 200
+  register: security_groups_response
+
+- name: Set security group exists fact
+  set_fact:
+    security_group_exists: "{{ ('cust' + client_id) in (security_groups_response.json.data | map(attribute='group') | list) }}"
+
+# Create security group if it doesn't exist
+- name: Create security group
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/firewall/groups"
+    method: POST
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    body_format: form-urlencoded
+    body:
+      group: "cust{{ client_id }}"
+      comment: "Security group for customer {{ client_id }}"
+    validate_certs: false
+    status_code: [200, 201, 400, 500]  # Accept 400 for "already exists" cases
+  register: security_group_created
+  when: not security_group_exists
+  failed_when: "security_group_created.status not in [200, 201, 400] or (security_group_created.status == 400 and 'already exists' not in security_group_created.json.errors | default(['']) | join(''))"
+
+# Check if security rule exists
+- name: Check if security rule exists
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/firewall/groups/cust{{ client_id }}"
+    method: GET
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    validate_certs: false
+    status_code: 200
+  register: security_rules_response
+  failed_when: false
+
+- name: Set security rule exists fact
+  set_fact:
+    security_rule_exists: "{{ security_rules_response.status == 200 and security_rules_response.json.data | selectattr('source', 'defined') | selectattr('source', 'equalto', '10.' + client_id + '.0.0/16') | list | length > 0 }}"
+  failed_when: false
+
+# Create security rule if it doesn't exist or if security group was just created
+- name: Create security rule
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/firewall/groups/cust{{ client_id }}"
+    method: POST
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    body_format: form-urlencoded
+    body:
+      action: "ACCEPT"
+      type: "in"
+      source: "10.{{ client_id }}.0.0/16"
+      enable: 1
+      comment: "Allow traffic from customer {{ client_id }} subnet"
+    validate_certs: false
+    status_code: [200, 201, 400]
+  register: security_rule_created
+  when: not security_rule_exists or (security_group_created is defined and security_group_created.changed)
+  failed_when: "security_rule_created.status not in [200, 201, 400] or (security_rule_created.status == 400 and 'already exists' not in security_rule_created.json.errors | default(['']) | join(''))"
+
+# Add debug task to verify security rule creation
+- name: Debug security rule creation
+  debug:
+    msg: "Security rule status: {{ security_rule_created.status if security_rule_created is defined else 'Not created (already exists)' }}"
+  when: not security_rule_exists or (security_group_created is defined and security_group_created.changed)

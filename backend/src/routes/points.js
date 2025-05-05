@@ -2,42 +2,41 @@ const express = require('express');
 const crypto = require('crypto');
 const User = require('../models/User');
 const Level = require('../models/Level');
-const Team = require('../models/Team');
 const { authenticate } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Get scoreboard with team scores and member points
+// Get scoreboard with user scores
 router.get('/', async (req, res) => {
   try {
-    const teams = await Team.find({}).populate({
-      path: 'members',
-      select: 'username achieved',
+    const users = await User.find({}).populate({
+      path: 'achieved.level_id',
+      select: 'points',
     });
 
-    // Calculate team scores
-    let scoreboard = teams.map(team => {
-      const totalPoints = team.members.reduce((teamTotal, member) => {
-        return teamTotal + member.achieved.reduce((sum, achievement) => sum + achievement.points, 0);
+    // Calculate user scores
+    let scoreboard = users.map(user => {
+      const totalPoints = user.achieved.reduce((sum, achievement) => {
+        return sum + achievement.level_id.points;
       }, 0);
 
       return {
-        name: team.name,
+        username: user.username,
         total_points: totalPoints,
-        members: team.members.map(member => ({
-          username: member.username,
-          points: member.achieved.reduce((sum, achievement) => sum + achievement.points, 0),
+        achieved_levels: user.achieved.map(achievement => ({
+          level_id: achievement.level_id._id,
+          points: achievement.level_id.points,
         })),
       };
     });
 
-    // Sort teams by total_points in descending order (highest score first)
+    // Sort users by total_points in descending order (highest score first)
     scoreboard.sort((a, b) => b.total_points - a.total_points);
 
     // Assign ranks
-    scoreboard = scoreboard.map((team, index) => ({
+    scoreboard = scoreboard.map((user, index) => ({
       rank: index + 1, // Rank starts at 1
-      ...team,
+      ...user,
     }));
 
     res.json(scoreboard);

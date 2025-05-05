@@ -5,23 +5,28 @@ import { useAuth } from '../../api/auth/useAuth';
 const ProfileDownload = () => {
     const { getProfile } = useAuth();
     const [profile, setProfile] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         const fetchProfile = async () => {
             try {
                 const data = await getProfile();
                 setProfile(data);
+                setError(false); 
             } catch (error) {
                 console.error("Erreur lors de la récupération du profil VPN:", error);
+                setError(true);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchProfile();
-    }, [getProfile]);
+    }, []);
 
-    const handleDownload = (os) => {
+    const handleDownload = () => {
         if (!profile) {
-            alert('Le profil VPN n\'est pas encore chargé.');
             return;
         }
 
@@ -32,8 +37,6 @@ const ProfileDownload = () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-
-        console.log(`Téléchargement du profil pour ${os}`);
     };
 
     return (
@@ -44,28 +47,37 @@ const ProfileDownload = () => {
                 </div>
 
                 <div className="download-intro">
-                    <p>Afin d'accéder à votre environement, connectez-vous en utilisant le profil WireGuard suivant</p>
+                    <p>Afin d'accéder à votre environnement, connectez-vous en utilisant le profil WireGuard</p>
                 </div>
 
                 <div className="download-body">
                     <div className="os-selection">
-                        <div className="os-card" onClick={() => handleDownload('Windows')}>
+                        <div className="os-card">
                             <div className="os-icon">💻</div>
                             <div className="os-name">Client WireGuard</div>
-                            <button className="download-button">Documentation</button>
+                            <button
+                                className="download-button"
+                                onClick={() => window.open('https://www.wireguard.com/install/', '_blank')}
+                            >
+                                Documentation
+                            </button>
                         </div>
 
-                        <div className="os-card" onClick={() => handleDownload('macOS')}>
+                        <div className="os-card" onClick={() => handleDownload()}>
                             <div className="os-icon">🎯</div>
                             <div className="os-name">Profile VPN</div>
-                            <button className="download-button">Télécharger</button>
+                            <button
+                                className="download-button"
+                                disabled={loading || error}
+                            >
+                                {loading ? 'Chargement' : error ? 'Error' : 'Télécharger'}
+                            </button>
                         </div>
-
                     </div>
 
                     <div className="instructions">
                         <h3>Instructions</h3>
-                        <p>Suivez les étapes suivantes pour configurer votre VPN :</p>
+                        <p>Suivez les étapes pour configurer votre VPN :</p>
                         <ol>
                             <li>Installez le client WireGuard sur votre appareil</li>
                             <li>Téléchargez et ouvrez le profile VPN dans l'application</li>

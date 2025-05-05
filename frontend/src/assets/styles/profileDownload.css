@@ -125,3 +125,13 @@ html::-webkit-scrollbar {
 .instructions li {
     margin-bottom: 8px;
 }
+
+.download-button:disabled {
+    background-color: #ccc; 
+    color: #666;
+    cursor: not-allowed; 
+}
+
+.download-button[disabled]:hover {
+    background-color: #ccc; 
+}

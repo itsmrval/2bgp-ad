@@ -1,9 +1,11 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../api/auth/useAuth";
-import ProfileDownloadPage from "../pages/profileDownload/profileDownloadPage";
+
+import VmsLoadingPage from "../pages/loading/vmsLoadingPage";
+import ProfileDownloadPage from "../pages/loading/profileDownloadPage";
 
 const ProtectedRoute = ({ children }) => {
-  const { user, wgState, loading } = useAuth();
+  const { user, wgState, vmsState, loading } = useAuth();
 
   if (loading) return <div>Loading...</div>;
 
@@ -11,10 +13,12 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  console.log(wgState)
-
   if (wgState === false) {
     return <ProfileDownloadPage />;
+  }
+
+  if (vmsState === false) {
+    return <VmsLoadingPage />;
   }
 
   return children;

@@ -1,23 +1,22 @@
 import React from 'react';
-import Team from '../../components/team/team.jsx';
+import Vms from '../../components/loading/vms.jsx';
 import Header from '../../components/header/Header.jsx';
-import Footer from '../../components/footer/Footer.jsx';
 
-const AboutPage = () => {
+const VmsLoadingPage = () => {
     return (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <div>
             {/* Header area */}
             <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000 }}>
                 <Header />
             </div>
             
             {/* Main content area */}
-            <div style={{ flex: 1 }}>
-                <Team />
+            <div style={{ marginTop: '60px', marginBottom: '0px' }}>
+                <Vms />
             </div>
             
         </div>
     );
 };
 
-export default AboutPage;
+export default VmsLoadingPage;
