@@ -1,0 +1,169 @@
+- name: check_if_template_exists
+  ansible.builtin.command:
+    cmd: qm list
+  register: qm_list_output
+  changed_when: false
+
+- name: set_facts
+  ansible.builtin.set_fact:
+    template_exists_1: "{{ '{{ template_win_1 }}' in qm_list_output.stdout }}"
+    template_exists_2: "{{ '{{ template_win_2 }}' in qm_list_output.stdout }}"
+    template_exists_3: "{{ '{{ template_win_3 }}' in qm_list_output.stdout }}"
+
+- name: check_windows_iso_exists
+  stat:
+    path: "/var/lib/vz/template/iso/{{ iso_winserv2019_name }}"
+  register: windows_iso_stat
+
+- name: check_virtio_iso_exists
+  stat:
+    path: "/var/lib/vz/template/iso/{{ iso_virtio_drivers_name }}"
+  register: virtio_iso_stat
+
+- name: install_aria2
+  apt:
+    name: aria2
+    state: present
+  become: yes
+
+- name: download_winsrv2019_iso
+  command: >
+    aria2c -x 16 -s 16 -k 1M 
+    -d "/var/lib/vz/template/iso/" 
+    -o "{{ iso_winserv2019_name }}"
+    "{{ iso_winserv2019 }}"
+  args:
+    creates: "/var/lib/vz/template/iso/{{ iso_winserv2019_name }}"
+  when:
+    - not windows_iso_stat.stat.exists | default(true)
+
+- name: download_virtio_drivers_iso
+  command: >
+    aria2c -x 16 -s 16 -k 1M 
+    -d "/var/lib/vz/template/iso/" 
+    -o "{{ iso_virtio_drivers_name }}"
+    "{{ iso_virtio_drivers }}"
+  args:
+    creates: "/var/lib/vz/template/iso/{{ iso_virtio_drivers_name }}"
+  when: not virtio_iso_stat.stat.exists
+
+- name: check_winiso_mount
+  command: mountpoint -q /mnt/winiso
+  register: winiso_mount_check
+  ignore_errors: yes
+  changed_when: false
+
+- name: check_virtio_mount
+  command: mountpoint -q /mnt/virtio
+  register: virtio_mount_check
+  ignore_errors: yes
+  changed_when: false
+
+
+- name: unmount_winiso
+  command: umount /mnt/winiso
+  when: winiso_mount_check.rc == 0
+  become: yes
+  ignore_errors: yes
+
+- name: unmount_virtio
+  command: umount /mnt/virtio
+  when: virtio_mount_check.rc == 0
+  become: yes
+  ignore_errors: yes
+
+- name: remove_winiso_mount
+  file:
+    path: /mnt/winiso
+    state: absent
+  become: yes
+  ignore_errors: yes
+
+- name: remove_virtio_mount
+  file:
+    path: /mnt/virtio
+    state: absent
+  become: yes
+  ignore_errors: yes
+
+- name: create_mount_directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /mnt/winiso
+    - /mnt/virtio
+    - /mnt/provision
+  become: yes
+  ignore_errors: yes
+
+- name: install_lxml
+  apt:
+    name:
+      - python3-lxml
+      - python3-pip
+      - genisoimage
+    state: present
+  become: yes
+
+- name: download_qemu_ga
+  copy:
+    src: "{{ playbook_dir }}/assets/windows/qemu-ga.msi"
+    dest: "/mnt/provision/qemu-ga.msi"
+    owner: root
+    group: root
+
+- name: copy all powershell scripts 
+  copy:
+    src: "{{ item }}"
+    dest: "/mnt/provision/{{ item | basename }}"
+    owner: root
+    group: root
+  with_fileglob:
+    - "{{ playbook_dir }}/assets/windows/*.ps1"
+
+- name: mount_virtio_drivers_iso
+  command: mount -o loop,ro /var/lib/vz/template/iso/{{ iso_virtio_drivers_name }} /mnt/virtio
+  become: yes
+
+- name: mount_windows_server_iso
+  command: mount -o loop,ro /var/lib/vz/template/iso/{{ iso_winserv2019_name }} /mnt/winiso
+  become: yes
+
+- name: copy_winiso
+  command: rsync -av /mnt/winiso/ /mnt/provision
+  become: yes
+
+- name: copy_virtio
+  command: rsync -av /mnt/virtio/ /mnt/provision/
+  become: yes
+
+- name: unmount_winiso
+  mount:
+    path: /mnt/winiso
+    state: unmounted
+  become: yes
+
+- name: unmount_virtio
+  mount:
+    path: /mnt/virtio
+    state: unmounted
+  become: yes
+
+- name: copy_xml
+  copy:
+    src: "{{ playbook_dir }}/assets/windows/autounattend.xml"
+    dest: "/mnt/provision/autounattend.xml"
+    owner: root
+    group: root
+
+- name: create_iso
+  command: >
+    genisoimage -o /var/lib/vz/template/iso/Windows_Server_Auto.iso
+    -b boot/etfsboot.com -no-emul-boot -boot-load-size 8 -iso-level 3
+    -relaxed-filenames -allow-lowercase -allow-multidot -udf -J -joliet-long
+    -eltorito-alt-boot -e boot/boot.sdi -no-emul-boot -V "WinSrv_Auto"
+    -allow-limited-size /mnt/provision/
+  become: yes
+  register: iso_created

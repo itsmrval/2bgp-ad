@@ -6,29 +6,14 @@
 
 - name: set_facts
   ansible.builtin.set_fact:
-    template_exists_1: "{{ '{{ template_win_1 }}' in qm_list_output.stdout }}"
-    template_exists_2: "{{ '{{ template_win_2 }}' in qm_list_output.stdout }}"
-    template_exists_3: "{{ '{{ template_win_3 }}' in qm_list_output.stdout }}"
-  when: role_type=="server"
-
-- name: set_facts
-  ansible.builtin.set_fact:
     template_exists_1: "{{ '{{ template_win_4 }}' in qm_list_output.stdout }}"
     template_exists_2: "{{ '{{ template_win_5 }}' in qm_list_output.stdout }}"
     template_exists_3: "{{ '{{ template_win_6 }}' in qm_list_output.stdout }}"
-  when: role_type=="client"
-
-- name: check_windows_iso_exists
-  stat:
-    path: "/var/lib/vz/template/iso/{{ iso_winserv2019_name }}"
-  register: windows_iso_stat
-  when: role_type=="server"
 
 - name: check_windows_iso_exists
   stat:
     path: "/var/lib/vz/template/iso/{{ iso_winclient_name }}"
   register: windows_iso_stat
-  when: role_type=="client"
 
 - name: check_virtio_iso_exists
   stat:
@@ -45,24 +30,11 @@
   command: >
     aria2c -x 16 -s 16 -k 1M 
     -d "/var/lib/vz/template/iso/" 
-    -o "{{ iso_winserv2019_name }}"
-    "{{ iso_winserv2019 }}"
-  args:
-    creates: "/var/lib/vz/template/iso/{{ iso_winserv2019_name }}"
-  when:
-    - role_type == "server"
-    - not windows_iso_stat.stat.exists | default(true)
-
-- name: download_winclient_iso
-  command: >
-    aria2c -x 16 -s 16 -k 1M 
-    -d "/var/lib/vz/template/iso/" 
     -o "{{ iso_winclient_name }}"
     "{{ iso_winclient }}"
   args:
     creates: "/var/lib/vz/template/iso/{{ iso_winclient_name }}"
   when:
-    - role_type == "client"
     - not windows_iso_stat.stat.exists | default(true)
 
 - name: download_virtio_drivers_iso
@@ -87,6 +59,12 @@
   ignore_errors: yes
   changed_when: false
 
+- name: check_provision_mount
+  command: mountpoint -q /mnt/provision
+  register: provision_mount_check
+  ignore_errors: yes
+  changed_when: false
+
 - name: unmount_winiso
   command: umount /mnt/winiso
   when: winiso_mount_check.rc == 0
@@ -96,6 +74,12 @@
 - name: unmount_virtio
   command: umount /mnt/virtio
   when: virtio_mount_check.rc == 0
+  become: yes
+  ignore_errors: yes
+
+- name: unmount_provision
+  command: umount /mnt/provision
+  when: provision_mount_check.rc == 0
   become: yes
   ignore_errors: yes
 
@@ -109,6 +93,13 @@
 - name: remove_virtio_mount
   file:
     path: /mnt/virtio
+    state: absent
+  become: yes
+  ignore_errors: yes
+
+- name: remove_provision_mount
+  file:
+    path: /mnt/provision
     state: absent
   become: yes
   ignore_errors: yes
@@ -141,21 +132,12 @@
     owner: root
     group: root
 
-- name: copy all powershell scripts 
-  copy:
-    src: "{{ item }}"
-    dest: "/mnt/provision/{{ item | basename }}"
-    owner: root
-    group: root
-  with_fileglob:
-    - "{{ playbook_dir }}/assets/windows/*.ps1"
-
 - name: mount_virtio_drivers_iso
   command: mount -o loop,ro /var/lib/vz/template/iso/{{ iso_virtio_drivers_name }} /mnt/virtio
   become: yes
 
 - name: mount_windows_server_iso
-  command: mount -o loop,ro /var/lib/vz/template/iso/{{ iso_winserv2019_name }} /mnt/winiso
+  command: mount -o loop,ro /var/lib/vz/template/iso/{{ iso_winclient_name }} /mnt/winiso
   become: yes
 
 - name: copy_winiso
@@ -180,30 +162,10 @@
 
 - name: copy_xml
   copy:
-    src: "{{ playbook_dir }}/assets/windows/autounattend.xml"
-    dest: "/mnt/provision/autounattend.xml"
-    owner: root
-    group: root
-  when: role_type=="server"
-
-- name: copy_xml
-  copy:
     src: "{{ playbook_dir }}/assets/windows/clientautounattend.xml"
-    dest: "/mnt/provision/autounattend.xml"
+    dest: "/mnt/provision/clientautounattend.xml"
     owner: root
     group: root
-  when: role_type=="client"
-
-- name: create_iso
-  command: >
-    genisoimage -o /var/lib/vz/template/iso/Windows_Server_Auto.iso
-    -b boot/etfsboot.com -no-emul-boot -boot-load-size 8 -iso-level 3
-    -relaxed-filenames -allow-lowercase -allow-multidot -udf -J -joliet-long
-    -eltorito-alt-boot -e boot/boot.sdi -no-emul-boot -V "WinSrv_Auto"
-    -allow-limited-size /mnt/provision/
-  become: yes
-  register: iso_created
-  when: role_type=="server"
 
 - name: create_iso
   command: >
@@ -214,4 +176,10 @@
     -allow-limited-size /mnt/provision/
   become: yes
   register: iso_created
-  when: role_type=="client"
+
+
+- name: unmount_provision
+  mount:
+    path: /mnt/provision
+    state: unmounted
+  become: yes
