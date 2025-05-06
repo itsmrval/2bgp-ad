@@ -1,8 +1,8 @@
 - name: define_variables
   set_fact:
     vms:
-      - { vm_id: "{{ template_win_1 }}", vm_name: "build-01", storage_name: "{{ vm_storage }}" }
-      # - { vm_id: "{{ template_win_2 }}", vm_name: "build-02", storage_name: "{{ vm_storage }}" }
+      # - { vm_id: "{{ template_win_1 }}", vm_name: "build-01", storage_name: "{{ vm_storage }}" }
+      - { vm_id: "{{ template_win_2 }}", vm_name: "build-02", storage_name: "{{ vm_storage }}" }
       # - { vm_id: "{{ template_win_3}}", vm_name: "build-03", storage_name: "{{ vm_storage }}" }
     vm_memory: 4096
     vm_cores: 4
@@ -23,7 +23,7 @@
     --ide2 file=local:iso/Windows_Server_Auto.iso,media=cdrom
     --scsihw virtio-scsi-pci
     --sata0 {{ item.storage_name }}:{{ drive_size_gb }},format={{ format }}
-    --net0 model=e1000e,bridge=vmbr0
+    --net0 model=e1000e,bridge=cust100
     --ostype {{ vm_os_type }}
     --agent {{ agent }}
     --boot order=ide2
@@ -41,6 +41,17 @@
   until: agent_result.rc == 0
   retries: 300
   delay: 10
+  with_items: "{{ vms }}"
+
+- name: configure ethernet interface
+  shell: >
+    qm guest exec {{ item.vm_id }} -- powershell.exe -Command "
+    New-NetIPAddress -InterfaceAlias Ethernet -IPAddress '10.100.0.{{ item.vm_id }}' -PrefixLength 16 -DefaultGateway 10.100.0.254 -AddressFamily IPv4;
+    Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses ('10.100.0.254','8.8.8.8')"
+  register: network_config
+  until: network_config.rc == 0
+  retries: 100 
+  delay: 5
   with_items: "{{ vms }}"
 
 - name: waiting_install
@@ -70,6 +81,9 @@
   delay: 10
   with_items: "{{ vms }}"
 
+
+
+  
 # - name: shutdown_vms
 #   command: "qm shutdown {{ item.vm_id }}"
 #   when: item.vm_id in vms | map(attribute='vm_id') | list

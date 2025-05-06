@@ -30,7 +30,7 @@ Import-Module ActiveDirectory
 
 # Définir les variables pour la création du domaine
 $domainName = "mirage.com"
-$securePassword = ConvertTo-SecureString "P@ssw0rd" -AsPlainText -Force
+$securePassword = ConvertTo-SecureString "Velizy78!" -AsPlainText -Force
 
 # Promouvoir le serveur en tant que contrôleur de domaine
 try {

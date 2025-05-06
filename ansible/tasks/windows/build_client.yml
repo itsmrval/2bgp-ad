@@ -1,8 +1,8 @@
 - name: define_variables
   set_fact:
     vms:
-      # - { vm_id: "{{ template_win_4 }}", vm_name: "build-04", storage_name: "{{ vm_storage }}" }
-      - { vm_id: "{{ template_win_5 }}", vm_name: "build-05", storage_name: "{{ vm_storage }}" }
+      - { vm_id: "{{ template_win_4 }}", vm_name: "build-04", storage_name: "{{ vm_storage }}", server_ip: "10.100.0.112", server_domain: "mgmgrand.com" }
+      # - { vm_id: "{{ template_win_5 }}", vm_name: "build-05", storage_name: "{{ vm_storage }}", server_ip: "10.100.0.113", server_domain: "mirage.com" }
     vm_memory: 4096
     vm_cores: 4
     vm_sockets: 1
@@ -22,7 +22,7 @@
     --ide2 file=local:iso/Windows_Client_Auto.iso,media=cdrom
     --scsihw virtio-scsi-pci
     --sata0 {{ item.storage_name }}:{{ drive_size_gb }},format={{ format }}
-    --net0 model=e1000e,bridge=vmbr0
+    --net0 model=e1000e,bridge=cust100
     --ostype {{ vm_os_type }}
     --agent {{ agent }}
     --boot order=ide2
@@ -42,6 +42,18 @@
   delay: 10
   with_items: "{{ vms }}"
 
+- name: configure ethernet interface
+  shell: >
+    qm guest exec {{ item.vm_id }} -- powershell.exe -Command "
+    New-NetIPAddress -InterfaceAlias Ethernet -IPAddress '10.100.0.{{ item.vm_id }}' -PrefixLength 16 -DefaultGateway 10.100.0.254 -AddressFamily IPv4;
+    Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses ('{{ item.server_ip }}','8.8.8.8')"
+  register: network_config
+  until: network_config.rc == 0
+  retries: 100 
+  delay: 5
+  with_items: "{{ vms }}"
+
+      
 - name: waiting_install
   command: >
     qm guest exec {{ item.vm_id }} -- powershell.exe -Command "Get-Content 'C:\Windows\Setup\State\State.ini'"
@@ -49,6 +61,26 @@
   until: installation_complete.stdout is search('ImageState=IMAGE_STATE_COMPLETE')
   retries: 200
   delay: 10
+  with_items: "{{ vms }}"
+
+
+- name: insert pc in domain
+  shell: >
+    qm guest exec {{ item.vm_id }} -- powershell.exe -Command  "Add-Computer -DomainName {{ item.server_domain }} -Credential (New-Object System.Management.Automation.PSCredential ('Administrator@{{ item.server_domain }}', (ConvertTo-SecureString 'Velizy78!' -AsPlainText -Force))) -Restart"
+  register: domain_result
+  until: domain_result.rc == 0
+  retries: 50
+  delay: 10
+  with_items: "{{ vms }}"
+
+
+- name: verify domain for pc client
+  shell: >
+    qm guest exec {{ item.vm_id }} -- powershell.exe -Command "(Get-WmiObject Win32_ComputerSystem).Domain"
+  register: domain_verify
+  until: domain_verify.stdout is search(item.server_domain)
+  retries: 300
+  delay: 5
   with_items: "{{ vms }}"
 
 # - name: shutdown_vms

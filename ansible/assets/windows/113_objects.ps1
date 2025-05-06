@@ -8,7 +8,7 @@ New-ADOrganizationalUnit -Name "Casino" -Path "DC=mirage,DC=com"
 # Définir les groupes et comptes pour Mirage
 $groups = @{
     "Croupiers"  = @("DannyOcean", "LinusCaldwell", "RustyRyan")
-    "Sécurité"   = @("BasherTarr", "LivingstonDell", "FrankCatton")
+    "Securite"   = @("BasherTarr", "LivingstonDell", "FrankCatton")
     "IT"         = @("ReubenTishkoff", "SaulBloom", "VirgilMalloy")
     "Admin"      = @("TerryBenedict")
 }
