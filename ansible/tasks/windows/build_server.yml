@@ -1,9 +1,9 @@
 - name: define_variables
   set_fact:
     vms:
-      # - { vm_id: "{{ template_win_1 }}", vm_name: "build-01", storage_name: "{{ vm_storage }}" }
+      - { vm_id: "{{ template_win_1 }}", vm_name: "build-01", storage_name: "{{ vm_storage }}" }
       - { vm_id: "{{ template_win_2 }}", vm_name: "build-02", storage_name: "{{ vm_storage }}" }
-      # - { vm_id: "{{ template_win_3}}", vm_name: "build-03", storage_name: "{{ vm_storage }}" }
+      - { vm_id: "{{ template_win_3}}", vm_name: "build-03", storage_name: "{{ vm_storage }}" }
     vm_memory: 4096
     vm_cores: 4
     vm_sockets: 1
@@ -71,46 +71,12 @@
   delay: 10
   with_items: "{{ vms }}"
 
-- name: Verify deployment success marker
-  shell: "qm guest exec {{ item.vm_id }} -- powershell.exe -Command \"Test-Path 'C:\\deployfull.txt'\""
-  register: deploy_status
-  until: 
-    - "'True' in deploy_status.stdout"
-    - "deploy_status.rc == 0"
+- name: verify domain controller role
+  shell: 'qm guest exec {{ item.vm_id }} -- powershell.exe -Command "(Get-WmiObject Win32_ComputerSystem).DomainRole"'
+  register: role_ad_result
+  until: role_ad_result.stdout is search('4|5')
   retries: 300
   delay: 10
   with_items: "{{ vms }}"
 
 
-
-  
-# - name: shutdown_vms
-#   command: "qm shutdown {{ item.vm_id }}"
-#   when: item.vm_id in vms | map(attribute='vm_id') | list
-#   register: shutdown_result
-#   ignore_errors: yes
-#   with_items: "{{ vms }}"
-
-# - name: verify vm is stopped
-#   shell: "qm list | grep '^ *{{ item.vm_id }}' | awk '{print $3}'"
-#   register: vm_status
-#   until: vm_status.stdout | trim == "stopped"
-#   retries: 30
-#   delay: 10
-#   with_items: "{{ vms }}"
-
-# - name: unmount_iso
-#   command: "qm set {{ item.vm_id }} --delete ide2"
-#   with_items: "{{ vms }}"
-
-# - name: creating_template
-#   command: "qm template {{ item.vm_id }}"
-#   with_items: "{{ vms }}"
-
-# - name: enable_firewall
-#   command: "pvesh set /nodes/{{ node }}/qemu/{{ item.vm_id }}/firewall/options -enable true"
-#   with_items: "{{ vms }}"
-
-# - name: done
-#   debug:
-#     msg: "Template build {{ item.vm_name }}, with vmid {{ item.vm_id }} complete."

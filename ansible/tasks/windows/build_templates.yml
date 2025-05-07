@@ -1,0 +1,44 @@
+- name: define_variables
+  set_fact:
+    vms:
+      - { vm_id: "{{ template_win_1 }}"}
+      - { vm_id: "{{ template_win_2 }}" }
+      - { vm_id: "{{ template_win_3 }}" }
+      - { vm_id: "{{ template_win_4 }}" }
+      - { vm_id: "{{ template_win_5 }}" }
+
+
+- name: shutdown_vms
+  command: "qm shutdown {{ item.vm_id }}"
+  when: item.vm_id in vms | map(attribute='vm_id') | list
+  register: shutdown_result
+  ignore_errors: yes
+  with_items: "{{ vms }}"
+
+- name: verify vm is stopped
+  shell: "qm list | grep '^ *{{ item.vm_id }}' | awk '{print $3}'"
+  register: vm_status
+  until: vm_status.stdout | trim == "stopped"
+  retries: 30
+  delay: 10
+  with_items: "{{ vms }}"
+
+- name: unmount_iso
+  command: "qm set {{ item.vm_id }} --delete ide2"
+  with_items: "{{ vms }}"
+
+- name: delete_ethernet_interface
+  command: "qm set {{ item.vm_id }} --delete net0"
+  with_items: "{{ vms }}"
+ 
+- name: creating_template
+  command: "qm template {{ item.vm_id }}"
+  with_items: "{{ vms }}"
+
+- name: enable_firewall
+  command: "pvesh set /nodes/{{ proxmox_node }}/qemu/{{ item.vm_id }}/firewall/options -enable true"
+  with_items: "{{ vms }}"
+
+- name: done
+  debug:
+    msg: "Template build complete."

@@ -30,5 +30,3 @@ foreach ($group in $groups.Keys) {
 }
 
 Write-Host "Configuration terminée pour $organizationName." -ForegroundColor Green
-Unregister-ScheduledTask -TaskName "ExecuteADSetup" -Confirm:$false -ErrorAction SilentlyContinue
-New-Item -Path "C:\deployfull.txt" -ItemType File -Force | Out-Null

@@ -1,0 +1,14 @@
+- name: define_variables
+  set_fact:
+    vms:
+      - { vm_id: "{{ template_win_1 }}"}
+      - { vm_id: "{{ template_win_2 }}"}
+      - { vm_id: "{{ template_win_3}}"}
+
+- name: create objets on ad
+  shell: 'qm guest exec {{ item.vm_id }} "powershell.exe" "D:\\{{ item.vm_id }}_objects.ps1"'
+  register: objects_result
+  until: objects_result.rc == 0
+  retries: 100
+  delay: 5
+  with_items: "{{ vms }}"
