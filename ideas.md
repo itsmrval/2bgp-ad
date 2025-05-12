@@ -179,15 +179,19 @@ Key ctf = 127 + 2019
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 2 (Création de compte via exploitation d’un partage SMB mal configuré) :
+Level 2 prendre controle d'un compte sans permission :
 
-Après avoir compris le réseau du casinon vous comprenez donc que leurs infrastructures est sur des windows server ttl 127. 
+Après avoir compris le réseau du casino vous comprenez donc que leurs infrastructures est sur des windows server ttl 127.
+L'etape consiste à prendre le controle d'un compte. Pour cela, on peut faire une attaque assez "simple" en recuperant le hash du password de la personne et de se connecter au compte en RDP ou WinRM (peut etre plus simple comme il va travailler sur Exegol sans doute).
+Procédure pour trouver le hash (à réaliser) :
 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 3:
+Level 3  :
+
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
