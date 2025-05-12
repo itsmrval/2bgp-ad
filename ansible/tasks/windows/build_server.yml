@@ -53,6 +53,29 @@
   retries: 100 
   delay: 5
   with_items: "{{ vms }}"
+  
+- name: verify ip configuration
+  shell: >
+    qm guest exec {{ item.vm_id }} -- powershell.exe -Command "
+    (Get-NetIPAddress -InterfaceAlias Ethernet -AddressFamily IPv4).IPAddress"
+  register: ip_verification
+  with_items: "{{ vms }}"
+
+
+- name: reconfigure ethernet interface
+  shell: >
+    qm guest exec {{ item.vm_id }} -- powershell.exe -Command "
+    Remove-NetIPAddress -InterfaceAlias Ethernet -Confirm:$false;
+    New-NetIPAddress -InterfaceAlias Ethernet -IPAddress '10.100.0.{{ item.vm_id }}' -PrefixLength 16 -DefaultGateway 10.100.0.254 -AddressFamily IPv4;
+    Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses ('{{ item.server_ip }}','8.8.8.8')"
+  register: network_config_2
+  until: network_config.rc_2 == 0
+  retries: 100 
+  delay: 5
+  when: "'10.100.0.' + item.vm_id not in ip_verification.results[idx].stdout"
+  with_items: "{{ vms }}"
+  loop_control:
+    index_var: idx
 
 - name: waiting_install
   command: >
