@@ -171,25 +171,40 @@ Attaque :
 
 lancer un nmap pour que la personne connaissent son réseaux qui répondent 
 
-nmap -sn 192.168.1.0/24
+nmap -Pn -p- -sV -sC 192.168.1.0/24
 
-avec les IPs faire un nmap :
+ping IP SRV (vu en nmap) => Permet de voir TTL 127 donc WinSRV
+
+
 
 Key ctf = 127 + 2019
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 2 prendre controle d'un compte sans permission :
+Level 2 prendre controle d'un compte sans permission (ASREP-Roasting) :
+
+=> L'attaque consiste à recuperer le hash d'un password. Cette technique exploite le fait que si un utilisateur n'a pas de pré-authentification requise (ce qui est le cas par défaut pour les comptes de service), le serveur Kerberos renverra le TGT chiffré avec le mot de passe de l'utilisateur sans vérifier le mot de passe au préalable.
 
 Après avoir compris le réseau du casino vous comprenez donc que leurs infrastructures est sur des windows server ttl 127.
 L'etape consiste à prendre le controle d'un compte. Pour cela, on peut faire une attaque assez "simple" en recuperant le hash du password de la personne et de se connecter au compte en RDP ou WinRM (peut etre plus simple comme il va travailler sur Exegol sans doute).
-Procédure pour trouver le hash (à réaliser) :
 
+Procédure pour trouver le hash (à réaliser) :
+Avoir une liste de user pour réaliser un bruteforce sur les username. Pour cela, on peut fournir une liste d'user à l'utilisateur qui peut telechagrer depuis le site web avec 1000 username afin de bruteforce et on met par exemple 5 username valides.
+
+userenum --dc $IPDC$ -d $NOMDOMAINE$ userslist.txt -t200
+
+Mettre dans list_recup.txt les noms recuperes
+
+Ensuite 
+
+impacket-GetNPUsers -request -outputfile hashes.txt -format john -userfile list_recup.txt -dc-ip $IPDC$ $NOMDOMAINE$/
+
+Connexion en WinRM ou autre avec le compte de service.
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 3  :
+Level 3   :
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
