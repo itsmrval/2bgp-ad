@@ -204,24 +204,25 @@ Connexion en WinRM ou autre avec le compte de service.
 
 
 Level 3   : 
-	Le but est d'elever ses privileges pour etre admin (pas du domaine mais avec certains).
-	Attaque à realiser et à definir.
+
+Le but est d'elever ses privileges pour etre admin (pas du domaine mais avec certains).
+Attaque à realiser et à definir.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Level 4:
 
-	Il se rend compte qu'il y a un lien de confiance avec l'AD en face.
-	Il est  Admin d'un groupe "IT" et possède donc les droit pour : 
-	Accéder au service SMB partagé avec le second AD.
-	Un utilisateur de l'autre AD se connecte tout le temps sur le partage (backups).
-	Dans backup il y a un fichier txt avec ecrit "derniere connexion le : DATE" ou le mec se rend compte qu'un user se connecte toutes les minutes
-	il faut donc supprimer le repertoire et le PC en face va faire un multicast pour demander le nom du repertoire
-	L'atttaquant empoissone les reponses qui consiste à faire un empoisonnement de nom via les protocoles LLMNR
-	ou NetBios.
-	Il recupere le hash du compte XXX.
-	Connexion sur le compte grace au login et au hash (pas le password).
+Il se rend compte qu'il y a un lien de confiance avec l'AD en face.
+Il est  Admin d'un groupe "IT" et possède donc les droit pour : 
+Accéder au service SMB partagé avec le second AD.
+Un utilisateur de l'autre AD se connecte tout le temps sur le partage (backups).
+Dans backup il y a un fichier txt avec ecrit "derniere connexion le : DATE" ou le mec se rend compte qu'un user se connecte toutes les minutes
+il faut donc supprimer le repertoire et le PC en face va faire un multicast pour demander le nom du repertoire
+L'atttaquant empoissone les reponses qui consiste à faire un empoisonnement de nom via les protocoles LLMNR
+ou NetBios.
+Il recupere le hash du compte XXX.
+Connexion sur le compte grace au login et au hash (pas le password).
 
  
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
