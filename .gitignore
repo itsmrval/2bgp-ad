@@ -21,3 +21,5 @@ yarn.lock
 .vscode/
 *.swp
 *.swo
+
+ansible/inventory.yml
