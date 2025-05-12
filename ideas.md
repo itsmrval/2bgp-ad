@@ -198,10 +198,26 @@ impacket-GetNPUsers -request -outputfile hashes.txt -format john -userfile list_
 
 Connexion en WinRM ou autre avec le compte de service.
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level 
+Récuperer les infos sur toutes les machines du réseaux
+netexec smb 10.10.10.0/24 recupere tous les infos :  nom de domaines du pc, son domaine, son OS ainsi que l'etat de son protocole smb.
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 3   :
+Level 2 Bis empoisonner des requetes dns/mdns via LLMNR et Netbios 
+utiliser responder pour scanner tout le réseau et empoisonner les requêtes d'accès à un partage inexistant.
+Cela permet de récuperer un hash et un login. possibilité de faire une attaque pass the hash ou juste de craquer ce dernier.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Level 3   : connexion à la machine compromise
+en utilisant psexec, wmi, smbclient
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
