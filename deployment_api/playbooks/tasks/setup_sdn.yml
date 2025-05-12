@@ -107,15 +107,16 @@
   when: not subnet_exists or (vnet_created is defined and vnet_created.changed) or (zone_created is defined and zone_created.changed)
   failed_when: false
 
-- name: Apply SDN changes
+- name: apply_sdn
   uri:
-    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/sdn/apply"
-    method: POST
+    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/sdn"
+    method: PUT 
     headers:
       Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
       CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
     validate_certs: false
     status_code: 200
+
 
 # Check if security group exists
 - name: Check if security group exists

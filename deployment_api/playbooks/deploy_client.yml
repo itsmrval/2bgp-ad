@@ -10,6 +10,10 @@
     proxmox_realm: "{{ proxmox_user.split('@')[1] }}"
 
   tasks:
+
+    - name: Load deployment variables
+      import_tasks: tasks/set_fact.yml
+
     - name: Clone VMs asynchronously
       community.general.proxmox_kvm:
         api_user: "{{ proxmox_user }}"
