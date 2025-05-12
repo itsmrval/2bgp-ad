@@ -107,7 +107,6 @@
   when: not subnet_exists or (vnet_created is defined and vnet_created.changed) or (zone_created is defined and zone_created.changed)
   failed_when: false
 
-# Apply SDN changes
 - name: Apply SDN changes
   uri:
     url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/sdn/apply"
@@ -117,7 +116,6 @@
       CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
     validate_certs: false
     status_code: 200
-  when: (zone_created is defined and zone_created.changed) or (vnet_created is defined and vnet_created.changed) or (subnet_created is defined and subnet_created.changed)
 
 # Check if security group exists
 - name: Check if security group exists
@@ -146,9 +144,9 @@
     body_format: form-urlencoded
     body:
       group: "cust{{ client_id }}"
-      comment: "Security group for customer {{ client_id }}"
+      comment: "cust {{ client_id }}"
     validate_certs: false
-    status_code: [200, 201, 400, 500]  # Accept 400 for "already exists" cases
+    status_code: [200, 201, 400, 500]
   register: security_group_created
   when: not security_group_exists
   failed_when: "security_group_created.status not in [200, 201, 400] or (security_group_created.status == 400 and 'already exists' not in security_group_created.json.errors | default(['']) | join(''))"

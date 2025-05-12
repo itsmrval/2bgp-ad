@@ -160,6 +160,7 @@ export const AuthProvider = ({ children }) => {
     };
   }, [user, wgState, vmsState]);
 
+
   return (
     <AuthContext.Provider value={{
       user,

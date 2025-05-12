@@ -11,4 +11,4 @@
   changed_when: user_result.rc == 0
 
 - name: setup_permissions
-  ansible.builtin.shell: "pveum aclmod / -group {{ ansible_pve_api_group }} -role PVEAdmin"
+  ansible.builtin.shell: "pveum aclmod / -group {{ ansible_pve_api_group }} -role Administrator"

@@ -1,0 +1,58 @@
+# Description: This tasks will enable firewall at dc/node
+
+- name: accept_fw_datacenter
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/firewall/options"
+    method: PUT
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    body_format: form-urlencoded
+    body:
+      policy_in: ACCEPT
+      policy_out: ACCEPT
+    validate_certs: false
+    status_code: 200
+  register: datacenter_firewall_policy_set
+
+- name: enable_fw_datacenter
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/cluster/firewall/options"
+    method: PUT
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    body_format: form-urlencoded
+    body:
+      enable: 1
+    validate_certs: false
+    status_code: 200
+  register: datacenter_firewall_enabled
+
+- name: get_nodes
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/nodes"
+    method: GET
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    validate_certs: false
+    status_code: 200
+  register: nodes_response
+
+- name: enable_fw_node
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/nodes/{{ item.node }}/firewall/options"
+    method: PUT
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    body_format: form-urlencoded
+    body:
+      enable: 1
+    validate_certs: false
+    status_code: 200
+  loop: "{{ nodes_response.json.data }}"
+  loop_control:
+    label: "{{ item.node }}"
+  register: node_firewall_enabled
