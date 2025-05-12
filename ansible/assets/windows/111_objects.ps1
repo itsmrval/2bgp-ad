@@ -9,7 +9,7 @@ New-ADOrganizationalUnit -Name "Casino" -Path "DC=bellagio,DC=com"
 $groups = @{
     "Croupiers"  = @("DannyOcean", "LinusCaldwell", "RustyRyan")
     "Securite"   = @("BasherTarr", "LivingstonDell", "FrankCatton")
-    "IT"         = @("ReubenTishkoff", "SaulBloom", "VirgilMalloy")
+    "IT"         = @("ReubenTishkoff", "SaulBloom", "VirgilMalloy", "svc-bella")
     "Admin"      = @("TerryBenedict")
 }
 
