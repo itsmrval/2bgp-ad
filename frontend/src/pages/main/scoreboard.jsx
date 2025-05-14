@@ -21,9 +21,6 @@ const ScoreboardPage = () => {
                 <Header />
             </div>
             <Scoreboard />
-            <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000 }}>
-                <Footer />
-            </div>
         </div>
     );
 };

@@ -13,8 +13,7 @@
     position: fixed;
     width: 98%;
     height: 80px;
-    background-color: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.077);
     top: -10px;
     left: 0;
     right: 0;
@@ -63,9 +62,10 @@
     margin-left: 1rem;
     margin-right: 1rem;
     cursor: pointer;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     font-size: 21px; /* Augmenté de 1.125rem à 1.5rem */
     transition: color 0.3s ease;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 .main-nav li:hover {

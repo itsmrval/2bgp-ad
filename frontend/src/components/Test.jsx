@@ -2,9 +2,15 @@ import React, { useState, useEffect } from 'react';
 import PlayingCard from './PlayingCard';
 import { useNavigate } from 'react-router-dom';
 import OceansLogo from '../assets/img/OCEAN’S 11.png'; // Import the logo
+import BackgroundImage from '../assets/img/tissu.jpg'; // Import the background image
 
 const BlackjackTable = ({ playedCards }) => {
-    return (  <div className="flex flex-wrap gap-4 p-4 bg-green-800 rounded-lg relative w-full h-[500px]">
+    return (  <div className="flex flex-wrap gap-4 p-4 bg-green-800 rounded-lg relative w-full h-[500px]"
+               style={{
+                 backgroundImage: `url(${BackgroundImage})`,
+                 backgroundSize: 'cover',
+                 backgroundPosition: 'center'
+               }}>
     {/* Ocean's 11 Logo */}
     <img
       src={OceansLogo}

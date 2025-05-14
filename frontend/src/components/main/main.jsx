@@ -1,10 +1,10 @@
 import React from 'react';
 import Test from '../Test.jsx';
 import GameTable from '../GameTable.jsx';
+import BackgroundImage from '../../assets/img/tissu.jpg'; // Import the background image
 
 const Main = () => {
     const mainStyle = {
-        backgroundColor: 'white',
         width: '100%',
         minHeight: '100vh',
         padding: '20px',
@@ -17,7 +17,11 @@ const Main = () => {
         boxSizing: 'border-box',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundImage: `url(${BackgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
     };
 
     const cardStyle = {

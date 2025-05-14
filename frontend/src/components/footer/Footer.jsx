@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 export default function Footer() {
     const [isConnected, setIsConnected] = useState(true);
     
@@ -8,7 +7,7 @@ export default function Footer() {
             style={{
                 width: '100%',
                 padding: '30px 20px',
-                background: '#FFFFFF',
+                backgroundColor: 'transparent',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -37,7 +36,7 @@ export default function Footer() {
                 >
                     <span
                         style={{
-                            color: '#000000',
+                            color: '#FFFFFF',
                             fontSize: '12px',
                             fontFamily: "'Helvetica-Inserat', Helvetica, Arial, sans-serif",
                             textDecoration: 'none',

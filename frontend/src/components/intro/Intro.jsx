@@ -52,16 +52,16 @@ const Intro = () => {
     // Rest of your component code remains the same
     useEffect(() => {
         const titles = {
-            1: "OCEAN'S ONE",
-            2: "OCEAN'S TWO",
-            3: "2BGP TEAMS",
-            4: "MATHIEU BERSIN",
+            1: "2BGP TEAMS PRESENTS",
+            2: "MATHIEU BERSIN",
+            3: "CORENTIN BONNEAU",
+            4: "FRANCOIS GOYALONGO",
             5: "CORENTIN BONNEAU",
-            6: "FRANCOIS GOYALONGO",
-            7: "VALENTIN PUCCETTI",
-            8: "OCEAN'S EIGHT",
-            9: "OCEAN'S NINE",
-            10: "OCEAN'S TEN",
+            6: "VALENTIN PUCCETTI",
+            7: "Danny Ocean planifie le braquage de trois casinos à Las Vegas.",
+            8: "Il recrute une équipe de onze experts, dont vous, spécialiste en cybersécurité.",
+            9: "Votre mission: cartographier et exploiter les failles des réseaux depuis votre chambre.",
+            10: "Pendant le braquage, vous neutraliserez les systèmes de sécurité en temps réel.",
             11: "OCEAN'S ELEVEN"
         };
 
