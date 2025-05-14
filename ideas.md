@@ -351,13 +351,14 @@ Admettons que BloodHound révèle qu’un compte BackupOperator-Mirage a un droi
 
 Exploitation finale : ajout au groupe privilégié
 
-# Depuis votre session psexec sur ITServer-Mirage
+Depuis votre session psexec sur ITServer-Mirage
+
 net group "Domain Admins" BackupOperator-Mirage /domain
 
 
 Message réussite : 
 
-vous maîtrisez à présent les deux domaines. Le déblocage du chemin privilégié via BloodHound a permis de prendre le contrôle des groupes Domain Admins et Enterprise Admins, assurant le succès ultime du casse numérique avant l’attaque physique sur le Strip.
+Vous maîtrisez à présent les deux domaines. Le déblocage du chemin privilégié via BloodHound a permis de prendre le contrôle des groupes Domain Admins et Enterprise Admins, assurant le succès ultime du casse numérique avant l’attaque physique sur le Strip.
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
