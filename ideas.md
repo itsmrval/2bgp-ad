@@ -174,14 +174,17 @@ Bienvenu dans l'équipe et que le braquage commence !!!
 
 7- cracker le contenu du lsass avec pypykatz
 
-8- realiser la faille dcsync avec secretsdump
+8- pass the hash NTLM
 
-9- realiser la faille dcshadow
+9- realiser la faille dcsync avec secretsdump
 
-10 idées : exploiter le ticket d'or pour se creer un compte admin sur le second ad (à tester)
+10- realiser la faille dcshadow
 
-10- exploiter le lien trust pour enumerer le contenu du second ad ( à faire) ou kerbrute
+11 bis idées : exploiter le ticket d'or pour se creer un compte admin sur le second ad (à tester)
 
+11- exploiter le lien trust pour enumerer le contenu du second ad ( à faire) ou kerbrute
+
+**Pour un total de 11 failles réalisables et tester**
 
 Les failles qui necessitent une configuration en amont : 
 
