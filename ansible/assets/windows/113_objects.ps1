@@ -1,9 +1,9 @@
-# Domaine: casino.mirage.com
-$domain = "mirage.com"
-$rootOu = "OU=Casino,DC=mirage,DC=com"
+# Domaine: casino.mirage.local
+$domain = "mirage.local"
+$rootOu = "OU=Casino,DC=mirage,DC=local"
 
 # Créer l'OU racine
-New-ADOrganizationalUnit -Name "Casino" -Path "DC=mirage,DC=com"
+New-ADOrganizationalUnit -Name "Casino" -Path "DC=mirage,DC=local"
 
 # Définir les groupes et comptes pour Mirage
 $groups = @{

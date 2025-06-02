@@ -1,0 +1,31 @@
+- name: define_variables
+  set_fact:
+    vms:
+      - { vm_id: "{{ template_win_1 }}"}
+      - { vm_id: "{{ template_win_2 }}"}
+      - { vm_id: "{{ template_win_3 }}"}
+      - { vm_id: "{{ template_win_4 }}"}
+      - { vm_id: "{{ template_win_5 }}"}
+
+
+- name: shutdown_vms
+  command: "qm shutdown {{ item.vm_id }}"
+  when: item.vm_id in vms | map(attribute='vm_id') | list
+  register: shutdown_result
+  ignore_errors: yes
+  with_items: "{{ vms }}"
+
+- name: verify vm is stopped
+  shell: "qm list | grep '^ *{{ item.vm_id }}' | awk '{print $3}'"
+  register: vm_status
+  until: vm_status.stdout | trim == "stopped"
+  retries: 30
+  delay: 10
+  with_items: "{{ vms }}"
+
+- name: destroy_vms
+  command: "qm destroy {{ item.vm_id }}"
+  when: item.vm_id in vms | map(attribute='vm_id') | list
+  register: shutdown_result
+  ignore_errors: yes
+  with_items: "{{ vms }}"

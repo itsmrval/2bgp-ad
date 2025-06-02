@@ -5,7 +5,7 @@
           <SetupUILanguage>
             <UILanguage>fr-FR</UILanguage>
           </SetupUILanguage>
-          <SystemLocale>en-US</SystemLocale>
+          <SystemLocale>fr-FR</SystemLocale>
           <InputLocale>fr-FR</InputLocale>
           <UILanguage>en-US</UILanguage>
           <UILanguageFallback>en-US</UILanguageFallback>

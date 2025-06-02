@@ -7,7 +7,7 @@ Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
 Import-Module ActiveDirectory
 
 # Définir les variables pour la création du domaine
-$domainName = "mirage.com"
+$domainName = "mirage.local"
 $securePassword = ConvertTo-SecureString "Velizy78!" -AsPlainText -Force
 
 # Promouvoir le serveur en tant que contrôleur de domaine

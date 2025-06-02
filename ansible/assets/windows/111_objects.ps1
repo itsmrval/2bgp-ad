@@ -1,9 +1,9 @@
-# Domaine: casino.bellagio.com
-$domain = "bellagio.com"
-$rootOu = "OU=Casino,DC=bellagio,DC=com"
+# Domaine: casino.bellagio.local
+$domain = "bellagio.local"
+$rootOu = "OU=Casino,DC=bellagio,DC=local"
 
 # Créer l'OU racine
-New-ADOrganizationalUnit -Name "Casino" -Path "DC=bellagio,DC=com"
+New-ADOrganizationalUnit -Name "Casino" -Path "DC=bellagio,DC=local"
 
 # Définir les groupes et comptes pour Bellagio
 $groups = @{

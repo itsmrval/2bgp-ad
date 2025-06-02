@@ -1,0 +1,21 @@
+- name: configure folder smb
+  shell: >
+    qm guest exec 111 -- powershell.exe -Command "
+        \$Parameters = @{
+            Name = 'test'
+            Path = 'C:\\test'
+            Description = 'dossier de sauvegarde'
+            FullAccess = 'Administrator'
+            ReadAccess = 'svc-bella'
+        }
+      New-Item -Path \$Parameters.Path -ItemType Directory -Force
+      icacls \$Parameters.Path /inheritance:r /grant:r 'Administrator:(F)' /grant:r 'mgmgrand.com\DannyOcean:(M)'
+      New-SmbShare @Parameters
+      Restart-Service LanmanServer
+      Grant-SmbShareAccess -Name \$Parameters.Name -AccountName 'svc-bella' -AccessRight Read -Force
+      Grant-SmbShareAccess -Name \$Parameters.Name -AccountName 'mgmgrand.com\DannyOcean' -AccessRight Change -Force
+    "
+  register: configure_folder_smb
+  until: configure_folder_smb.rc == 0
+  retries: 50
+  delay: 5

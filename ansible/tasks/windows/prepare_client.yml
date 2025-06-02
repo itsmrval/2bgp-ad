@@ -8,7 +8,6 @@
   ansible.builtin.set_fact:
     template_exists_1: "{{ '{{ template_win_4 }}' in qm_list_output.stdout }}"
     template_exists_2: "{{ '{{ template_win_5 }}' in qm_list_output.stdout }}"
-    template_exists_3: "{{ '{{ template_win_6 }}' in qm_list_output.stdout }}"
 
 - name: check_windows_iso_exists
   stat:
@@ -131,6 +130,15 @@
     dest: "/mnt/provision/qemu-ga.msi"
     owner: root
     group: root
+
+- name: copy all powershell scripts 
+  copy:
+    src: "{{ item }}"
+    dest: "/mnt/provision/{{ item | basename }}"
+    owner: root
+    group: root
+  with_fileglob:
+    - "{{ playbook_dir }}/assets/windows/*_client_*.ps1"
 
 - name: mount_virtio_drivers_iso
   command: mount -o loop,ro /var/lib/vz/template/iso/{{ iso_virtio_drivers_name }} /mnt/virtio

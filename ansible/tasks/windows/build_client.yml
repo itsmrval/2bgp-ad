@@ -1,8 +1,8 @@
 - name: define_variables
   set_fact:
     vms:
-      - { vm_id: "{{ template_win_4 }}", vm_name: "build-04", storage_name: "{{ vm_storage }}", server_ip: "10.100.0.112", server_domain: "mgmgrand.com" }
-      - { vm_id: "{{ template_win_5 }}", vm_name: "build-05", storage_name: "{{ vm_storage }}", server_ip: "10.100.0.113", server_domain: "mirage.com" }
+      - { vm_id: "{{ template_win_4 }}", vm_name: "build-04", storage_name: "{{ vm_storage }}", server_ip: "10.100.0.112", server_domain: "mgmgrand.local" }
+      # - { vm_id: "{{ template_win_5 }}", vm_name: "build-05", storage_name: "{{ vm_storage }}", server_ip: "10.100.0.113", server_domain: "mirage.local" }
     vm_memory: 4096
     vm_cores: 4
     vm_sockets: 1
@@ -12,27 +12,27 @@
     agent: 1
     node: "{{ inventory_hostname }}"
 
-# - name: create_vm
-#   command: >
-#     qm create {{ item.vm_id }}
-#     --name {{ item.vm_name }}
-#     --sockets {{ vm_sockets }}
-#     --cores {{ vm_cores }}
-#     --memory {{ vm_memory }}
-#     --ide2 file=local:iso/Windows_Client_Auto.iso,media=cdrom
-#     --scsihw virtio-scsi-pci
-#     --sata0 {{ item.storage_name }}:{{ drive_size_gb }},format={{ format }}
-#     --net0 model=e1000e,bridge=cust100
-#     --ostype {{ vm_os_type }}
-#     --agent {{ agent }}
-#     --boot order=ide2
-#   with_items: "{{ vms }}"
-#   register: vm_creation
+- name: create_vm
+  command: >
+    qm create {{ item.vm_id }}
+    --name {{ item.vm_name }}
+    --sockets {{ vm_sockets }}
+    --cores {{ vm_cores }}
+    --memory {{ vm_memory }}
+    --ide2 file=local:iso/Windows_Client_Auto.iso,media=cdrom
+    --scsihw virtio-scsi-pci
+    --sata0 {{ item.storage_name }}:{{ drive_size_gb }},format={{ format }}
+    --net0 model=e1000e,bridge=cust100
+    --ostype {{ vm_os_type }}
+    --agent {{ agent }}
+    --boot order=ide2
+  with_items: "{{ vms }}"
+  register: vm_creation
 
-# - name: start_vms
-#   command: "qm start {{ item.vm_id }}"
-#   with_items: "{{ vms }}"
-#   when: item.vm_id in vm_creation.results | map(attribute='item.vm_id') | list
+- name: start_vms
+  command: "qm start {{ item.vm_id }}"
+  with_items: "{{ vms }}"
+  when: item.vm_id in vm_creation.results | map(attribute='item.vm_id') | list
 
 - name: waiting_agent
   shell: "qm agent {{ item.vm_id }} ping"
@@ -46,7 +46,7 @@
   shell: >
     qm guest exec {{ item.vm_id }} -- powershell.exe -Command "
     New-NetIPAddress -InterfaceAlias Ethernet -IPAddress '10.100.0.{{ item.vm_id }}' -PrefixLength 16 -DefaultGateway 10.100.0.254 -AddressFamily IPv4;
-    Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses ('{{ item.server_ip }}','8.8.8.8')"
+    Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses ('{{ item.server_ip }}')"
   register: network_config
   until: network_config.rc == 0
   retries: 100 
@@ -66,9 +66,9 @@
     qm guest exec {{ item.vm_id }} -- powershell.exe -Command "
     Remove-NetIPAddress -InterfaceAlias Ethernet -Confirm:$false;
     New-NetIPAddress -InterfaceAlias Ethernet -IPAddress '10.100.0.{{ item.vm_id }}' -PrefixLength 16 -DefaultGateway 10.100.0.254 -AddressFamily IPv4;
-    Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses ('{{ item.server_ip }}','8.8.8.8')"
+    Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses ('{{ item.server_ip }}')"
   register: network_config_2
-  until: network_config.rc_2 == 0
+  until: network_config_2.rc == 0
   retries: 100 
   delay: 5
   when: "'10.100.0.' + item.vm_id not in ip_verification.results[idx].stdout"
@@ -95,12 +95,31 @@
   delay: 10
   with_items: "{{ vms }}"
 
+- name: verify domain for pc client
+  shell: >
+    qm guest exec {{ item.vm_id }} -- powershell.exe -Command "(Get-WmiObject Win32_ComputerSystem).Domain"
+  register: domain_verification
+  with_items: "{{ vms }}"
+
+- name: reinsert pc in domain - if necessary
+  shell: >
+    qm guest exec {{ item.vm_id }} -- powershell.exe -Command "Add-Computer -DomainName {{ item.server_domain }} -Credential (New-Object System.Management.Automation.PSCredential ('Administrator@{{ item.server_domain }}', (ConvertTo-SecureString 'Velizy78!' -AsPlainText -Force))) -Restart"
+  register: domain_reinsert_result
+  until: domain_reinsert_result.rc == 0
+  retries: 50
+  delay: 10
+  ignore_errors: yes
+  when: item.server_domain not in domain_verification.results[domain_idx].stdout
+  with_items: "{{ vms }}"
+  loop_control:
+    index_var: domain_idx
 
 - name: verify domain for pc client
   shell: >
     qm guest exec {{ item.vm_id }} -- powershell.exe -Command "(Get-WmiObject Win32_ComputerSystem).Domain"
-  register: domain_verify
-  until: domain_verify.stdout is search(item.server_domain)
-  retries: 300
+  register: domain_verify_reinsert
+  until: domain_verify_reinsert.stdout is search(item.server_domain)
+  retries: 50
   delay: 5
+  ignore_errors: yes
   with_items: "{{ vms }}"

@@ -1,11 +1,11 @@
-# Domaine: casino.mgmgrand.com
-$domain = "mgmgrand.com"
-$rootOu = "OU=Casino,DC=mgmgrand,DC=com"
+# Domaine: casino.mgmgrand.local
+$domain = "mgmgrand.local"
+$rootOu = "OU=Casino,DC=mgmgrand,DC=local"
 
 # Créer l'OU racine
-New-ADOrganizationalUnit -Name "Casino" -Path "DC=mgmgrand,DC=com"
+New-ADOrganizationalUnit -Name "Casino" -Path "DC=mgmgrand,DC=local"
 
-# Définir les groupes et comptes pour MGM Grand
+# Définir les groupes et localptes pour MGM Grand
 $groups = @{
     "Croupiers"  = @("DannyOcean", "LinusCaldwell", "RustyRyan")
     "Securite"   = @("BasherTarr", "LivingstonDell", "FrankCatton")
@@ -30,3 +30,10 @@ foreach ($group in $groups.Keys) {
 }
 
 Write-Host "Configuration terminée pour $organizationName." -ForegroundColor Green
+
+Move-ADObject -Identity "CN=PC-CLIENT, CN=Computers, DC=mgmgrand, DC=local" -TargetPath "OU=Croupiers, OU=Casino,DC=mgmgrand,DC=local"
+
+New-GPO -Name "LLMNR" -Comment "GPO pour LLMNR"
+Set-GPRegistryValue -Name "LLMNR" -Key "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -ValueName "EnableMulticast" -Type DWord -Value 1
+New-GPLink -Name "LLMNR" -Target "OU=Croupiers, OU=Casino,DC=mgmgrand, DC=local"
+

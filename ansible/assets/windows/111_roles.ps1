@@ -7,7 +7,7 @@
     Import-Module ActiveDirectory
 
     # Définir les variables pour la création du domaine
-    $domainName = "bellagio.com"
+    $domainName = "bellagio.local"
     $securePassword = ConvertTo-SecureString "Velizy78!" -AsPlainText -Force
 
     # Promouvoir le serveur en tant que contrôleur de domaine

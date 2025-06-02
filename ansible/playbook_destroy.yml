@@ -1,0 +1,12 @@
+---
+- name: init_playbook
+  hosts: all
+  gather_facts: yes
+  become: yes
+  tasks:
+
+  ### SETUP ANSIBLE ###
+
+  ### PREPARING WINDOWS TEMPLATES ###
+    - name: destroy all
+      import_tasks: tasks/windows/destroy_all.yml
