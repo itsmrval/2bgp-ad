@@ -228,10 +228,12 @@ Message réussite niveau :
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Level 2 prendre controle d'un compte sans permission (ASREP-Roasting) :
+!!!!!!!! FOURNIR UNE LISTE DE COMPTE AD POSSIBLE AU PENTESTER !!!!!!!
+
 
 Script pour histoire du niveau :
 
-Après avoir réussi à cartographier le réseau du casino grâce à votre expertise en reconnaissance avec NMAP, Danny Ocean et son équipe sont maintenant prêts à passer à l'étape suivante : infiltrer les systèmes internes pour prendre le contrôle des comptes sans autorisation.
+Après avoir réussi à cartographier le réseau du casino grâce à votre expertise en reconnaissance avec NMAP, ton équipe est maintenant prête à passer à l'étape suivante : infiltrer les systèmes internes pour prendre le contrôle des comptes sans autorisation.
 
 Terry Benedicta sous-estimé une faille cruciale dans son système de sécurité informatique. Les comptes de service de son réseau Active Directory n'ont pas de pré-authentification requise, une vulnérabilité connue sous le nom d'ASREP-Roasting.
 
