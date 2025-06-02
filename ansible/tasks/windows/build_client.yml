@@ -2,7 +2,7 @@
   set_fact:
     vms:
       - { vm_id: "{{ template_win_4 }}", vm_name: "build-04", storage_name: "{{ vm_storage }}", server_ip: "10.100.0.112", server_domain: "mgmgrand.local" }
-      # - { vm_id: "{{ template_win_5 }}", vm_name: "build-05", storage_name: "{{ vm_storage }}", server_ip: "10.100.0.113", server_domain: "mirage.local" }
+      #- { vm_id: "{{ template_win_5 }}", vm_name: "build-05", storage_name: "{{ vm_storage }}", server_ip: "10.100.0.113", server_domain: "mirage.local" }
     vm_memory: 4096
     vm_cores: 4
     vm_sockets: 1
@@ -99,6 +99,7 @@
   shell: >
     qm guest exec {{ item.vm_id }} -- powershell.exe -Command "(Get-WmiObject Win32_ComputerSystem).Domain"
   register: domain_verification
+  ignore_errors: yes
   with_items: "{{ vms }}"
 
 - name: reinsert pc in domain - if necessary

@@ -138,7 +138,7 @@
     owner: root
     group: root
   with_fileglob:
-    - "{{ playbook_dir }}/assets/windows/*_client_*.ps1"
+    - "{{ playbook_dir }}/assets/windows/clients/*.ps1"
 
 - name: mount_virtio_drivers_iso
   command: mount -o loop,ro /var/lib/vz/template/iso/{{ iso_virtio_drivers_name }} /mnt/virtio
@@ -170,7 +170,7 @@
 
 - name: copy_xml
   copy:
-    src: "{{ playbook_dir }}/assets/windows/clientautounattend.xml"
+    src: "{{ playbook_dir }}/assets/windows/clients/autounattend.xml"
     dest: "/mnt/provision/autounattend.xml"
     owner: root
     group: root

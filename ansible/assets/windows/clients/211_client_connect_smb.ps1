@@ -1,5 +1,7 @@
+net use Z: \\bellagio.local\script /user:mgmgrand\DannyOcean P@ssw0rd
+
 # Chemin du fichier source sur le partage Samba
-$sourcePath = "\\bellagio.local\script\111_script_smb.ps1"
+$sourcePath = "Z:\111_script_smb.ps1"
 
 # Chemin du fichier de destination local
 $destinationPath = "C:\connect_smb.ps1"

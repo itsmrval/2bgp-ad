@@ -1,5 +1,5 @@
 # Chemin du partage de fichiers
-$sharePath = "\\bellagio.com\logs"
+$sharePath = "\\bellagio.local\logs"
 $filePath = "verify.txt"  # Chemin relatif après le mappage du lecteur
 
 try {
