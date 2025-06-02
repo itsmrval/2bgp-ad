@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PlayingCard from './PlayingCard';
 import { useNavigate } from 'react-router-dom';
-import OceansLogo from '../assets/img/header.png'; 
 import BackgroundImage from '../assets/img/tissu.jpg';
 
 const BlackjackTable = ({ playedCards }) => {
@@ -11,19 +10,6 @@ const BlackjackTable = ({ playedCards }) => {
                  backgroundSize: 'cover',
                  backgroundPosition: 'center'
                }}>
-    <img
-      src={OceansLogo}
-      alt="Ocean's 11"
-      className="absolute z-10"
-      style={{ 
-        maxWidth: '1000px',
-        maxHeight: '800px',
-        position: 'absolute', 
-        top: '80px', 
-        left: '50%', 
-        transform: 'translateX(-50%)'
-      }}
-    /> 
             {[...Array(13)].map((_, index) => {
                 // Use percentage values for responsive positioning
                 let leftPos, topPos;
@@ -49,22 +35,24 @@ const BlackjackTable = ({ playedCards }) => {
                 const card = playedCards.find(c => c.slotIndex === index);
 
                 return (
-                    <div
-                        key={`card-${index}`}
-                        style={{
-                            width: '90px',
-                            height: '126px',
-                            position: 'absolute',
-                            background: 'transparent',
-                            border: '2px solid rgb(255, 0, 0)',
-                            borderRadius: 6,
-                            left: leftPos,
-                            top: topPos,
-                            transform: 'translate(-50%, -50%)'
-                        }}
-                    >
-                        {card && <PlayingCard value={card.value} suit={card.suit} />}
-                    </div>
+                    // In the BlackjackTable component, update the card slot div:
+                        <div
+                            key={`card-${index}`}
+                            style={{
+                                width: '90px',
+                                height: '126px',
+                                position: 'absolute',
+                                background: 'transparent',
+                                border: '2px solid rgb(255, 0, 0)',
+                                borderRadius: 6,
+                                left: leftPos,
+                                top: topPos,
+                                transform: 'translate(-50%, -50%)',
+                                zIndex: card ? 10 : 1  // Higher z-index when a card is present
+                            }}
+                        >
+                            {card && <PlayingCard value={card.value} suit={card.suit} />}
+                        </div>
                 );
             })}
         </div>
@@ -72,24 +60,24 @@ const BlackjackTable = ({ playedCards }) => {
 };
 
 
+
+
+
 const CardWrapper = ({ card, style, onClick, hoverEffect }) => {
     const [isHovered, setIsHovered] = useState(false);
 
-    // Base style for all cards
     const baseStyle = {
         width: '90px',
         height: '126px',
         position: 'absolute',
         transition: 'all 0.3s cubic-bezier(0.23, 1, 0.32, 1)',
-        overflow: 'visible',
-        transform: `${style.transform}`,
-        left: '50%', // Center point reference
+        transform: style.transform,
+        left: '50%',
         bottom: '30px',
-        marginLeft: '-45px', // Half of width to center properly
+        marginLeft: '-45px',
         ...style
     };
 
-    // Apply hover effect if enabled
     const hoverStyles = hoverEffect && isHovered ? {
         transform: `${style.transform} translateY(-50px)`,
         zIndex: 100,
@@ -104,7 +92,6 @@ const CardWrapper = ({ card, style, onClick, hoverEffect }) => {
             onClick={onClick}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className="bg-white rounded-lg shadow-md"
         >
             <PlayingCard
                 value={card.value}
@@ -114,6 +101,7 @@ const CardWrapper = ({ card, style, onClick, hoverEffect }) => {
         </div>
     );
 };
+
 
 const Test = () => {
     const navigate = useNavigate();

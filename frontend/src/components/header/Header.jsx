@@ -12,6 +12,7 @@ const TransparentHeader = () => {
   const { logout } = useAuth();
 
   const currentPath = location.pathname;
+  const isHomePage = currentPath === '/' || currentPath === '/main';
 
   const isActive = (path) => {
     if (path === '/main' && (currentPath === '/' || currentPath === '/main')) {
@@ -25,6 +26,23 @@ const TransparentHeader = () => {
     navigate('/login');
   };
 
+  // Function to conditionally render links based on current page
+  const renderNavLink = (path, text) => {
+    const active = isActive(path) ? 'active' : '';
+    
+    return (
+      <li className={active}>
+        {isHomePage ? (
+          <Link to={path} style={{ textDecoration: 'none', color: 'inherit' }}>{text}</Link>
+        ) : (
+          <Link to={path} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <b>{text}</b>
+          </Link>
+        )}
+      </li>
+    );
+  };
+
   return (
     <header className="transparent-header">
       <div className="logo">
@@ -33,15 +51,9 @@ const TransparentHeader = () => {
 
       <nav className="main-nav">
         <ul>
-          <li className={isActive('/') ? 'active' : ''}>
-            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>Accueil</Link>
-          </li>
-          <li className={isActive('/scoreboard') ? 'active' : ''}>
-            <Link to="/scoreboard" style={{ textDecoration: 'none', color: 'inherit' }}>Scoreboard</Link>
-          </li>
-          <li className={isActive('/about') ? 'active' : ''}>
-            <Link to="/about" style={{ textDecoration: 'none', color: 'inherit' }}>Informations</Link>
-          </li>
+          {renderNavLink('/', 'Accueil')}
+          {renderNavLink('/scoreboard', 'Scoreboard')}
+          {renderNavLink('/about', 'Informations')}
         </ul>
       </nav>
 

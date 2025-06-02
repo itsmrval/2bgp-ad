@@ -11,7 +11,7 @@ export default function Footer() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                zIndex: 1,
+                zIndex: 1000   ,
             }}
         >
             <div
