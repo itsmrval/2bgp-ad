@@ -228,6 +228,7 @@ Message réussite niveau : Bravo ! Votre balayage Nmap a porté ses fruits : vou
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Level 2 Trouver les user :
+
 !!!!!!!! FOURNIR UNE LISTE DE COMPTE AD POSSIBLE AU PENTESTER !!!!!!!
 
 Script pour histoire du niveau :
@@ -256,9 +257,7 @@ Level 3 prendre controle d'un compte sans permission (ASREP-Roasting) :
 
 Script pour histoire du niveau :
 
-Après avoir réussi à cartographier le réseau du casino grâce à votre expertise en reconnaissance avec NMAP, ton équipe est maintenant prête à passer à l'étape suivante : infiltrer les systèmes internes pour prendre le contrôle des comptes sans autorisation.
-
-Terry Benedicta sous-estimé une faille cruciale dans son système de sécurité informatique. Les comptes de service de son réseau Active Directory n'ont pas de pré-authentification requise, une vulnérabilité connue sous le nom d'ASREP-Roasting.
+Terry Benedicta sous-estime une faille cruciale dans son système de sécurité informatique. Les comptes de service de son réseau Active Directory n'ont pas de pré-authentification requise, une vulnérabilité connue sous le nom d'ASREP-Roasting.
 
 Votre objectif est de récupérer le hashs des mots de passe de l'utilisateur précédemment trouvé pour permettre à l'équipe d'Ocean de récuperer ces comptes et de prendre le contrôle des comptes nécessaires pour désactiver les systèmes de sécurité des casinos.
 
