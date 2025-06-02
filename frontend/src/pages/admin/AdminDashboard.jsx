@@ -96,7 +96,7 @@ const AdminDashboard = () => {
   return (
     <div className="admin-dashboard">
       <header className="dashboard-header">
-        <h1>Admin Dashboard</h1>
+        <h1>Admin</h1>
       </header>
       <div className="dashboard-content">
         <section className="dashboard-section">

@@ -6,7 +6,6 @@ const AddLevelModal = ({ onClose, onAddLevel }) => {
     hid: "",
     flag: "",
     points: "",
-    url: "",
     description: ""
   });
 
@@ -44,10 +43,6 @@ const AddLevelModal = ({ onClose, onAddLevel }) => {
           <div className="form-group">
             <label>Points:</label>
             <input type="number" name="points" value={levelData.points} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label>URL:</label>
-            <input type="text" name="url" value={levelData.url} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label>Description:</label>

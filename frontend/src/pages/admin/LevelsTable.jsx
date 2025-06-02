@@ -10,7 +10,6 @@ const LevelsTable = ({ levels, onDeleteLevel }) => {
             <th>Name</th>
             <th>HID</th>
             <th>Points</th>
-            <th>URL</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -20,7 +19,6 @@ const LevelsTable = ({ levels, onDeleteLevel }) => {
               <td>{level.name}</td>
               <td>{level.hid}</td>
               <td>{level.points}</td>
-              <td>{level.url}</td>
               <td>
                 <button onClick={() => onDeleteLevel(level._id)}>Delete</button>
               </td>
