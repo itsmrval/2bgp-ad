@@ -184,10 +184,15 @@ Bienvenu dans l'équipe et que le braquage commence !!!
 
 
 Les failles qui necessitent une configuration en amont : 
-0 ouvrir le port ssh, smb pour donner des indices
+
+0 ouvrir le port ssh, smb etc pour donner des indices
+
 1 configurer une tache planifié ou un script pour creer une fausse connexion à un partage (déjà tester j'ai le script)
+
 4 activer ssh
+
 5 creer la tache planifié et donner les droits à l'utilisateur ou aux utilisateurs
+
 8 mettre l'utilisateur dont on a cracké les mdp dans le groupe admins avec restrictions si il le faut
 
 
