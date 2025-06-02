@@ -8,6 +8,7 @@ const LevelsTable = ({ levels, onDeleteLevel }) => {
         <thead>
           <tr>
             <th>Name</th>
+            <th>ID</th>
             <th>HID</th>
             <th>Points</th>
             <th>Actions</th>
@@ -17,6 +18,7 @@ const LevelsTable = ({ levels, onDeleteLevel }) => {
           {levels.map(level => (
             <tr key={level._id}>
               <td>{level.name}</td>
+              <td>{level._id}</td>
               <td>{level.hid}</td>
               <td>{level.points}</td>
               <td>

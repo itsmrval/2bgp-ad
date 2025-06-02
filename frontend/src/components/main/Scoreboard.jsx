@@ -5,6 +5,7 @@ import { useAuth } from '../../api/auth/useAuth';
 const Scoreboard = () => {
   const { getPoints } = useAuth();
   const [teams, setTeams] = useState([]);
+  const [expandedTeams, setExpandedTeams] = useState(new Set());
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,6 +19,69 @@ const Scoreboard = () => {
 
     fetchData();
   }, [getPoints]);
+
+  const toggleTeamExpansion = (teamRank) => {
+    const newExpandedTeams = new Set(expandedTeams);
+    if (newExpandedTeams.has(teamRank)) {
+      newExpandedTeams.delete(teamRank);
+    } else {
+      newExpandedTeams.add(teamRank);
+    }
+    setExpandedTeams(newExpandedTeams);
+  };
+
+  const renderLevels = (levels, teamRank) => {
+    const isExpanded = expandedTeams.has(teamRank);
+    const shouldTruncate = levels.length > 1;
+    
+    if (!shouldTruncate) {
+      return levels.map((level, index) => (
+        <div key={index} className="member">
+          <span className="member-name">Niveau {index + 1}</span>
+          <span className="member-chips">({level.points ? level.points.toLocaleString() : "0"} points)</span>
+        </div>
+      ));
+    }
+
+    if (isExpanded) {
+      return (
+        <>
+          {levels.map((level, index) => (
+            <div key={index} className="member">
+              <span className="member-name">Niveau {index + 1}</span>
+              <span className="member-chips">({level.points ? level.points.toLocaleString() : "0"} points)</span>
+            </div>
+          ))}
+          <div 
+            className="member expand-toggle" 
+            onClick={() => toggleTeamExpansion(teamRank)}
+            style={{ cursor: 'pointer'}}
+          >
+            <span className="member-name">↑</span>
+          </div>
+        </>
+      );
+    } else {
+      const firstLevel = levels[0];
+      const hiddenCount = levels.length - 1;
+      
+      return (
+        <>
+          <div className="member">
+            <span className="member-name">Niveau 1</span>
+            <span className="member-chips">({firstLevel.points ? firstLevel.points.toLocaleString() : "0"} points)</span>
+          </div>
+          <div 
+            className="member expand-toggle" 
+            onClick={() => toggleTeamExpansion(teamRank)}
+            style={{ cursor: 'pointer'}}
+          >
+            <span className="member-name">+{hiddenCount} ↓</span>
+          </div>
+        </>
+      );
+    }
+  };
 
   return (
     <div className="scoreboard-content">
@@ -42,12 +106,7 @@ const Scoreboard = () => {
               <div className="team-column">
                 <div className="team-name">{team.username}</div>
                 <div className="team-members">
-                  {team.achieved_levels.map((level, index) => (
-                    <div key={index} className="member">
-                      <span className="member-name">Niveau {index + 1}</span>
-                      <span className="member-chips">({level.points ? level.points.toLocaleString() : "0"} points)</span>
-                    </div>
-                  ))}
+                  {renderLevels(team.achieved_levels, team.rank)}
                 </div>
               </div>
               <div className="chips-column">

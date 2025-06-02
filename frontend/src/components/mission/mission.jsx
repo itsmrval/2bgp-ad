@@ -1,46 +1,87 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getLevels, awardUserPoints } from '../../api/calls';
 import '../../assets/styles/mission.css';
 
-const TITLE = "Objectif de la mission";
-const CONTENT = "Après avoir retrouvé le vaisseau d'Arkann, une étrange inquiétude s'empare de vous : Arkann n'est nulle part en vue. Aurait-il délibérément abandonné son vaisseau pour vous mettre à l'épreuve ? Pourtant, ce dernier est hermétiquement verrouillé...";
-const POINTS = 150;
-const SUCCESS_RATE = "100%";
-const DEFAULT_FLAG = "FLAG-EXAMPLE";
-
-const MissionCard = ({
-    title = TITLE,
-    content = CONTENT,
-    points = POINTS,
-    successRate = SUCCESS_RATE,
-    correctFlag = DEFAULT_FLAG 
-}) => {
+const MissionCard = () => {
     const navigate = useNavigate();
-    
+    const { levelId } = useParams(); 
+    const [level, setLevel] = useState(null);
     const [flag, setFlag] = useState('');
     const [feedbackMessage, setFeedbackMessage] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
     const [showFeedback, setShowFeedback] = useState(false);
+    const [isCompleted, setIsCompleted] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchLevel = async () => {
+            try {
+                if (!levelId) {
+                    console.log('111')
+                    return
+                }
+
+                const levels = await getLevels();
+                const currentLevel = levels.find(l => l._id === levelId);
+                
+                if (!currentLevel) {
+                    console.error('Level not found:', levelId);
+                    navigate('/');
+                    return;
+                }
+
+                setLevel(currentLevel);
+            
+                
+            } catch (err) {
+                console.error('Error fetching level:', err);
+                setError('Failed to load level data');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchLevel();
+    }, [navigate, levelId]);
 
     const handleBackClick = () => {
         navigate('/');
     };
 
-    const handleFlagSubmit = (e) => {
+    const handleStartClick = () => {
+        if (level && level.url) {
+            window.open(level.url, '_blank');
+        }
+    };
+
+    const handleFlagSubmit = async (e) => {
         e.preventDefault();
         
-        if (flag.trim()) {
-            if (flag === correctFlag) { 
-                setFeedbackMessage('Félicitations! Flag correct.');
-                setIsSuccess(true);
-                setTimeout(() => {
-                    navigate('/'); 
-                }, 3000);
-            } else {
-                setFeedbackMessage('Flag incorrect. Essayez à nouveau.');
-                setIsSuccess(false);
-            }
+        if (!flag.trim()) {
+            setFeedbackMessage('Veuillez entrer un flag');
+            setIsSuccess(false);
+            setShowFeedback(true);
+            setTimeout(() => setShowFeedback(false), 3000);
+            return;
+        }
+
+        try {
+            const userId = localStorage.getItem('id');
+            await awardUserPoints(userId, level._id, flag);
             
+            setFeedbackMessage('Flag correct ! Niveau réussi');
+            setIsSuccess(true);
+            setShowFeedback(true);
+            
+            setTimeout(() => {
+                navigate('/');
+            }, 3000);
+        } catch (error) {
+            console.error('Error submitting flag:', error);
+            setFeedbackMessage('Flag incorrect');
+            setIsSuccess(false);
             setShowFeedback(true);
             
             setTimeout(() => {
@@ -49,53 +90,98 @@ const MissionCard = ({
         }
     };
 
+    if (loading) {
+        return (
+            <div className="mission-app-body">
+                <div className="card">
+                    <div className="card-body">
+                        <p>Chargement...</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (error || !level) {
+        return (
+            <div className="mission-app-body">
+                <div className="card">
+                    <div className="card-body">
+                        <p>Erreur: {error || 'Niveau non trouvé'}</p>
+                        <button className="back-button" onClick={handleBackClick}>
+                            Retour
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="mission-app-body">
             <div className="card">
                 <div className="card-header">
-                    <h5 className="card-title">{title}</h5>
+                    <h5 className="card-title">{level.name}</h5>
+                    <div className={`level-status ${isCompleted ? 'status-success' : 'status-pending'}`}>
+                        {isCompleted ? 'Completed' : 'Pending'}
+                    </div>
                 </div>
                 
                 <div className="card-stats">
                     <div className="card-stat">
                         <strong>Points</strong>
-                        <span>{points}</span>
+                        <span>{level.points}</span>
                     </div>
                     <div className="card-stat">
-                        <strong>Taux de succès</strong>
-                        <span>{successRate}</span>
+                        <strong>Difficulté</strong>
+                        <span>{level.difficulty || 'N/A'}</span>
                     </div>
                 </div>
                 
                 <div className="card-body">
-                    <p className="card-text">{content}</p>
+                    <p className="card-text">{level.description}</p>
                     
-                    <div className="flag-section">
-                        <h6>Soumettre un flag</h6>
-                        <form onSubmit={handleFlagSubmit} className="flag-form">
-                            <div className="input-group">
-                                <input
-                                    type="text"
-                                    className="flag-input"
-                                    value={flag}
-                                    onChange={(e) => setFlag(e.target.value)}
-                                    placeholder="Entrez le flag ici"
-                                    required
-                                />
-                                <button type="submit" className="submit-btn">Valider</button>
-                            </div>
-                        </form>
-                        
-                        {showFeedback && (
-                            <div className={`feedback-message ${isSuccess ? 'success' : 'error'}`}>
-                                {feedbackMessage}
-                            </div>
-                        )}
-                    </div>
+                    {level.url && (
+                        <div className="start-section">
+                            <button 
+                                className={`start-button ${isCompleted ? 'launch-button-done' : 'launch-button'}`}
+                                onClick={handleStartClick}
+                                disabled={isCompleted}
+                            >
+                                <i className={`fa ${isCompleted ? 'fa-circle-check' : 'fa-rocket'}`}></i>
+                                <span>{isCompleted ? 'Done' : 'Start Challenge'}</span>
+                            </button>
+                        </div>
+                    )}
+                    
+                    {!isCompleted && (
+                        <div className="flag-section">
+                            <h6>Soumettre un flag</h6>
+                            <form onSubmit={handleFlagSubmit} className="flag-form">
+                                <div className="input-group">
+                                    <input
+                                        type="text"
+                                        className="flag-input"
+                                        value={flag}
+                                        onChange={(e) => setFlag(e.target.value)}
+                                        placeholder="Entrez le flag ici"
+                                        required
+                                    />
+                                    <button type="submit" className="submit-btn">Valider</button>
+                                </div>
+                            </form>
+                            
+                            {showFeedback && (
+                                <div className={`feedback-message ${isSuccess ? 'success' : 'error'}`}>
+                                    {feedbackMessage}
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
                 
                 <button className="back-button" onClick={handleBackClick}>
-                    Back
+                    Retour
                 </button>
             </div>
         </div>

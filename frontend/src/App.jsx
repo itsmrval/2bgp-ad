@@ -19,7 +19,6 @@ function App() {
         <AuthProvider>
             <Router>
                 <Routes>
-                    {/* Protected route */}
                     <Route path="/" element={
                         <ProtectedRoute>
                             <MainPage />
@@ -32,7 +31,7 @@ function App() {
                     <Route path="/scoreboard" element={<Scoreboard />} />
                     
 
-                    <Route path="/mission" element={
+                    <Route path="/mission/:levelId" element={
                         <ProtectedRoute>
                             <MissionPage />
                         </ProtectedRoute>
