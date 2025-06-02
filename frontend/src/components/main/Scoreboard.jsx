@@ -45,7 +45,7 @@ const Scoreboard = () => {
                   {team.achieved_levels.map((level, index) => (
                     <div key={index} className="member">
                       <span className="member-name">Niveau {index + 1}</span>
-                      <span className="member-chips">{level.points ? level.points.toLocaleString() : "0"} chips</span> {/* Assuming each level has a 'points' field */}
+                      <span className="member-chips">({level.points ? level.points.toLocaleString() : "0"} points)</span>
                     </div>
                   ))}
                 </div>

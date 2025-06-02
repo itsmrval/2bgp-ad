@@ -12,6 +12,7 @@ import MissionPage from './pages/mission/mission';
 import AboutPage from './pages/about/aboutPage';
 import Scoreboard from './pages/main/scoreboard';
 import ProtectedRoute from "./context/ProtectedRoute";
+import AdminPage from "./pages/admin/AdminDashboard"
 
 function App() {
     return (
@@ -36,11 +37,13 @@ function App() {
                             <MissionPage />
                         </ProtectedRoute>
                     } />
-                    <Route path="/profile" element={
+
+                    <Route path="/admin" element={
                         <ProtectedRoute>
-                            <ProfileDownloadPage />
+                            <AdminPage />
                         </ProtectedRoute>
                     } />
+
 
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
