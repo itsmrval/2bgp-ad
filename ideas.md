@@ -156,6 +156,31 @@ Bienvenu dans l'équipe et que le braquage commence !!!
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+0- nmap voir les protocoles et port ouvert
+1- responder faille (LLMNR et Netbios)
+2- cracker le mdp avec hashcat
+3- verifier la validité du mdp avec netexec
+4- se connecter à la machine locale via ssh (vu qu'on a les credentials et de plus c'est realiste)
+5 bis - enumerer les droits de l'utilisateur grace à l'outil...
+5- exploiter la faille des tâches planifiées afin de creer un compte admin
+6- installer procdump puis creer un partage et extraire le contenu du lsass
+7- cracker le contenu du lsass avec pypykatz
+8- realiser la faille dcsync avec secretsdump
+9- realiser la faille dcshadow
+10 idées : exploiter le ticket d'or pour se creer un compte admin sur le second ad (à tester)
+10- exploiter le lien trust pour enumerer le contenu du second ad ( à faire) ou kerbrute
+
+
+Les failles qui necessitent une configuration en amont : 
+0 ouvrir le port ssh, smb pour donner des indices
+1 configurer une tache planifié ou un script pour creer une fausse connexion à un partage (déjà tester j'ai le script)
+4 activer ssh
+5 creer la tache planifié et donner les droits à l'utilisateur ou aux utilisateurs
+8 mettre l'utilisateur dont on a cracké les mdp dans le groupe admins avec restrictions si il le faut
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Level 1 (Reconnaissance NMAP) :
 
 Script pour histoire du niveau :
