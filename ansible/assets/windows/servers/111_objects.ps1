@@ -7,7 +7,7 @@ New-ADOrganizationalUnit -Name "Casino" -Path "DC=bellagio,DC=local"
 
 # Définir les groupes et comptes pour Bellagio
 $groups = @{
-    "Croupiers"  = @("DannyOcean", "LinusCaldwell", "RustyRyan")
+    "Croupiers"  = @("RobertPop", "LinusCaldwell", "RustyRyan")
     "Securite"   = @("BasherTarr", "LivingstonDell", "FrankCatton")
     "IT"         = @("ReubenTishkoff", "SaulBloom", "VirgilMalloy", "svc-bella")
 }
@@ -24,7 +24,15 @@ foreach ($group in $groups.Keys) {
     
     # Créer les utilisateurs pour chaque groupe
     foreach ($user in $groups[$group]) {
-        New-ADUser -Name $user -Path $ouPath -AccountPassword (ConvertTo-SecureString "P@ssw0rd" -AsPlainText -Force) -Enabled $true
+        if ($user -eq "svc-bella") {
+            # Pour le compte de service, utiliser un mot de passe différent
+            $password = ConvertTo-SecureString "P@ssw0rd" -AsPlainText -Force
+        } else {
+            # Pour les autres utilisateurs, utiliser un mot de passe générique
+            $password = ConvertTo-SecureString "eF?&4W0eUs6zfJaM!?op" -AsPlainText -Force
+        }
+        New-ADUser -Name $user -Path $ouPath -AccountPassword (ConvertTo-SecureStringp $password -AsPlainText -Force) -Enabled $true
+
     }
 }
 

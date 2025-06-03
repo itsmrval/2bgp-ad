@@ -15,11 +15,13 @@ try {
     # Configuration des permissions NTFS
     icacls $Path /inheritance:r
     icacls $Path /grant:r 'Administrator:(OI)(CI)(F)'
+    icacls $Path /grant:r 'SYSTEM:(OI)(CI)(F)'
     icacls $Path /grant:r 'mgmgrand.local\DannyOcean:(OI)(CI)(M)'
     icacls $Path /grant:r 'svc-bella:(OI)(CI)(M)'
 
     icacls $PathScript /inheritance:r
     icacls $PathScript /grant:r 'Administrator:(OI)(CI)(F)'
+    icacls $PathScript /grant:r 'SYSTEM:(OI)(CI)(F)'
     icacls $PathScript /grant:r 'mgmgrand.local\DannyOcean:(OI)(CI)(M)'
     icacls $PathScript /grant:r 'svc-bella:(OI)(CI)(M)'
 

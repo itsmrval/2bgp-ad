@@ -5,6 +5,7 @@ New-Item -Path $Path -ItemType Directory -Force
 # Configuration des permissions NTFS
 icacls $Path /inheritance:r
 icacls $Path /grant:r "Administrator:(OI)(CI)(F)"
+icacls $Path /grant:r "SYSTEM:(OI)(CI)(F)"
 icacls $Path /grant:r "mgmgrand\DannyOcean:(OI)(CI)(M)"
 
 

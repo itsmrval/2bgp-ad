@@ -7,9 +7,9 @@ New-ADOrganizationalUnit -Name "Casino" -Path "DC=mgmgrand,DC=local"
 
 # Définir les groupes et localptes pour MGM Grand
 $groups = @{
-    "Croupiers"  = @("DannyOcean", "LinusCaldwell", "RustyRyan")
-    "Securite"   = @("BasherTarr", "LivingstonDell", "FrankCatton")
-    "IT"         = @("ReubenTishkoff", "SaulBloom", "VirgilMalloy")
+    "Croupiers"  = @("DannyOcean", "CharlieO'Brien", "BennyCardcounter", "AceHighman")
+    "Securite"   = @("StevieGuard", "LaraLockdown", "MaxFortress")
+    "IT"         = @("NoraScript", "CalvinCode", "EthanByte", "svc-winrm")
 }
 
 # Créer les OUs, groupes et utilisateurs
@@ -24,7 +24,18 @@ foreach ($group in $groups.Keys) {
     
     # Créer les utilisateurs pour chaque groupe
     foreach ($user in $groups[$group]) {
-        New-ADUser -Name $user -Path $ouPath -AccountPassword (ConvertTo-SecureString "P@ssw0rd" -AsPlainText -Force) -Enabled $true
+        if ($user -eq "svc-winrm") {
+            # Pour le compte de service, utiliser un mot de passe différent
+            $password = ConvertTo-SecureString "Administrator123" -AsPlainText -Force
+        } elseif ($user -eq "DannyOcean") {
+            # Pour Danny Ocean, utiliser un mot de passe spécifique
+            $password = ConvertTo-SecureString "Cisco" -AsPlainText -Force
+        } else {
+            # Pour les autres utilisateurs, utiliser un mot de passe générique
+            $password = ConvertTo-SecureString "eF?&4W0eUs6zfJaM!?op" -AsPlainText -Force
+        }
+        New-ADUser -Name $user -Path $ouPath -AccountPassword (ConvertTo-SecureStringp $password -AsPlainText -Force) -Enabled $true
+
     }
 }
 
