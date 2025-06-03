@@ -23,12 +23,17 @@ const positions = [
 
 const BlackjackTable = ({ playedCards, completedLevels, nextLevelHid, hand }) => {
   const [animatedCards, setAnimatedCards] = useState(new Set());
+  const [visibleCards, setVisibleCards] = useState(new Set());
 
   useEffect(() => {
     completedLevels.forEach((card, index) => {
       setTimeout(() => {
-        setAnimatedCards(prev => new Set([...prev, card.id]));
+        setVisibleCards(prev => new Set([...prev, card.id]));
       }, index * 200);
+      
+      setTimeout(() => {
+        setAnimatedCards(prev => new Set([...prev, card.id]));
+      }, index * 200 + 50);
     });
   }, [completedLevels]);
 
@@ -88,6 +93,7 @@ const BlackjackTable = ({ playedCards, completedLevels, nextLevelHid, hand }) =>
           const isNextLevel = index === expectedSlotForNextLevel;
 
           const isAnimated = card && animatedCards.has(card.id);
+          const isVisible = card && (visibleCards.has(card.id) || playedCard); // played cards should be visible immediately
           const rotation = position.rotation;
 
           return (
@@ -106,7 +112,7 @@ const BlackjackTable = ({ playedCards, completedLevels, nextLevelHid, hand }) =>
                 zIndex: isNextLevel ? 20 : (card ? 10 : 1),
               }}
             >
-              {card && (
+              {card && isVisible && (
                 <div
                   style={{
                     width: '100%',
@@ -130,8 +136,6 @@ const BlackjackTable = ({ playedCards, completedLevels, nextLevelHid, hand }) =>
     </>
   );
 };
-
-
 const CardWrapper = ({ card, style, onClick, animationDelay, showAnimation, isDisabled, isNextLevel }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [shouldShow, setShouldShow] = useState(false);
