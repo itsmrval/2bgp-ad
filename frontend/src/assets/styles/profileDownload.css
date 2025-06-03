@@ -1,23 +1,11 @@
-/* Add these styles at the top of the file */
-body, html {
-    overflow: hidden;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-}
-
-body::-webkit-scrollbar, 
-html::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
 
 .profile-download-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 70vh;
-    background-color: #ffffff;
     padding: 50px 20px;
-    overflow: hidden; /* Prevent scrolling in this container */
+    overflow: hidden;
 }
 
 /* For the download card, in case it has scrollable content */

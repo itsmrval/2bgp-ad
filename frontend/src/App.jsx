@@ -1,13 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import React from 'react';
 
-import { AuthProvider } from './api/auth/useAuth';  // Import AuthProvider
+import { AuthProvider } from './api/auth/useAuth'; 
 
 import LoginPages from './pages/auth/login';
 import SignupPages from './pages/auth/signup';
 import Intro from './pages/intro/intro';
 import MainPage from './pages/main/main';
-import ProfileDownloadPage from "./pages/loading/profileDownloadPage";
 import MissionPage from './pages/mission/mission';
 import AboutPage from './pages/about/aboutPage';
 import Scoreboard from './pages/main/scoreboard';

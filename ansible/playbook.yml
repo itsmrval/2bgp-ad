@@ -149,23 +149,23 @@
         protocol: "udp"
       delegate_to: "{{ container_web_ip }}" 
 
-  ### PREPARING WINDOWS TEMPLATES ###
-    - name: server_prepare_windows_template
-      import_tasks: tasks/windows/prepare_template.yml
-      vars:
-        role_type: "server"
+    - name: prepare_windows_template
+      import_tasks: tasks/windows/prepare_server.yml
 
-    - name: server_build_windows_template
-      import_tasks: tasks/windows/build_template.yml
-      vars:
-        role_type: "server"
+    - name: build_windows_template
+      import_tasks: tasks/windows/build_server.yml
 
-    - name: client_prepare_windows_template
-      import_tasks: tasks/windows/prepare_template.yml
-      vars:
-        role_type: "client"
+    - name: prepare_windows_client_template
+      import_tasks: tasks/windows/prepare_client.yml
 
-    - name: client_build_windows_template
-      import_tasks: tasks/windows/build_template.yml
-      vars:
-        role_type: "client"
+    - name: build_windows_client_template
+      import_tasks: tasks/windows/build_client.yml
+
+    - name: deploy objects on windows server
+      import_tasks: tasks/windows/objects_server.yml
+    
+    - name: configure ad for vulnerability
+      import_tasks: tasks/windows/vulnerability.yml
+
+    # - name: transform vms to template
+    #   import_tasks: tasks/windows/build_templates.yml

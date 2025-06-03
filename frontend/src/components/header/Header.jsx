@@ -4,21 +4,19 @@ import styled from 'styled-components';
 import '../../assets/styles/header.css';
 import { useAuth } from '../../api/auth/useAuth';
 
-// Import your logo and gif
 import logo from '../../assets/logo/logo.png';
 import logoGif from '../../assets/logo/logo.gif';
 
-const TransparentHeader = () => {
+const TransparentHeader = ({isHomePage}) => {
   const location = useLocation();
   const navigate = useNavigate();
 
   const { logout } = useAuth();
 
   const currentPath = location.pathname;
-  const isHomePage = currentPath === '/' || currentPath === '/main';
 
   const isActive = (path) => {
-    if (path === '/main' && (currentPath === '/' || currentPath === '/main')) {
+    if (path === '/' && currentPath === '/') {
       return true;
     }
     return currentPath === path;
