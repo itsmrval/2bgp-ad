@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getLevels, awardUserPoints } from '../../api/calls';
+import { getLevel, awardUserPoints } from '../../api/calls';
 import '../../assets/styles/mission.css';
 import loadingGif from '../../assets/logo/logo.gif';
 
@@ -21,26 +21,26 @@ const MissionCard = () => {
             try {
                 if (!levelId) {
                     console.log('Level ID is missing');
+                    setError('Level ID is missing');
+                    setLoading(false);
                     return;
                 }
 
-                const levels = await getLevels();
-                const currentLevel = levels.find(l => l._id === levelId);
+                const response = await getLevel(levelId);
 
-                if (!currentLevel) {
-                    console.error('Level not found:', levelId);
-                    navigate('/');
-                    return;
+                if (response) {
+                    setLevel(response);
+                } else {
+                    setError('An error occurred while fetching the level.');
                 }
 
-                setLevel(currentLevel);
                 setTimeout(() => {
                     setLoading(false);
                 }, 200);
 
             } catch (err) {
                 console.error('Error fetching level:', err);
-                setError('Failed to load level data');
+                setError('An error occurred while fetching the level.');
                 setLoading(false);
             }
         };
@@ -107,7 +107,7 @@ const MissionCard = () => {
             <div className="mission-app-body">
                 <div className="card">
                     <div className="card-body">
-                        <p>Erreur: {error || 'Niveau non trouvé'}</p>
+                        <p>Error: {error || 'Level not found'}</p>
                         <button className="back-button" onClick={handleBackClick}>
                             Retour
                         </button>
@@ -139,7 +139,7 @@ const MissionCard = () => {
                 </div>
 
                 <div className="card-body">
-                    <p className="card-text">{level.description}</p>
+                    <p className="card-text" dangerouslySetInnerHTML={{ __html: level.description }}></p>
 
                     {level.url && (
                         <div className="start-section">
