@@ -10,7 +10,6 @@ $groups = @{
     "Croupiers"  = @("DannyOcean", "LinusCaldwell", "RustyRyan")
     "Securite"   = @("BasherTarr", "LivingstonDell", "FrankCatton")
     "IT"         = @("ReubenTishkoff", "SaulBloom", "VirgilMalloy")
-    "Admin"      = @("TerryBenedict")
 }
 
 # Créer les OUs, groupes et utilisateurs

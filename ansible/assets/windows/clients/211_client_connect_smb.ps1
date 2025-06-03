@@ -4,7 +4,7 @@ net use Z: \\bellagio.local\script /user:mgmgrand\DannyOcean P@ssw0rd
 $sourcePath = "Z:\111_script_smb.ps1"
 
 # Chemin du fichier de destination local
-$destinationPath = "C:\connect_smb.ps1"
+$destinationPath = "C:\script\connect_smb.ps1"
 
 # Copier le contenu du fichier depuis le partage Samba vers le fichier local
 Copy-Item -Path $sourcePath -Destination $destinationPath -Force

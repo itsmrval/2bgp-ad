@@ -124,3 +124,11 @@
   delay: 5
   ignore_errors: yes
   with_items: "{{ vms }}"
+
+- name: waiting_agent
+  shell: "qm agent {{ item.vm_id }} ping"
+  register: agent_result_up
+  until: agent_result_up.rc == 0
+  retries: 300
+  delay: 10
+  with_items: "{{ vms }}"
