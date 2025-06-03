@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getLevel, awardUserPoints } from '../../api/calls';
 import '../../assets/styles/mission.css';
+import { useAuth } from '../../api/auth/useAuth';
 import loadingGif from '../../assets/logo/logo.gif';
 
 const MissionCard = () => {
+    const { user } = useAuth();
     const navigate = useNavigate();
     const { levelId } = useParams();
     const [level, setLevel] = useState(null);
@@ -58,39 +60,38 @@ const MissionCard = () => {
         }
     };
 
-    const handleFlagSubmit = async (e) => {
-        e.preventDefault();
+const handleFlagSubmit = async (e) => {
+    e.preventDefault();
 
-        if (!flag.trim()) {
-            setFeedbackMessage('Veuillez entrer un flag');
-            setIsSuccess(false);
-            setShowFeedback(true);
-            setTimeout(() => setShowFeedback(false), 3000);
-            return;
-        }
+    if (!flag.trim()) {
+        setFeedbackMessage('Veuillez entrer un flag');
+        setIsSuccess(false);
+        setShowFeedback(true);
+        setTimeout(() => setShowFeedback(false), 3000);
+        return;
+    }
 
-        try {
-            const userId = localStorage.getItem('id');
-            await awardUserPoints(userId, level._id, flag);
+    try {
+        const userId = user.id;
+        await awardUserPoints(userId, level._id, flag);
 
-            setFeedbackMessage('Flag correct ! Niveau réussi');
-            setIsSuccess(true);
-            setShowFeedback(true);
+        setFeedbackMessage('Flag correct ! Niveau réussi');
+        setIsSuccess(true);
+        setShowFeedback(true);
 
-            setTimeout(() => {
-                navigate('/');
-            }, 3000);
-        } catch (error) {
-            console.error('Error submitting flag:', error);
-            setFeedbackMessage('Flag incorrect');
-            setIsSuccess(false);
-            setShowFeedback(true);
+        navigate('/');
+    } catch (error) {
+        console.error('Error submitting flag:', error);
+        setFeedbackMessage('Flag incorrect');
+        setIsSuccess(false);
+        setShowFeedback(true);
 
-            setTimeout(() => {
-                setShowFeedback(false);
-            }, 3000);
-        }
-    };
+        setTimeout(() => {
+            setShowFeedback(false);
+        }, 3000);
+    }
+};
+
 
     if (loading) {
         return (
