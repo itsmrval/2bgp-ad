@@ -1,4 +1,4 @@
-net use Z: \\bellagio.local\script /user:mgmgrand\DannyOcean P@ssw0rd
+net use Z: \\bellagio.local\script /user:mgmgrand\DannyOcean Qwerty123
 
 # Chemin du fichier source sur le partage Samba
 $sourcePath = "Z:\111_script_smb.ps1"

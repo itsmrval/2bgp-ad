@@ -42,4 +42,4 @@ $TaskSettings.DisallowStartIfOnBatteries = $false
 $TaskSettings.RunOnlyIfNetworkAvailable = $false
 $TaskSettings.RunOnlyIfNetworkAvailable = $false
 
-Register-ScheduledTask -TaskName $TaskName -Action $TaskAction -Trigger $TaskTrigger -Settings $TaskSettings -User "DannyOcean" -Password "P@ssw0rd" -RunLevel Highest -Force
+Register-ScheduledTask -TaskName $TaskName -Action $TaskAction -Trigger $TaskTrigger -Settings $TaskSettings -User "DannyOcean" -Password "Qwerty123" -RunLevel Highest -Force

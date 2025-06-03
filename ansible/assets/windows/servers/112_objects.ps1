@@ -29,7 +29,7 @@ foreach ($group in $groups.Keys) {
             $password = ConvertTo-SecureString "Administrator123" -AsPlainText -Force
         } elseif ($user -eq "DannyOcean") {
             # Pour Danny Ocean, utiliser un mot de passe spécifique
-            $password = ConvertTo-SecureString "Cisco" -AsPlainText -Force
+            $password = ConvertTo-SecureString "Qwerty123" -AsPlainText -Force
         } else {
             # Pour les autres utilisateurs, utiliser un mot de passe générique
             $password = ConvertTo-SecureString "eF?&4W0eUs6zfJaM!?op" -AsPlainText -Force
