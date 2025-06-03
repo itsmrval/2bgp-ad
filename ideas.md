@@ -330,14 +330,15 @@ Level 5 (AD Mgm Grand) : Escalade de privilèges via une tache planifié
 
 Script pour histoire du niveau :
 
+Après avoir consolidé votre accès sur dans le casino Bellagio et pris le contrôle du serveur de sauvegarde, l’équipe d’Ocean se tourne désormais vers un nouveau terrain de jeu : Le MGM Grand. Une source à vous révèle qu’un script PowerShell s’exécute toutes les heures avec des droits élevés sur une machine membre du domaine MGM. 
+
+Votre objectif est simple : modifier le contenu du fichier de script planifié de façon à créer un compte avec assez au niveau de privilège au prochain passage de la tâche. 
 
 Attaque : 
 
 L'utilisateur se doit de créer un compte admin local grace a son droit de changer le fichier de script dans les taches planifiés
 
-Message réussite niveau :
-
-vous êtes administrateur local du serveur IT et pouvez préparer la phase suivante du braquage : la désactivation des systèmes de sécurité et la collecte en toute discrétion des données critiques avant l’assaut sur les coffres. Bonne escalade !
+Exemple de script : 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
