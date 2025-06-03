@@ -13,8 +13,7 @@ send_request() {
         --data-urlencode "hid=$2" \
         --data-urlencode "description=$3" \
         --data-urlencode "flag=$4" \
-        --data-urlencode "url=$5" \
-        --data-urlencode "points=$6"
+        --data-urlencode "points=$5"
 }
 
 # Check if levels exist by sending a GET request
