@@ -31,7 +31,7 @@ foreach ($group in $groups.Keys) {
             # Pour les autres utilisateurs, utiliser un mot de passe générique
             $password = ConvertTo-SecureString "eF?&4W0eUs6zfJaM!?op" -AsPlainText -Force
         }
-        New-ADUser -Name $user -Path $ouPath -AccountPassword (ConvertTo-SecureStringp $password -AsPlainText -Force) -Enabled $true
+        New-ADUser -Name $user -Path $ouPath -AccountPassword (ConvertTo-SecureString $password -AsPlainText -Force) -Enabled $true
 
     }
 }
