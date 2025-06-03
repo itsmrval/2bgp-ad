@@ -7,14 +7,14 @@ import LoaderGif from '../assets/logo/logo.gif';
 import { useAuth } from '../api/auth/useAuth';
 
 const positions = [
-  { left: '7%', top: '20%', rotation: -8 }, 
-  { left: '17%', top: '25%', rotation: -8 }, 
+  { left: '7%', top: '20%', rotation: -8 },
+  { left: '17%', top: '25%', rotation: -8 },
   { left: '17%', top: '45%', rotation: -8 },
-  { left: '28%', top: '46%', rotation: -8 }, 
-  { left: '35%', top: '65%', rotation: -6 }, 
+  { left: '28%', top: '46%', rotation: -8 },
+  { left: '35%', top: '65%', rotation: -6 },
   { left: '45%', top: '65%', rotation: -2 },
   { left: '55%', top: '65%', rotation: 2 },
-  { left: '65%', top: '65%', rotation: 6 }, 
+  { left: '65%', top: '65%', rotation: 6 },
   { left: '72%', top: '46%', rotation: 8 },
   { left: '83%', top: '45%', rotation: 8 },
   { left: '83%', top: '25%', rotation: 8 },
@@ -30,7 +30,7 @@ const BlackjackTable = ({ playedCards, completedLevels, nextLevelHid, hand }) =>
       setTimeout(() => {
         setVisibleCards(prev => new Set([...prev, card.id]));
       }, index * 200);
-      
+
       setTimeout(() => {
         setAnimatedCards(prev => new Set([...prev, card.id]));
       }, index * 200 + 50);
@@ -93,7 +93,7 @@ const BlackjackTable = ({ playedCards, completedLevels, nextLevelHid, hand }) =>
           const isNextLevel = index === expectedSlotForNextLevel;
 
           const isAnimated = card && animatedCards.has(card.id);
-          const isVisible = card && (visibleCards.has(card.id) || playedCard); // played cards should be visible immediately
+          const isVisible = card && (visibleCards.has(card.id) || playedCard);
           const rotation = position.rotation;
 
           return (
@@ -125,7 +125,8 @@ const BlackjackTable = ({ playedCards, completedLevels, nextLevelHid, hand }) =>
                   <PlayingCard
                     value={card.value}
                     suit={card.suit}
-                    isCompleted={!!completedCard && !playedCard}
+                    hoverAnimated={true}
+                    active={isNextLevel}
                   />
                 </div>
               )}
@@ -136,6 +137,7 @@ const BlackjackTable = ({ playedCards, completedLevels, nextLevelHid, hand }) =>
     </>
   );
 };
+
 const CardWrapper = ({ card, style, onClick, animationDelay, showAnimation, isDisabled, isNextLevel }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [shouldShow, setShouldShow] = useState(false);
@@ -217,12 +219,11 @@ const CardWrapper = ({ card, style, onClick, animationDelay, showAnimation, isDi
         onMouseEnter={() => !isDisabled && setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <PlayingCard 
-          value={card.value} 
-          suit={card.suit} 
-          isHovered={isHovered && !isDisabled} 
-          isDisabled={isDisabled}
-          isNextLevel={isNextLevel}
+        <PlayingCard
+          value={card.value}
+          suit={card.suit}
+          hoverAnimated={isHovered && !isDisabled}
+          active={isNextLevel}
         />
       </div>
     </>
@@ -246,11 +247,11 @@ const Index = () => {
       try {
         const nextLevel = await getNextUserNextLevel(user.id);
         const data = await getLevels();
-        
+
         setLevels(data);
         setNextLevelHid(nextLevel);
         initializeGame(data, nextLevel);
-        
+
         setTimeout(() => {
           setShowCardAnimation(true);
           setLoading(false);
@@ -264,10 +265,10 @@ const Index = () => {
 
   const initializeGame = (data, nextLevel) => {
     const valueMap = { A: 0, J: 10, Q: 11, K: 12 };
-    
+
     const completedCards = [];
     const handCards = [];
-    
+
     data.forEach(level => {
       const card = {
         suit: 'hearts',
@@ -277,9 +278,9 @@ const Index = () => {
         slotIndex: null,
         levelId: level.id
       };
-      
+
       const isCompleted = isLevelCompleted(level.hid, nextLevel);
-      
+
       if (isCompleted) {
         const slotIndex = valueMap[card.value] ?? parseInt(card.value) - 1;
         completedCards.push({ ...card, slotIndex, played: true });
@@ -287,10 +288,10 @@ const Index = () => {
         handCards.push(card);
       }
     });
-    
+
     setCompletedLevels(completedCards);
     setHand(handCards);
-    
+
     const occupiedSlots = completedCards.map(card => card.slotIndex);
     const allSlots = [...Array(13).keys()];
     setAvailableSlots(allSlots.filter(slot => !occupiedSlots.includes(slot)));
@@ -315,7 +316,7 @@ const Index = () => {
     setPlayedCards(prev => [...prev, { ...card, slotIndex }]);
     navigate(`/mission/${card.id}`);
   };
-  
+
   const calculateHandCardStyle = (index, card) => {
     const cardSpacing = 45;
     const unplayedCards = hand.filter(c => !c.played);
@@ -336,9 +337,9 @@ const Index = () => {
     <div className="flex justify-center items-center min-h-screen bg-gray-900">
       <div className="relative w-full max-w-3xl bg-gray-800 rounded-lg shadow-2xl p-4 overflow-hidden">
         <div className="mb-4">
-          <BlackjackTable 
-            playedCards={playedCards} 
-            completedLevels={completedLevels} 
+          <BlackjackTable
+            playedCards={playedCards}
+            completedLevels={completedLevels}
             nextLevelHid={nextLevelHid}
             hand={hand}
           />
@@ -354,7 +355,7 @@ const Index = () => {
                 const unplayedIndex = hand.filter((c, i) => !c.played && i <= index).length - 1;
                 const isNextLevel = card.value == nextLevelHid;
                 const isDisabled = nextLevelHid && card.value != nextLevelHid;
-                
+
                 return (
                   <CardWrapper
                     key={card.id}
@@ -377,4 +378,3 @@ const Index = () => {
 };
 
 export default Index;
-
