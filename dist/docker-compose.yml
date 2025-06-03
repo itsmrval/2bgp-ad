@@ -1,5 +1,6 @@
 services:
 
+# Reverse proxy
   haproxy:
     platform: linux/x86_64
     container_name: haproxy
@@ -12,6 +13,7 @@ services:
       - ./config/cert.pem:/usr/local/etc/haproxy/cert.pem
     restart: unless-stopped
 
+# Backend
   backend:
     build:
       context: ./backend
@@ -27,6 +29,7 @@ services:
       retries: 3
       start_period: 3s
 
+# Frontend
   frontend:
     build:
       context: ./frontend
@@ -40,6 +43,7 @@ services:
       retries: 3
       start_period: 3s
 
+# MongoDB Database
   mongodb:
     platform: linux/x86_64
     image: mongo:4.4.6
@@ -49,6 +53,18 @@ services:
     env_file:
       - config/mongodb.env
 
+# Deploy
+  deploy:
+    platform: linux/x86_64
+    image: curlimages/curl
+    container_name: deploy
+    volumes:
+      - ./scripts/deploy_levels.sh:/scripts/deploy_levels.sh
+      - ./config/backend.env:/scripts/config/backend.env
+    command: ["sh", "/scripts/deploy_levels.sh"]
+    depends_on:
+      backend:
+        condition: service_healthy
 
 volumes:
   mongodata:
