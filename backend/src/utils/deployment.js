@@ -37,7 +37,6 @@ const deployClient = async (client_id) => {
         return true;
     } catch (error) {
         console.error('Deployment error:', error);
-        throw error;
     }
 }
 
