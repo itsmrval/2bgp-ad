@@ -64,6 +64,18 @@ body, html {
     display: none;
 }
 
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.loading-indicator img {
+  width: 100px;
+}
+
+
 /* Row styling */
 .team-row {
     display: flex;

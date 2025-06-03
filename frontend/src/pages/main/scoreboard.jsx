@@ -1,7 +1,6 @@
 import React from 'react';
 import Scoreboard from '../../components/main/Scoreboard.jsx';
 import Header from '../../components/header/Header.jsx';
-import Footer from '../../components/footer/Footer.jsx';
 import '../../assets/styles/scoreboard.css';
 
 const ScoreboardPage = () => {

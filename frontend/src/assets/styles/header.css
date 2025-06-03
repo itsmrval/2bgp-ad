@@ -31,15 +31,28 @@
 }
 
 .logo {
-    height: 110px; /* Make the logo smaller */
-    width: auto; /* Maintain aspect ratio */
-    display: block;
+  position: relative;
+  width: 100px; /* Adjust based on your logo size */
+  height: 100px; /* Adjust based on your logo size */
 }
 
-.logo img {
-    height: 100%;
-    width: auto;
-    object-fit: contain;
+.static-logo, .gif-logo {
+  position: absolute;
+  top: 4.5vh;
+  left: 0;
+  width: 100%;
+}
+
+.gif-logo {
+  display: none;
+}
+
+.logo:hover .static-logo {
+  display: none;
+}
+
+.logo:hover .gif-logo {
+  display: block;
 }
 
 .main-nav {

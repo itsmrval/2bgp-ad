@@ -1,7 +1,6 @@
 import React from 'react';
 import Header from '../../components/header/Header.jsx';
 import Main from '../../components/main/main.jsx';
-import Footer from '../../components/footer/Footer.jsx';
 
 const MainPage = () => {
   return (
@@ -12,10 +11,6 @@ const MainPage = () => {
       </div>
       {/* Main content area */}
       <Main />
-      {/* Footer area */}
-      <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000 }}>
-        <Footer />
-      </div>
     </div>
   );
 };

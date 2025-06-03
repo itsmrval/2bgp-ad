@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getLevels, awardUserPoints } from '../../api/calls';
 import '../../assets/styles/mission.css';
+import loadingGif from '../../assets/logo/logo.gif';
 
 const MissionCard = () => {
     const navigate = useNavigate();
-    const { levelId } = useParams(); 
+    const { levelId } = useParams();
     const [level, setLevel] = useState(null);
     const [flag, setFlag] = useState('');
     const [feedbackMessage, setFeedbackMessage] = useState('');
@@ -19,13 +20,13 @@ const MissionCard = () => {
         const fetchLevel = async () => {
             try {
                 if (!levelId) {
-                    console.log('111')
-                    return
+                    console.log('Level ID is missing');
+                    return;
                 }
 
                 const levels = await getLevels();
                 const currentLevel = levels.find(l => l._id === levelId);
-                
+
                 if (!currentLevel) {
                     console.error('Level not found:', levelId);
                     navigate('/');
@@ -33,12 +34,13 @@ const MissionCard = () => {
                 }
 
                 setLevel(currentLevel);
-            
-                
+                setTimeout(() => {
+                    setLoading(false);
+                }, 200);
+
             } catch (err) {
                 console.error('Error fetching level:', err);
                 setError('Failed to load level data');
-            } finally {
                 setLoading(false);
             }
         };
@@ -58,7 +60,7 @@ const MissionCard = () => {
 
     const handleFlagSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (!flag.trim()) {
             setFeedbackMessage('Veuillez entrer un flag');
             setIsSuccess(false);
@@ -70,11 +72,11 @@ const MissionCard = () => {
         try {
             const userId = localStorage.getItem('id');
             await awardUserPoints(userId, level._id, flag);
-            
+
             setFeedbackMessage('Flag correct ! Niveau réussi');
             setIsSuccess(true);
             setShowFeedback(true);
-            
+
             setTimeout(() => {
                 navigate('/');
             }, 3000);
@@ -83,7 +85,7 @@ const MissionCard = () => {
             setFeedbackMessage('Flag incorrect');
             setIsSuccess(false);
             setShowFeedback(true);
-            
+
             setTimeout(() => {
                 setShowFeedback(false);
             }, 3000);
@@ -92,11 +94,9 @@ const MissionCard = () => {
 
     if (loading) {
         return (
-            <div className="mission-app-body">
-                <div className="card">
-                    <div className="card-body">
-                        <p>Chargement...</p>
-                    </div>
+            <div className="full-page-loading">
+                <div className="loading-indicator">
+                    <img src={loadingGif} alt="Loading..." />
                 </div>
             </div>
         );
@@ -121,12 +121,12 @@ const MissionCard = () => {
         <div className="mission-app-body">
             <div className="card">
                 <div className="card-header">
-                    <h5 className="card-title">{level.name}</h5>
+                    <h5 className="card-title">Niveau {level.hid}</h5>
                     <div className={`level-status ${isCompleted ? 'status-success' : 'status-pending'}`}>
-                        {isCompleted ? 'Completed' : 'Pending'}
+                        {isCompleted ? 'Terminé' : 'Non réalisé'}
                     </div>
                 </div>
-                
+
                 <div className="card-stats">
                     <div className="card-stat">
                         <strong>Points</strong>
@@ -137,13 +137,13 @@ const MissionCard = () => {
                         <span>{level.difficulty || 'N/A'}</span>
                     </div>
                 </div>
-                
+
                 <div className="card-body">
                     <p className="card-text">{level.description}</p>
-                    
+
                     {level.url && (
                         <div className="start-section">
-                            <button 
+                            <button
                                 className={`start-button ${isCompleted ? 'launch-button-done' : 'launch-button'}`}
                                 onClick={handleStartClick}
                                 disabled={isCompleted}
@@ -153,7 +153,7 @@ const MissionCard = () => {
                             </button>
                         </div>
                     )}
-                    
+
                     {!isCompleted && (
                         <div className="flag-section">
                             <h6>Soumettre un flag</h6>
@@ -170,7 +170,7 @@ const MissionCard = () => {
                                     <button type="submit" className="submit-btn">Valider</button>
                                 </div>
                             </form>
-                            
+
                             {showFeedback && (
                                 <div className={`feedback-message ${isSuccess ? 'success' : 'error'}`}>
                                     {feedbackMessage}
@@ -179,7 +179,7 @@ const MissionCard = () => {
                         </div>
                     )}
                 </div>
-                
+
                 <button className="back-button" onClick={handleBackClick}>
                     Retour
                 </button>

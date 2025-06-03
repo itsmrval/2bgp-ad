@@ -12,6 +12,13 @@ const handleResponse = async (response) => {
   return response.json();
 };
 
+export const getUser = async (userId) => {
+  const response = await fetch(`${API_URL}/users/${userId}`, {
+    headers: getAuthHeaders(),
+  });
+  return handleResponse(response);
+};
+
 export const register = async (username, password) => {
   const response = await fetch(`${API_URL}/auth/register`, {
     method: 'POST',
@@ -40,6 +47,13 @@ export const deleteUser = async (userId) => {
 
 export const getLevels = async () => {
   const response = await fetch(`${API_URL}/levels`, {
+    headers: getAuthHeaders(),
+  });
+  return handleResponse(response);
+};
+
+export const getLevel = async (levelId) => {
+  const response = await fetch(`${API_URL}/levels/${levelId}`, {
     headers: getAuthHeaders(),
   });
   return handleResponse(response);
@@ -83,3 +97,20 @@ export const awardUserPoints = async (userId, levelId, flag = '') => {
   });
   return handleResponse(response);
 };
+
+export const getNextUserNextLevel = async (userId) => {
+    try {
+        const levels = await getLevels();
+        const user = await getUser(userId);
+        let currentLevel = 0;
+        for await (const achieved of user?.achieved) {
+            const level = await levels.find(l => l._id === achieved.level_id)
+            if (parseInt(level?.hid) > currentLevel)
+                currentLevel = parseInt(level?.hid);
+        }
+        return currentLevel + 1;
+    } catch (error) {
+        console.error('Error getting next level:', error);
+        return null;
+    }
+}

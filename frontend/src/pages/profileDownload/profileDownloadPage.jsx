@@ -1,7 +1,6 @@
 import React from 'react';
 import ProfileDownload from '../../components/profileDownload/profileDownload.jsx';
 import Header from '../../components/header/Header.jsx';
-import Footer from '../../components/footer/Footer.jsx';
 
 const ProfileDownloadPage = () => {
     return (

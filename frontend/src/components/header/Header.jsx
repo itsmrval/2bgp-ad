@@ -2,8 +2,11 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import '../../assets/styles/header.css';
-import {useAuth} from '../../api/auth/useAuth';
+import { useAuth } from '../../api/auth/useAuth';
 
+// Import your logo and gif
+import logo from '../../assets/logo/logo.png';
+import logoGif from '../../assets/logo/logo.gif';
 
 const TransparentHeader = () => {
   const location = useLocation();
@@ -26,10 +29,9 @@ const TransparentHeader = () => {
     navigate('/login');
   };
 
-  // Function to conditionally render links based on current page
   const renderNavLink = (path, text) => {
     const active = isActive(path) ? 'active' : '';
-    
+
     return (
       <li className={active}>
         {isHomePage ? (
@@ -46,7 +48,8 @@ const TransparentHeader = () => {
   return (
     <header className="transparent-header">
       <div className="logo">
-        <img src={require('../../assets/logo/logo.png')} alt="2BGP Logo" />
+        <img src={logo} alt="2BGP Logo" className="static-logo" />
+        <img src={logoGif} alt="2BGP Logo GIF" className="gif-logo" />
       </div>
 
       <nav className="main-nav">
@@ -143,7 +146,7 @@ const StyledWrapper = styled.div`
   }
 
   .Btn:active {
-    transform: translate(2px ,2px);
+    transform: translate(2px, 2px);
   }
 `;
 
