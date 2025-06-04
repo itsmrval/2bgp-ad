@@ -116,34 +116,6 @@ File Share Managers
       Description: Compte administrateur de Terry Benedict. <br/>
       Membres: Benedict <br/>
 
-**********************************************************************************************************************************************      
-
-Tuto Exegol conteneur : https://youtu.be/7AI2rYDLIUs?si=uwSTkzRqh5wNxuXm
-
-Idées Attaques : 
-
-On a besoin de 14 attaques !!!
-
-**Attaques de bas niveau :**
-
-LLMNR, NBT-NS et mDNS spoofing
-
-Kerberoast w/o pre-authentication
-
-l'attaque asrep roasting permet prendre la main sur d'autres comptes
-
-
-**Attaques simples :**
-Abus des DACL (Discretionary Access Control Lists)
-
-Prendre le controle d'un compte qui a les droits de modifier ou de create des gpo grâce aux 
-attaques précédentes pour lancer des attaques plus vastes
-
-
-**Attaques Importantes :**
-
-Print NightMareeeee
-AdminSDHolder
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -192,19 +164,6 @@ Bienvenu dans l'équipe et que le braquage commence !!!
 
 11- exploiter le lien trust pour enumerer le contenu du second ad ( à faire) ou kerbrute
 
-**Pour un total de 11 failles réalisables et tester**
-
-Les failles qui necessitent une configuration en amont : 
-
-0 ouvrir le port ssh, smb etc pour donner des indices
-
-1 configurer une tache planifié ou un script pour creer une fausse connexion à un partage (déjà tester j'ai le script)
-
-4 activer ssh
-
-5 creer la tache planifié et donner les droits à l'utilisateur ou aux utilisateurs
-
-8 mettre l'utilisateur dont on a cracké les mdp dans le groupe admins avec restrictions si il le faut
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
