@@ -5,11 +5,10 @@ $rootOu = "OU=Casino,DC=mirage,DC=local"
 # Créer l'OU racine
 New-ADOrganizationalUnit -Name "Casino" -Path "DC=mirage,DC=local"
 
-# Définir les groupes et comptes pour Mirage
 $groups = @{
-    "Croupiers"  = @("DannyOcean", "LinusCaldwell", "RustyRyan")
-    "Securite"   = @("BasherTarr", "LivingstonDell", "FrankCatton")
-    "IT"         = @("ReubenTishkoff", "SaulBloom", "VirgilMalloy")
+    "Gestion"    = @("BasherTarr", "LivingstonDell", "FrankCatton", "NightGuard", "EyeInTheSky", "SafeWatcher")
+    "Marketing"  = @("LinusCaldwell", "RustyRyan", "JackSpot", "AceKeeper", "ChipMaster")
+    "Finance"    = @("ReubenTishkoff", "SaulBloom", "VirgilMalloy", "CodeDealer", "ByteBettor", "CryptoWizard")
 }
 
 # Créer les OUs, groupes et utilisateurs

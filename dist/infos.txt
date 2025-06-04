@@ -1,0 +1,5 @@
+=== Information Système Windows ===
+Version: 10.0.26100
+Machine: AMD64
+Nom de l'ordinateur: PC-CORENTIN
+===================================

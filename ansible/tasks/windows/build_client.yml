@@ -12,27 +12,27 @@
     agent: 1
     node: "{{ inventory_hostname }}"
 
-- name: create_vm
-  command: >
-    qm create {{ item.vm_id }}
-    --name {{ item.vm_name }}
-    --sockets {{ vm_sockets }}
-    --cores {{ vm_cores }}
-    --memory {{ vm_memory }}
-    --ide2 file=local:iso/Windows_Client_Auto.iso,media=cdrom
-    --scsihw virtio-scsi-pci
-    --sata0 {{ item.storage_name }}:{{ drive_size_gb }},format={{ format }}
-    --net0 model=e1000e,bridge=cust100
-    --ostype {{ vm_os_type }}
-    --agent {{ agent }}
-    --boot order=ide2
-  with_items: "{{ vms }}"
-  register: vm_creation
+# - name: create_vm
+#   command: >
+#     qm create {{ item.vm_id }}
+#     --name {{ item.vm_name }}
+#     --sockets {{ vm_sockets }}
+#     --cores {{ vm_cores }}
+#     --memory {{ vm_memory }}
+#     --ide2 file=local:iso/Windows_Client_Auto.iso,media=cdrom
+#     --scsihw virtio-scsi-pci
+#     --sata0 {{ item.storage_name }}:{{ drive_size_gb }},format={{ format }}
+#     --net0 model=e1000e,bridge=cust100
+#     --ostype {{ vm_os_type }}
+#     --agent {{ agent }}
+#     --boot order=ide2
+#   with_items: "{{ vms }}"
+#   register: vm_creation
 
-- name: start_vms
-  command: "qm start {{ item.vm_id }}"
-  with_items: "{{ vms }}"
-  when: item.vm_id in vm_creation.results | map(attribute='item.vm_id') | list
+# - name: start_vms
+#   command: "qm start {{ item.vm_id }}"
+#   with_items: "{{ vms }}"
+#   when: item.vm_id in vm_creation.results | map(attribute='item.vm_id') | list
 
 - name: waiting_agent
   shell: "qm agent {{ item.vm_id }} ping"

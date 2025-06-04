@@ -17,8 +17,8 @@
     # - name: prepare_windows_client_template
     #   import_tasks: tasks/windows/prepare_client.yml
 
-    # - name: build_windows_client_template
-    #   import_tasks: tasks/windows/build_client.yml
+    - name: build_windows_client_template
+      import_tasks: tasks/windows/build_client.yml
 
     # - name: deploy objects on windows server
     #   import_tasks: tasks/windows/objects_server.yml
