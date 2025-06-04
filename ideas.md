@@ -187,8 +187,6 @@ Key ctf = 128 + Bellagio.local
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Level 2 Trouver les user (AD Bellagio) :
 
-!!!!!!!! FOURNIR UNE LISTE DE COMPTE AD POSSIBLE AU PENTESTER !!!!!!!
-
 Script pour histoire du niveau :
 
 Après avoir cartographié l’infrastructure du casino grâce à NMAP. Votre équipe se retrouve face à un nouveau défi : pénétrer le cœur de l’Active Directory pour dénicher les identifiants des employés et des comptes de services.
@@ -206,8 +204,6 @@ kerbrute userenum --dc "10.100.0.111" -d "bellagio.local" users.txt
 FLAG : svc-bella
 
 Mettre dans list_recup.txt les noms recuperes
-
-Message réussite niveau : Félicitations ! Grâce à votre liste de 1 000 noms d’utilisateur et votre script Kerbrute, vous avez identifié 1 comptes AD valides dans le domaine bellagio.local (les noms figurent désormais dans list_recup.txt). En particulier, vous avez mis la main sur le compte svc-bella, qui correspond au flag du niveau 2.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
