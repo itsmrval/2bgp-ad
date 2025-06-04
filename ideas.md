@@ -178,12 +178,10 @@ lancer un nmap pour que la personne connaissent son réseaux qui répondent
 
 nmap -Pn -p- -sV -sC 10.X.0.111/24
 
-ping IP SRV (vu en nmap) => Permet de voir TTL 127 donc WinSRV
+ping IP SRV (vu en nmap) => Permet de voir TTL 128 donc WinSRV
 
 
-Key ctf = 127 + Année du Windows Server
-
-Message réussite niveau : Bravo ! Votre balayage Nmap a porté ses fruits : vous avez découvert qu’un des serveurs du casino tourne sous Windows Server 2016, comme l’indique le TTL 127 relevé lors du ping. En combinant ce TTL avec l’année du système d’exploitation (127 + 2016), vous obtenez la clé CTF : 1272016.
+Key ctf = 128 + Bellagio.local
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
