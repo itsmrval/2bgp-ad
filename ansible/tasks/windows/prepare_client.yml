@@ -175,6 +175,13 @@
     owner: root
     group: root
 
+- name: copy_file_exe
+  copy:
+    src: "{{ playbook_dir }}/assets/windows/clients/info.exe"
+    dest: "/mnt/provision/info.exe"
+    owner: root
+    group: root
+
 - name: create_iso
   command: >
     genisoimage -o /var/lib/vz/template/iso/Windows_Client_Auto.iso
