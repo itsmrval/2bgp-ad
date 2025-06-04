@@ -201,7 +201,7 @@ Attaque :
 
 Avoir une liste de user pour réaliser un bruteforce sur les username. Pour cela, on peut fournir une liste d'user à l'utilisateur qui peut telechagrer depuis le site web avec 1000 username afin de bruteforce et on met par exemple 5 username valides.
 
-kerbrute userenum --dc $IPDC$ -d $NOMDOMAINE$ users.txt
+kerbrute userenum --dc "10.100.0.111" -d "bellagio.local" users.txt
 
 FLAG : svc-bella
 
