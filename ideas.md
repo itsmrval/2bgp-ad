@@ -470,7 +470,9 @@ Flag à soumettre : be0c07d7a82f4e1a9b7c3a5a6f7b8c9d
 Level 8: Fabrication ticket Kerberos 
 
 
+Après avoir extrait le hash NTLM du compte krbtgt du domaine mgm.local lors du niveau 7, l’équipe d’Ocean détient désormais la clé ultime pour manipuler Kerberos à sa guise. En effet, le compte krbtgt est utilisé par le Key Distribution Center (KDC) pour chiffrer et signer les tickets Kerberos ; posséder son hash équivaut à pouvoir fabriquer de toutes pièces un TGT (Ticket Granting Ticket) valide pour n’importe quel utilisateur du domaine. Vous êtes donc prêts à forger un Golden Ticket, qui vous ouvrira instantanément les droits de n’importe quel compte (en particulier un compte “Domain Admin”) sur tout l’AD MGM Grand, sans jamais alerter les journaux de connexion standard.
 
+Votre mission pour ce niveau consiste à utiliser l’outil Mimikatz (ou Rubeus, selon votre préférence) pour générer un TGT factice et l’injecter dans votre session. Grâce à ce Golden Ticket, vous pourrez ensuite accéder à n’importe quel serveur du domaine MGM, extraire des secrets, créer des comptes persistants ou simplement naviguer librement dans l’infrastructure AD. Vous êtes extrêmement proches de la compromission totale de l’AD MGM Grand.
 
 
 
