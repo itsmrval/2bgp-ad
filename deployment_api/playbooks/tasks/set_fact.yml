@@ -1,6 +1,8 @@
 - name: set_fact
   set_fact:
     templates:
-      - { id: 111 }
-      - { id: 112 }
-      - { id: 113 }
+      - { id: 111, net: 1, suf: 1 }
+      - { id: 112, net: 2, suf: 1 }
+      - { id: 113, net: 3, suf: 1 }
+      - { id: 211, net: 2, suf: 2 }
+      - { id: 212, net: 3, suf: 2 }

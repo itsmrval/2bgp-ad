@@ -1,0 +1,40 @@
+# Clone VMs
+- name: Clone VMs
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/nodes/{{ proxmox_node }}/qemu/{{ item.id }}/clone"
+    method: POST
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    body_format: form-urlencoded
+    body:
+      newid: "{{ client_id }}00{{ item.id }}"
+      name: "vm-{{ client_id }}-{{ item.id }}"
+      storage: "{{ vm_storage }}"
+      format: "raw"
+      description: "CustomVM"
+    validate_certs: false
+    status_code: 200
+    timeout: 600
+  loop: "{{ templates }}"
+  register: deploy_jobs
+
+
+# Configure SMBIOS settings for cloned VMs with retries
+- name: Configure SMBIOS settings
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/nodes/{{ proxmox_node }}/qemu/{{ client_id }}00{{ item.id }}/config"
+    method: PUT
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    body_format: form-urlencoded
+    body:
+      smbios1: "serial={{ [client_id, item.net, item.suf] | join('/') | b64encode }},base64=1"
+    validate_certs: false
+    status_code: 200
+  loop: "{{ templates }}"
+  register: smbios_status
+  until: smbios_status is success and smbios_status.status == 200
+  retries: 30
+  delay: 5
