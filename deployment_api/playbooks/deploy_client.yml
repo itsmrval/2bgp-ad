@@ -28,6 +28,12 @@
       debug:
         msg: "auth OK"
       when: auth_response.status == 200
+
+    - name: setup_sdn
+      import_tasks: tasks/setup_sdn.yml
+     
+    - name: enable_firewall
+      import_tasks: tasks/setup_firewall.yml
      
     - name: clone_vms
       import_tasks: tasks/clone_vm.yml
@@ -42,9 +48,3 @@
         state: started
         timeout: 180
       loop: "{{ templates }}"
-
-    - name: setup_sdn
-      import_tasks: tasks/setup_sdn.yml
-     
-    - name: enable_firewall
-      import_tasks: tasks/setup_firewall.yml
