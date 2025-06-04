@@ -1,3 +1,11 @@
+
+dsacls "DC=domain,DC=com" /G "DOMAINE\NomUtilisateur:RPWP;replicating directory changes"
+
+
+dsacls "DC=domain,DC=com" /G "DOMAINE\NomUtilisateur:RPWP;replicating directory changes all"
+
+
+
 Ocean's Eleven
 
 theme song: https://youtu.be/sdSai09_jzc
