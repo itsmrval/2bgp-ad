@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../../assets/styles/profileDownload.css';
 import { useAuth } from '../../api/auth/useAuth';
+import LoaderGif from '../../assets/logo/logo.gif';
 
 const ProfileDownload = () => {
     const { getProfile } = useAuth();
@@ -48,6 +49,7 @@ const ProfileDownload = () => {
 
                 <div className="download-intro">
                     <p>Afin d'accéder à votre environnement, connectez-vous en utilisant le profil WireGuard</p>
+                    <p><b>Vous serez automatiquement redirigé</b></p>
                 </div>
 
                 <div className="download-body">

