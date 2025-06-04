@@ -16,13 +16,13 @@ try {
     icacls $Path /inheritance:r
     icacls $Path /grant:r 'Administrator:(OI)(CI)(F)'
     icacls $Path /grant:r 'SYSTEM:(OI)(CI)(F)'
-    icacls $Path /grant:r 'mgmgrand.local\DannyOcean:(OI)(CI)(M)'
+    icacls $Path /grant:r 'mgmgrand.local\svc-winrm:(OI)(CI)(M)'
     icacls $Path /grant:r 'svc-bella:(OI)(CI)(M)'
 
     icacls $PathScript /inheritance:r
     icacls $PathScript /grant:r 'Administrator:(OI)(CI)(F)'
     icacls $PathScript /grant:r 'SYSTEM:(OI)(CI)(F)'
-    icacls $PathScript /grant:r 'mgmgrand.local\DannyOcean:(OI)(CI)(M)'
+    icacls $PathScript /grant:r 'mgmgrand.local\svc-winrm:(OI)(CI)(M)'
     icacls $PathScript /grant:r 'svc-bella:(OI)(CI)(M)'
 
     # Création du partage SMB
@@ -31,7 +31,7 @@ try {
         Path = $Path
         Description = 'logs connection'
         FullAccess = 'Administrator'
-        ChangeAccess = 'mgmgrand.local\DannyOcean', 'svc-bella'
+        ChangeAccess = 'mgmgrand.local\svc-winrm', 'svc-bella'
     }
     New-SmbShare @shareParams -ErrorAction Stop
 
@@ -40,7 +40,7 @@ try {
         Path = $PathScript
         Description = 'script connection'
         FullAccess = 'Administrator'
-        ChangeAccess = 'mgmgrand.local\DannyOcean','svc-bella'
+        ChangeAccess = 'mgmgrand.local\svc-winrm','svc-bella'
     }
     New-SmbShare @shareParamsScript -ErrorAction Stop
 

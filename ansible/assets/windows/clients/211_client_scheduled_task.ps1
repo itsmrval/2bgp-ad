@@ -6,13 +6,13 @@ New-Item -Path $Path -ItemType Directory -Force
 icacls $Path /inheritance:r
 icacls $Path /grant:r "Administrator:(OI)(CI)(F)"
 icacls $Path /grant:r "SYSTEM:(OI)(CI)(F)"
-icacls $Path /grant:r "mgmgrand\DannyOcean:(OI)(CI)(M)"
+icacls $Path /grant:r "mgmgrand\svc-winrm:(OI)(CI)(M)"
 
 
 Copy-Item -Path "D:\211_client_connect_smb.ps1" -Destination "C:\script\script_task_smb.ps1"
 
 # Variables
-$user = "mgmgrand\DannyOcean"
+$user = "mgmgrand\svc-winrm"
 
 
 $tempInfFile = "$env:TEMP\secedit_temp.inf"
@@ -42,4 +42,4 @@ $TaskSettings.DisallowStartIfOnBatteries = $false
 $TaskSettings.RunOnlyIfNetworkAvailable = $false
 $TaskSettings.RunOnlyIfNetworkAvailable = $false
 
-Register-ScheduledTask -TaskName $TaskName -Action $TaskAction -Trigger $TaskTrigger -Settings $TaskSettings -User "DannyOcean" -Password "Qwerty123" -RunLevel Highest -Force
+Register-ScheduledTask -TaskName $TaskName -Action $TaskAction -Trigger $TaskTrigger -Settings $TaskSettings -User "svc-winrm" -Password "Administrator123" -RunLevel Highest -Force
