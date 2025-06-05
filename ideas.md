@@ -110,67 +110,15 @@ File Share Managers
       Membres: Benedict <br/>
 
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Histoire inspiré de Ocean's Eleven à mettre dans l'intro :
-
-
-Danny Ocean est un maître du casse et le cerveau derrière l'opération la plus audacieuse jamais orchestrée sur le Strip de Las Vegas. Après 2 ans passés en prison loin de sa femme Son objectif ? La reconquérir et dévaliser simultanément trois des plus prestigieux casinos détenus par le redoutable Terry Benedict, un magnat de la mafia et le nouvel homme de son ex femme dont le pouvoir s'étend jusque dans les systèmes numériques.
-
-Pour préparer ce coup d’éclat, Ocean a réuni une équipe de onze spécialistes aux compétences complémentaires : voleur, expert en explosifs, pilotes hors pair, acrobate, as du déguisement.
-Vous avez été reconnu pour vos prouesses et votre talent en réussissant un certain CTF nommé 2BGP, et vos compétences en pentest ont attiré l’attention d’Ocean.
-
-Reconnu pour votre expertise en Active Directory et Windows Server, vous avez été minutieusement sélectionné. 
-
-Votre objectif est d’aider le groupe à s’infiltrer dans les casinos. Pendant qu’ils seront sur le terrain, c’est à vous de surveiller tous les agissements. Vous serez infiltré directement dans une chambre d’hôtel, équipé de votre matériel informatique. Pour cela, ils ont besoin de votre aide : vous devrez découvrir et cartographier le réseau informatique des casinos. 
-
-Bienvenu dans l'équipe et que le braquage commence !!!
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-0- nmap voir les protocoles et port ouvert
-
-1- responder faille (LLMNR et Netbios)
-
-2- cracker le mdp avec hashcat
-
-3- verifier la validité du mdp avec netexec
-
-4- se connecter à la machine locale via ssh (vu qu'on a les credentials et de plus c'est realiste)
-
-5 bis - enumerer les droits de l'utilisateur grace à l'outil...
-
-5- exploiter la faille des tâches planifiées afin de creer un compte admin
-
-6- installer procdump puis creer un partage et extraire le contenu du lsass
-
-7- cracker le contenu du lsass avec pypykatz
-
-8- pass the hash NTLM
-
-9- realiser la faille dcsync avec secretsdump
-
-10- realiser la faille dcshadow
-
-11 bis idées : exploiter le ticket d'or pour se creer un compte admin sur le second ad (à tester)
-
-11- exploiter le lien trust pour enumerer le contenu du second ad ( à faire) ou kerbrute
-
-
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Level 1 (Reconnaissance NMAP) (AD Bellagio)  :
 
+
 Script pour histoire du niveau :
 
-Votre équipe est déjà infiltrée dans le casino, mais pour que le casse commence, vous devez d’abord pénétrer leur environnement informatique. 
-
-Votre mission, si vous l’acceptez, consiste à identifier les types de serveurs présents sur leur réseau ainsi que les ports ouverts.
-
-Cependant, après quelques verres bien placés, l’équipe a réussi à soudoyer un membre du service IT, obtenant ainsi une plage d’adresses IP…
-En lançant une reconnaissance méticuleuse avec nmap, vous allez pouvoir cartographier le réseau du casino et identifier les services exposés.
+"Reconnaissance" 1 "Votre équipe s'infiltre dans le casino, pour que le casse commence vous devez pénétrer leur environnement informatique.<br>Votre mission consiste à identifier les types de serveurs présents sur leur réseau ainsi que les ports ouverts.<br><br>L’équipe a réussi à soudoyer un membre du service IT lors des missions de reconnaissances, obtenant ainsi une plage d’adresses IP 10.X.0.0/24<br><br>Vous allez pouvoir cartographier le réseau du casino et identifier les services exposés.<br><br>Entrer le ttl suivi de la version du serveur." "1282019" 100
 
 Attaque : 
 
@@ -180,14 +128,15 @@ nmap -Pn -p- -sV -sC 10.X.0.111/24
 
 ping IP SRV (vu en nmap) => Permet de voir TTL 128 donc WinSRV
 
-
-Key ctf = 128 + Bellagio.local
+Key ctf = 1282019
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Level 2 Trouver les user (AD Bellagio) :
 
 Script pour histoire du niveau :
+
+"Enumération" 2 "Après avoir cartographié l’infrastructure du casino, vous vous retrouvez face à un nouveau défi : pénétrer le cœur de l’Active Directory pour dénicher les identifiants des employés et des comptes de services.<br><br>Grâce aux informations récoltées vous savez désormais quels serveurs hébergent le rôle de contrôleur de domaine et comment la topologie du réseau est organisée. Pour progresser, il vous faut dresser une liste des comptes AD susceptibles d’être utilisés dans l’environnement du casino.<br><br><br>Un de vos contacts au sein du service IT a réussi à récupérer un fichier brut : une liste d’environ 1 000 noms d’utilisateurs utilisés pour le support interne. Vous <a href="/users.txt" target="_blank">téléchargez ce fichier</a> puis l’analysez pour en extraire les comptes potentiellement valides.<br><br>Entrer le nom de l'utilisateur." "svc-bella" 200
 
 Après avoir cartographié l’infrastructure du casino grâce à NMAP. Votre équipe se retrouve face à un nouveau défi : pénétrer le cœur de l’Active Directory pour dénicher les identifiants des employés et des comptes de services.
 
