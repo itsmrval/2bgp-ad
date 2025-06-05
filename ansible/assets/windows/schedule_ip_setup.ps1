@@ -1,6 +1,6 @@
-$scriptPath = "C:\script\ip_setup.ps1"
+$scriptPath = "C:\deploy_script\ip_setup.ps1"
 
-$destinationDir = "C:\script"
+$destinationDir = "C:\deploy_script"
 if (!(Test-Path -Path $destinationDir)) {
     New-Item -Path $destinationDir -ItemType Directory -Force
 }
