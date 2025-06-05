@@ -111,7 +111,7 @@
 
     - name: add iptables masquerade rule for wg
       ansible.builtin.command: >
-        iptables -t nat -A POSTROUTING -s 172.17.{{ client_id }}.0/30 -d 10.{{ client_id }}.0.0/16 -o eth2 -j MASQUERADE
-
+        iptables -t nat -A POSTROUTING -s 172.17.{{ client_id }}.0/30 -d 10.{{ client_id }}.0.0/16 -o eth{{ client_id }} -j MASQUERADE
+        
     - name: save iptables rules
       ansible.builtin.command: iptables-save

@@ -14,13 +14,14 @@ const Intro = () => {
 
     const titleRef = useRef(null);
     const numberRef = useRef(null);
+    const audioRef = useRef(null); // Référence pour l'audio
     const navigate = useNavigate();
 
     useEffect(() => {
-        const audio = new Audio(Introsound);
-        audio.play().catch(err => console.error("Error playing audio:", err));
+        // Initialiser l'audio
+        audioRef.current = new Audio(Introsound);
+        audioRef.current.play().catch(err => console.error("Error playing audio:", err));
 
-        // Add page-specific styles when component mounts
         const style = document.createElement('style');
         style.innerHTML = `
             .intro-page-container {
@@ -43,26 +44,27 @@ const Intro = () => {
         `;
         document.head.appendChild(style);
 
-        // Cleanup function to remove styles when component unmounts
+        // Cleanup function
         return () => {
-            document.head.removeChild(style);
+            if (document.head.contains(style)) {
+                document.head.removeChild(style);
+            }
+            // Arrêter l'audio lors du démontage du composant
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0;
+            }
         };
     }, []);
 
-    // Rest of your component code remains the same
     useEffect(() => {
         const titles = {
-            1: "2BGP TEAMS PRESENTS",
-            2: "MATHIEU BERSIN",
-            3: "CORENTIN BONNEAU",
-            4: "FRANCOIS GOYALONGO",
-            5: "CORENTIN BONNEAU",
-            6: "VALENTIN PUCCETTI",
-            7: "Danny Ocean planifie le braquage de trois casinos à Las Vegas.",
-            8: "Il recrute une équipe de onze experts, dont vous, spécialiste en cybersécurité.",
-            9: "Votre mission: cartographier et exploiter les failles des réseaux depuis votre chambre.",
-            10: "Pendant le braquage, vous neutraliserez les systèmes de sécurité en temps réel.",
-            11: "OCEAN'S ELEVEN"
+            1: "Danny Ocean planifie le braquage de trois casinos à Las Vegas.",
+            2: "Il recrute une équipe de onze experts, dont vous, spécialiste en cybersécurité.",
+            3: "Votre mission: cartographier et exploiter les failles des réseaux depuis votre chambre.",
+            4: "Pendant le braquage, vous neutraliserez les systèmes de sécurité en temps réel.",
+            5: "Présenté par BONNEAU Corentin, PUCCETTI Valentin, BERSIN Mathieu et GOYA LONGO François.",
+            6: "OCEAN'S ELEVEN"
         };
 
         const colors = {
@@ -71,17 +73,12 @@ const Intro = () => {
             3: { number: '#3063ff' },
             4: { number: '#fe54ff' },
             5: { number: '#ff6b54' },
-            6: { number: '#ffdd5f' },
-            7: { number: '#8f00ff' },
-            8: { number: '#ff1493' },
-            9: { number: '#00ffff' },
-            10: { number: '#ffd700' },
-            11: { number: '#ff0000' }
+            6: { number: '#ff0000' }
         };
 
         setTitle(titles[currentNumber]);
-        setNumberColor(colors[currentNumber].number);
-        setTitleColor(colors[currentNumber].title || '#ffffff');
+        setNumberColor(colors[currentNumber]?.number || '#ff0000');
+        setTitleColor(colors[currentNumber]?.title || '#ffffff');
 
         setDirection(currentNumber % 4);
         setKey(prevKey => prevKey + 1);
@@ -116,13 +113,17 @@ const Intro = () => {
 
     useEffect(() => {
         if (animationComplete) {
-            if (currentNumber < 11) {
+            if (currentNumber < 6) {
                 const nextTimer = setTimeout(() => {
                     setCurrentNumber(prev => prev + 1);
                 }, 500);
                 return () => clearTimeout(nextTimer);
             } else {
                 const redirectTimer = setTimeout(() => {
+                    if (audioRef.current) {
+                        audioRef.current.pause();
+                        audioRef.current.currentTime = 0;
+                    }
                     navigate('/');
                 }, 4000);
 
