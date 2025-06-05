@@ -69,7 +69,7 @@
     New-NetIPAddress -InterfaceAlias Ethernet -IPAddress '10.100.0.{{ item.vm_id }}' -PrefixLength 16 -DefaultGateway 10.100.0.254 -AddressFamily IPv4;
     Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses ('1.1.1.1','8.8.8.8')"
   register: network_config_2
-  until: network_config.rc_2 == 0
+  until: network_config_2.rc == 0
   retries: 100 
   delay: 5
   when: "'10.100.0.' + item.vm_id not in ip_verification.results[idx].stdout"

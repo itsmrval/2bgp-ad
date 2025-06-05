@@ -6,7 +6,7 @@ $rootOu = "OU=Casino,DC=mirage,DC=local"
 New-ADOrganizationalUnit -Name "Casino" -Path "DC=mirage,DC=local"
 
 $groups = @{
-    "Gestion"    = @("svc-gpp", "LivingstonDell", "FrankCatton", "NightGuard", "EyeInTheSky", "SafeWatcher")
+    "Gestion"    = @("LivingstonDell", "FrankCatton", "NightGuard", "EyeInTheSky", "SafeWatcher")
     "Marketing"  = @("LinusCaldwell", "RustyRyan", "JackSpot", "AceKeeper", "ChipMaster")
     "Finance"    = @("ReubenTishkoff", "SaulBloom", "VirgilMalloy", "CodeDealer", "ByteBettor", "CryptoWizard")
 }
@@ -23,7 +23,15 @@ foreach ($group in $groups.Keys) {
     
     # Créer les utilisateurs pour chaque groupe
     foreach ($user in $groups[$group]) {
-        New-ADUser -Name $user -Path $ouPath -AccountPassword (ConvertTo-SecureString "P@ssw0rd" -AsPlainText -Force) -Enabled $true
+        if ($user -eq "FrankCatton") {
+            # Pour le compte de service, utiliser un mot de passe différent
+            $password = ConvertTo-SecureString "!2bgpad2025" -AsPlainText -Force
+        } else {
+            # Pour les autres utilisateurs, utiliser un mot de passe générique
+            $password = ConvertTo-SecureString "eF?&4W0eUs6zfJaM!?op" -AsPlainText -Force
+        }
+        New-ADUser -Name $user -Path $ouPath -AccountPassword $password -Enabled $true
+
     }
 }
 
