@@ -276,6 +276,7 @@ Attaque :
 L'utilisateur se doit de créer un compte admin local grace a son droit de changer le fichier de script dans les taches planifiés
 
 Exemple de script : 
+
 ```powershell
 $username = "NomUtilisateur"
 
