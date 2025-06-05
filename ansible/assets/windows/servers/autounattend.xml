@@ -94,19 +94,5 @@
             </OOBE>
             <TimeZone>UTC</TimeZone>
         </component>
-        <component name="Microsoft-Windows-WinRM-Client" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <WinRM>
-                <AllowAutoConfig>true</AllowAutoConfig>
-                <AllowUnencryptedTraffic>true</AllowUnencryptedTraffic>
-                <AllowBasic>true</AllowBasic>
-            </WinRM>
-        </component>
-        <component name="Microsoft-Windows-WinRM-Service" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <WinRM>
-                <AllowAutoConfig>true</AllowAutoConfig>
-                <AllowUnencryptedTraffic>true</AllowUnencryptedTraffic>
-                <AllowBasic>true</AllowBasic>
-            </WinRM>
-        </component>
     </settings>
 </unattend>
