@@ -12,11 +12,13 @@
       storage: "{{ vm_storage }}"
       format: "raw"
       description: "CustomVM"
+      full: 1
     validate_certs: false
     status_code: 200
     timeout: 600
   loop: "{{ templates }}"
   register: deploy_jobs
+
 
 - name: Configure SMBIOS settings
   uri:
@@ -45,11 +47,10 @@
       CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
     body_format: form-urlencoded
     body:
-      net0: "virtio,bridge=cust{{ client_id }}"
+      net0: "e1000e,bridge=cust{{ client_id }}"
     validate_certs: false
     status_code: 200
   loop: "{{ templates }}"
-  when: smbios_status is success and smbios_status.status == 200
   register: network_interface_status
   until: network_interface_status is success and network_interface_status.status == 200
   retries: 30
