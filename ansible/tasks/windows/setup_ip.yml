@@ -1,0 +1,6 @@
+- name: executing script to create scheduled task
+  shell: 'qm guest exec 111 "powershell.exe" "D:\\schedule_ip_setup.ps1"'
+  register: script_result
+  until: script_result.rc == 0
+  retries: 5
+  delay: 10
