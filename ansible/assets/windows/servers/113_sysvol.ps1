@@ -1,9 +1,9 @@
 # Configuration rapide
 $Username = "svc-backup"
-$Password = "Password123!"  # Se déchiffre depuis le hash ci-dessous
-$CPassword = "j1Uyj3Vx8TY9LtLZil2uAuZkFQA/4latT76ZwgdHdhw"
+$Password = "GPPstillStandingStrong2k18"
+$CPassword = "edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ"
 
-$GPOPath = "\\mirage.local\SYSVOL\mirage.local\Policies\{12345678-1234-1234-1234-123456789ABC}\Machine\Preferences\Groups"
+$GPOPath = "C:\Winows\SYSVOL\domain\{12345678-1234-1234-1234-123456789ABC}\Machine\Preferences\Groups"
 
 # Créer le dossier
 New-Item -Path $GPOPath -ItemType Directory -Force
