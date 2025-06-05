@@ -1,4 +1,3 @@
-# Clone VMs
 - name: Clone VMs
   uri:
     url: "https://{{ proxmox_ip }}:8006/api2/json/nodes/{{ proxmox_node }}/qemu/{{ item.id }}/clone"
@@ -19,8 +18,6 @@
   loop: "{{ templates }}"
   register: deploy_jobs
 
-
-# Configure SMBIOS settings for cloned VMs with retries
 - name: Configure SMBIOS settings
   uri:
     url: "https://{{ proxmox_ip }}:8006/api2/json/nodes/{{ proxmox_node }}/qemu/{{ client_id }}00{{ item.id }}/config"
@@ -36,5 +33,24 @@
   loop: "{{ templates }}"
   register: smbios_status
   until: smbios_status is success and smbios_status.status == 200
+  retries: 30
+  delay: 5
+
+- name: Add network interface to VM
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/nodes/{{ proxmox_node }}/qemu/{{ client_id }}00{{ item.id }}/config"
+    method: PUT
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    body_format: form-urlencoded
+    body:
+      net0: "virtio,bridge=cust{{ client_id }}"
+    validate_certs: false
+    status_code: 200
+  loop: "{{ templates }}"
+  when: smbios_status is success and smbios_status.status == 200
+  register: network_interface_status
+  until: network_interface_status is success and network_interface_status.status == 200
   retries: 30
   delay: 5
