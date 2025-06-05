@@ -214,3 +214,6 @@
     validate_certs: false
     status_code: 200
   register: network_interface_status
+  retries: 5
+  delay: 5
+  until: network_interface_status.status == 200
