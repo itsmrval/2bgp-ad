@@ -124,9 +124,13 @@ Attaque :
 
 lancer un nmap pour que la personne connaissent son réseaux qui répondent 
 
+```powershell
+
 nmap -Pn -p- -sV -sC 10.X.0.111/24
 
-ping IP SRV (vu en nmap) => Permet de voir TTL 128 donc WinSRV
+ping IP SRV
+```
+
 
 Key ctf = 1282019
 
