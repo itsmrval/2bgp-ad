@@ -11,6 +11,7 @@ $TaskName = "ExecuteSetupIPAtStartup"
 $TaskAction = New-ScheduledTaskAction -Execute "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -Argument "-ExecutionPolicy Bypass -File `"$scriptPath`""
 $TaskTrigger = New-ScheduledTaskTrigger -AtStartup
 
+$TaskTrigger.Delay = "PT1M"
 $TaskSettings = New-ScheduledTaskSettingsSet -StartWhenAvailable -DontStopOnIdleEnd
 $TaskSettings.ExecutionTimeLimit = "PT0S"
 $TaskSettings.AllowStartIfOnBatteries = $true
