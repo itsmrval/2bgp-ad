@@ -47,7 +47,7 @@
   shell: >
     qm guest exec {{ item.vm_id }} -- powershell.exe -Command "
     New-NetIPAddress -InterfaceAlias Ethernet -IPAddress '10.100.0.{{ item.vm_id }}' -PrefixLength 16 -DefaultGateway 10.100.0.254 -AddressFamily IPv4;
-    Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses ('10.100.0.254','8.8.8.8')"
+    Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses ('1.1.1.1','8.8.8.8')"
   register: network_config
   until: network_config.rc == 0
   retries: 100 
@@ -67,7 +67,7 @@
     qm guest exec {{ item.vm_id }} -- powershell.exe -Command "
     Remove-NetIPAddress -InterfaceAlias Ethernet -Confirm:$false;
     New-NetIPAddress -InterfaceAlias Ethernet -IPAddress '10.100.0.{{ item.vm_id }}' -PrefixLength 16 -DefaultGateway 10.100.0.254 -AddressFamily IPv4;
-    Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses ('{{ item.server_ip }}','8.8.8.8')"
+    Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses ('1.1.1.1','8.8.8.8')"
   register: network_config_2
   until: network_config.rc_2 == 0
   retries: 100 
