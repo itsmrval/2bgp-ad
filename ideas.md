@@ -441,12 +441,19 @@ Note : on peut aussi se connecter via WMI directement en faisant un PASS THE HAS
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 9 (AD Mirage) : Exploitation des mots de passe GPP (Group Policy Preferences)
+Level 9 (AD Mirage) : Enumeration de users sur le port 445
+
+
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 10 (AD Mirage) : Escalade de privilèges vi un chemin sans quotes
+Level 9 (AD Mirage) : Faille GPP
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level 11 (AD Mirage) : Escalade de privilèges vi un chemin sans quotes
 
 Script pour histoire du niveau :
 
@@ -484,9 +491,6 @@ Copy-Item "C:\Program.exe" -Destination "C:\Program Files\Some Folder\Program.ex
 Redémarrer le service vulnérable
 Restart-Service -Name "VulnerableService"
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Level 11:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Level 12:
