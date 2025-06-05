@@ -114,6 +114,13 @@
     owner: root
     group: root
 
+- name: copy_setup_ip
+  copy:
+    src: "{{ playbook_dir }}/assets/windows/ip_setup.ps1"
+    dest: "/mnt/provision/ip_setup.ps1"
+    owner: root
+    group: root
+
 - name: copy all powershell scripts 
   copy:
     src: "{{ item }}"
