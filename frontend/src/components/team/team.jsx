@@ -10,7 +10,7 @@ const Team = () => {
     const teamMembers = [
         {
             name: "Valentin PUCCETTI",
-            bio: "Texte descriptif doit aller ici",
+            bio: "IUT-Velizy",
             email: "contact@valentinp.fr",
             linkedin: "https://linkedin.com/in/valentin-p",
             github: "https://github.com/itsmrval",
@@ -18,20 +18,20 @@ const Team = () => {
         },
         {
             name: "Corentin BONNEAU",
-            bio: "Texte descriptif doit aller ici",
+            bio: "IUT-Velizy",
             linkedin: "https://linkedin.com/in/bonneau-corentin",
             image: cbImage
         },
         {
             name: "François GOYA LONGO",
-            bio: "Texte descriptif doit aller ici",
+            bio: "IUT-Velizy",
             email: "membre3@example.com",
             linkedin: "https://linkedin.com/in/fran%c3%a7ois-goya-longo-84574227b",
             image: fgImage
         },
         {
             name: "Mathieu BERSIN",
-            bio: "Texte descriptif doit aller ici",
+            bio: "IUT-Velizy",
             linkedin: "https://linkedin.com/in/mathieu-bersin-367270269",
             image: mbImage
         }
