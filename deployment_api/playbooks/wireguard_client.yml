@@ -64,7 +64,8 @@
           Address = 172.17.{{ client_id }}.1/30
           PrivateKey = {{ server_private_key }}
           ListenPort = 51{{client_id}}
-
+          Table = off
+          
           [Peer]
           PublicKey = {{ client_public_key }}
           AllowedIPs = 10.{{ client_id }}.0.0/16,172.17.{{ client_id }}.2/32
