@@ -65,7 +65,7 @@
           PrivateKey = {{ server_private_key }}
           ListenPort = 51{{client_id}}
           Table = off
-          
+
           [Peer]
           PublicKey = {{ client_public_key }}
           AllowedIPs = 10.{{ client_id }}.0.0/16,172.17.{{ client_id }}.2/32
@@ -109,17 +109,9 @@
         path: "{{ temp_dir }}"
         state: absent
 
-    - name: add iptables masquerade rule for wg{{ client_id }}
+    - name: add iptables masquerade rule for wg
       ansible.builtin.command: >
-        iptables -t nat -C POSTROUTING -s 172.17.{{ client_id }}.0/30 -d 10.{{ client_id }}.0.0/16 -o eth{{ client_id }} -j MASQUERADE
-      register: iptables_check
-      failed_when: false
-      changed_when: false
-
-    - name: insert iptables masquerade rule if not present
-      ansible.builtin.command: >
-        iptables -t nat -A POSTROUTING -s 172.17.{{ client_id }}.0/30 -d 10.{{ client_id }}.0.0/16 -o eth{{ client_id }} -j MASQUERADE
-      when: iptables_check.rc != 0
+        iptables -t nat -A POSTROUTING -s 172.17.{{ client_id }}.0/30 -d 10.{{ client_id }}.0.0/16 -o eth2 -j MASQUERADE
 
     - name: save iptables rules
-      ansible.builtin.command: iptables-save > /etc/iptables/rules.v4
+      ansible.builtin.command: iptables-save

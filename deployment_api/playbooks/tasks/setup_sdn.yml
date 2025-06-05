@@ -196,3 +196,21 @@
   debug:
     msg: "Security rule status: {{ security_rule_created.status if security_rule_created is defined else 'Not created (already exists)' }}"
   when: not security_rule_exists or (security_group_created is defined and security_group_created.changed)
+
+- name: Set network interface parameter name
+  set_fact:
+    net_param_name: "net{{ client_id }}"
+    net_param_value: "name=eth{{ client_id }},bridge=cust{{ client_id }},ip=10.{{ client_id }}.0.1/16"
+
+- name: Add network interface to container
+  uri:
+    url: "https://{{ proxmox_ip }}:8006/api2/json/nodes/{{ proxmox_node }}/lxc/2000/config"
+    method: PUT
+    headers:
+      Cookie: "PVEAuthCookie={{ auth_response.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth_response.json.data.CSRFPreventionToken }}"
+    body_format: form-urlencoded
+    body: "{{ {net_param_name: net_param_value} }}"
+    validate_certs: false
+    status_code: 200
+  register: network_interface_status
