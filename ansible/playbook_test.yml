@@ -14,14 +14,14 @@
     # - name: build_windows_template
     #   import_tasks: tasks/windows/build_server.yml
 
-    - name: prepare_windows_client_template
-      import_tasks: tasks/windows/prepare_client.yml
+    # - name: prepare_windows_client_template
+    #   import_tasks: tasks/windows/prepare_client.yml
 
-    - name: build_windows_client_template
-      import_tasks: tasks/windows/build_client.yml
+    # - name: build_windows_client_template
+    #   import_tasks: tasks/windows/build_client.yml
 
-    # - name: deploy objects on windows server
-    #   import_tasks: tasks/windows/objects_server.yml
+    - name: deploy objects on windows server
+      import_tasks: tasks/windows/objects_server.yml
     
     - name: configure ad for vulnerability
       import_tasks: tasks/windows/vulnerability.yml

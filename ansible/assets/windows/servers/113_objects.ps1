@@ -6,7 +6,7 @@ $rootOu = "OU=Casino,DC=mirage,DC=local"
 New-ADOrganizationalUnit -Name "Casino" -Path "DC=mirage,DC=local"
 
 $groups = @{
-    "Gestion"    = @("BasherTarr", "LivingstonDell", "FrankCatton", "NightGuard", "EyeInTheSky", "SafeWatcher")
+    "Gestion"    = @("svc-gpp", "LivingstonDell", "FrankCatton", "NightGuard", "EyeInTheSky", "SafeWatcher")
     "Marketing"  = @("LinusCaldwell", "RustyRyan", "JackSpot", "AceKeeper", "ChipMaster")
     "Finance"    = @("ReubenTishkoff", "SaulBloom", "VirgilMalloy", "CodeDealer", "ByteBettor", "CryptoWizard")
 }

@@ -1,5 +1,5 @@
 # Chemin du fichier où inscrire l'heure
-$path = "C:\Users\svc-winrm\Desktop\log.txt"
+$path = "C:\Users\svc-winrm.mgmgrand\Desktop\log.txt"
 
 # Vérifier si le fichier existe, sinon le créer vide
 if (-Not (Test-Path -Path $path)) {
@@ -16,4 +16,5 @@ if (-Not (Test-Path -Path $path)) {
 $heure = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 
 # Inscrire l'heure dans le fichier (ajoute une ligne à chaque exécution)
-Add-Content -Path $path -Value $heure
+$text = "Tache planifiée exécutée à : $heure "
+$text | Out-File -FilePath $path -Append
