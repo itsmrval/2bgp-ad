@@ -136,13 +136,7 @@ Level 2 Trouver les user (AD Bellagio) :
 
 Script pour histoire du niveau :
 
-"Enumération" 2 "Après avoir cartographié l’infrastructure du casino, vous vous retrouvez face à un nouveau défi : pénétrer le cœur de l’Active Directory pour dénicher les identifiants des employés et des comptes de services.<br><br>Grâce aux informations récoltées vous savez désormais quels serveurs hébergent le rôle de contrôleur de domaine et comment la topologie du réseau est organisée. Pour progresser, il vous faut dresser une liste des comptes AD susceptibles d’être utilisés dans l’environnement du casino.<br><br><br>Un de vos contacts au sein du service IT a réussi à récupérer un fichier brut : une liste d’environ 1 000 noms d’utilisateurs utilisés pour le support interne. Vous <a href="/users.txt" target="_blank">téléchargez ce fichier</a> puis l’analysez pour en extraire les comptes potentiellement valides.<br><br>Entrer le nom de l'utilisateur." "svc-bella" 200
-
-Après avoir cartographié l’infrastructure du casino grâce à NMAP. Votre équipe se retrouve face à un nouveau défi : pénétrer le cœur de l’Active Directory pour dénicher les identifiants des employés et des comptes de services.
-
-Grâce aux informations récoltées au niveau 1, vous savez désormais quels serveurs hébergent le rôle de contrôleur de domaine et comment la topologie du réseau est organisée. Mais pour progresser et obtenir un accès privilégié, il vous faut d’abord dresser une liste des comptes Active Directory susceptibles d’être utilisés dans l’environnement Bellagio.local.
-
-Un de vos contacts au sein du service IT, toujours sous l’effet des « encouragements » financiers de la bande, a réussi à récupérer un fichier brut : une liste d’environ 1 000 noms d’utilisateurs utilisés pour le support interne et les services automatisés. Vous téléchargez discrètement ce fichier puis l’analysez pour en extraire les comptes potentiellement valides.
+"Enumération" 2 "Après avoir cartographié l’infrastructure du casino, vous vous retrouvez face à un nouveau défi : pénétrer le cœur du serveur pour dénicher les identifiants des employés et des comptes de services.<br><br>Pour progresser, il vous faut dresser une liste des comptes AD susceptibles d’être utilisés dans l’environnement du casino.<br><br><br>Un de vos contacts au sein du service IT a réussi à récupérer un fichier brut : une liste d’environ 1 000 noms d’utilisateurs utilisés pour le support interne. Vous <a href="/users.txt" target="_blank">téléchargez ce fichier</a> puis l’analysez pour en extraire les comptes potentiellement valides.<br><br>Entrer le nom de l'utilisateur." "svc-bella" 200
 
 Attaque : 
 
@@ -164,9 +158,7 @@ Level 3 prendre controle d'un compte sans permission (ASREP-Roasting) (AD Bellag
 
 Script pour histoire du niveau :
 
-Terry Benedicta sous-estime une faille cruciale dans son système de sécurité informatique. Les comptes de service de son réseau Active Directory n'ont pas de pré-authentification requise, une vulnérabilité connue sous le nom d'ASREP-Roasting.
-
-Votre objectif est de récupérer le hashs des mots de passe de l'utilisateur précédemment trouvé pour permettre à l'équipe d'Ocean de récuperer ces comptes et de prendre le contrôle des comptes nécessaires pour désactiver les systèmes de sécurité des casinos.
+ "Usurpation de compte sans permission" 3 "Terry Benedicte sous-estime une faille cruciale dans son système de sécurité informatique. Les comptes de service de son réseau n'ont pas l'air d'avoir de pré-authentification requise.<br><br>Votre objectif est de récupérer le hashs des mots de passe de l'utilisateur précédemment trouvé pour permettre de récuperer ces comptes et de prendre le contrôle d'un compte pour qu'un de vos coéquipiers puissent se faire passer pour cette personne là et devier les systèmes de sécurité du Bellagio.<br><br>Entrer le mot de passe trouvé." "P@ssw0rd" 300 
 
 
 Attaque : 
@@ -192,11 +184,15 @@ Level 4 (AD Bellagio) : Attaque via le lien de confiance et empoisonnement SMB/L
 
 Script pour histoire du niveau :
 
-Grâce à votre compte SVC-bella sur le domaine bellagio.local, Maintenant tu peux donc effectuer une recherche ldap pour connaitre le ou les différents lien de confiance qui sont liés a cet AD. (ldapsearch -H ldap://10.100.0.111 -D "bellagio\svc-bella" -W -x -b "DC=bellagio,DC=local" >> ldapsearch.txt)
+send_request "Hash bruteforce" 4 "Grâce au compte trouvé, tu peux donc effectuer une recherche pour connaitre le ou les différents lien de confiance qui sont liés a ce serveur.<br><br>Avec toutes ces informations tu peux ensuite t'interesser au partage de fichier. Votre équipe a besoin de vous car elle est bloqué sans ce mot de passe ils ne pourront pas passer les portiques de sécurité qui va permettre a l'équipe de pouvoir se déplacer librement entre le Bellagio et le MGM Grand <br><br>Entre le mot de passe bruteforcé." "Qwerty123" 300
 
-Grace a toutes ces informations tu peux par exemple t'interesser au partage samba en utilisant le client samba de exegol...
 
 Attaque : 
+```powershell
+
+ldapsearch -H ldap://10.100.0.111 -D "bellagio\svc-bella" -W -x -b "DC=bellagio,DC=local" >> ldapsearch.txt
+
+```
 
 ```powershell
 
@@ -233,9 +229,9 @@ Level 5 (AD Mgm Grand) : Escalade de privilèges via une tache planifié
 
 Script pour histoire du niveau :
 
-Après avoir consolidé votre accès sur dans le casino Bellagio et pris le contrôle du serveur de sauvegarde, l’équipe d’Ocean se tourne désormais vers un nouveau terrain de jeu : Le MGM Grand. Une source à vous révèle qu’un script PowerShell s’exécute toutes les heures avec des droits élevés sur une machine membre du domaine MGM.
 
-Votre objectif est simple : modifier le contenu du fichier de script planifié de façon à créer un compte avec assez au niveau de privilège au prochain passage de la tâche.
+send_request "Coulisses du MGM" 5 "Danny Ocean te remercie, grace à toi toutes l'équipe du braquage va pouvoir se déplacer entre les 2 casinos.<br><br>Mais l’équipe a découvert que le système protégeant le coffre-fort se renouvelait toutes les cinq minutes. De plus, pour y accéder, il faut posséder un certain niveau de privilège afin de récupérer le mot de passe le protégeant, lequel est stocké dans le bureau du système de sécurité .<br><br>."2bgpad-butrt" 500
+
 
 Attaque :
 
@@ -258,6 +254,8 @@ Write-Host "Utilisateur $username créé et ajouté au groupe Administrators."
 
 ```
 
+FLAG : 2bgpad-butrt
+
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -267,10 +265,8 @@ Level 6 (AD MGM grand) : Dump mémoire LSAAS
 
 Script pour histoire du niveau :
 
-Après avoir créé le compte admin, l’équipe d’Ocean se trouve en position idéale pour s’attaquer à un objectif encore plus précieux : les secrets en mémoire vive du système stockés dans le processus LSASS.
+send_request "Mémoire Volatile" 6 "Danny Ocean et le reste de l’équipe se trouvent désormais dans la chambre forte du MGM Grand. <br><br>Votre mission est de les faire ressortir de cet endroit avec un maximum d’argent. Pour cela, il vous faudra réaliser un dump de la mémoire des comptes du MGM Grand afin d’obtenir les informations nécessaires pour ouvrir le plus de coffres possibles.<br><br>." "DannyOcean" 600
 
-
-Votre mission pour ce niveau consiste donc à utiliser votre compte admin pour dumper la mémoire, puis extraire de ce dump tous les identifiants utiles (hashes NTLM, tickets Kerberos).
 
 Attaque : 
 
@@ -327,6 +323,8 @@ La commande pour extraire le contenu du LSASS (.dmp) et l'afficher dans un forma
     pypykatz lsa minidump "your_lsass_file.dmp" --json
 ```
 
+FLAG : 
+
 
 
 
@@ -336,6 +334,8 @@ La commande pour extraire le contenu du LSASS (.dmp) et l'afficher dans un forma
 Level 7:  DCSYNC 
 
 Script pour histoire du niveau :
+
+ send_request "Miroir du Domaine" 7 "Danny Ocean et le reste de l’équipe se trouvent désormais dans la chambre forte du MGM Grand. <br><br>Votre mission est de les faire ressortir de cet endroit avec un maximum d’argent. Pour cela, il vous faudra réaliser un dump de la mémoire des comptes du MGM Grand afin d’obtenir les informations nécessaires pour ouvrir le plus de coffres possibles.<br><br>." "DannyOcean" 700
 
 Vous avez désormais les privilèges de Domain Admin sur le domaine MGM Grand. Avec ce niveau d’accès, vous êtes à deux doigts de contrôler totalement l’infrastructure Active Directory. Cependant, pour finaliser votre emprise, il vous faut centraliser tous les secrets du domaine : mots de passe de chaque utilisateur, comptes de services, et le hash du compte krbtg...
 
