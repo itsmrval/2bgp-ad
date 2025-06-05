@@ -300,6 +300,9 @@ On va donc installer l'outil procdump fourni par microsoft afin d'extraire le co
 Commande pour installer procdump
 ```shell
     invoke-webrequest https://download.sysinternals.com/files/Procdump.zip -OutFile "your_output"
+
+ Expand-Archive -path "C:/Users/Toto/Documents/Proc.zip" -Destinationpath "C:/Users/Toto/Documents/Proc"
+
 ```
 
 ensuite l'extraire 
