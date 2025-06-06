@@ -342,7 +342,10 @@ La commande pour extraire le contenu du LSASS (.dmp) et l'afficher dans un forma
     pypykatz lsa minidump "your_lsass_file.dmp" --json
 ```
 
-FLAG : 
+Forcer le hash et trouver le MDP
+
+FLAG ( :
+
 
 
 
