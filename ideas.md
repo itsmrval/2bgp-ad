@@ -301,13 +301,11 @@ Commande pour installer procdump
 ```shell
     invoke-webrequest https://download.sysinternals.com/files/Procdump.zip -OutFile "your_output"
 
- Expand-Archive -path "C:/Users/Toto/Documents/Proc.zip" -Destinationpath "C:/Users/Toto/Documents/Proc"
-
 ```
 
 ensuite l'extraire 
 ```Powershell
-    tocomplete
+     Expand-Archive -path "C:/Users/Toto/Documents/Proc.zip" -Destinationpath "C:/Users/Toto/Documents/Proc"
 ```
 
 puis l'installer en tant que debogger par défaut pour qu'il se lance sans problème même à travers une connexion distante et accepter les conditions d'utilisation.
