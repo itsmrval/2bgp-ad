@@ -1,20 +1,5 @@
 const axios = require('axios');
 
-const sendWireguardDeploy = async (client_id) => {
-    return axios.post(process.env.DEPLOYMENT_API_URL + '/wg', { client_id })
-        .then(response => {
-            if (response.data && response.data.status === 'success') {
-                return true;
-            } else {
-                console.log('Wireguard deployment failed:', response.data);
-                throw new Error('Wireguard deployment failed');
-            }
-        })
-        .catch(error => {
-            throw new Error(`Wireguard deployment error: ${error.message}`);
-        });
-};
-
 const sendVMDeploy = async (client_id) => {
     return axios.post(process.env.DEPLOYMENT_API_URL + '/vms', { client_id })
         .then(response => {
@@ -32,7 +17,6 @@ const sendVMDeploy = async (client_id) => {
 
 const deployClient = async (client_id) => {
     try {
-        await sendWireguardDeploy(client_id);
         await sendVMDeploy(client_id);
         return true;
     } catch (error) {
@@ -41,7 +25,7 @@ const deployClient = async (client_id) => {
 }
 
 const retrieveWireguard = async (client_id) => {
-    return axios.get(process.env.DEPLOYMENT_API_URL + '/wg/' + client_id)
+    return axios.get(process.env.DEPLOYMENT_API_URL + '/ovpn/' + client_id)
         .then(response => {
             if (response.data && response.status === 200) {
                 return response.data;
