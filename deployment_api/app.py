@@ -99,27 +99,34 @@ def check_infrastructure(client_id):
 @app.route('/ovpn/<int:client_id>', methods=['GET'])
 def get_ovpn_client(client_id):
     filepath = f'/etc/openvpn/user{client_id}/clients/client{client_id}.ovpn'
-    
+    status_path = f'/var/log/openvpn/user{client_id}-status.log'
+
     if not os.path.exists(filepath):
         return jsonify({'error': f'OVPN file for client {client_id} not found'}), 404
-    
+
+    is_online = False
+
+    if os.path.exists(status_path):
+        try:
+            with open(status_path, 'r') as status_file:
+                lines = status_file.readlines()
+                for line in lines:
+                    if line.startswith('CLIENT_LIST') and f'client{client_id}' in line:
+                        is_online = True
+                        break
+        except Exception as e:
+            return jsonify({'error': f'Error reading status file: {str(e)}'}), 500
+
     try:
         with open(filepath, 'r') as f:
             ovpn_file_content = f.read()
 
-        ip = f'172.17.{client_id}.2'
-        try:
-            result = subprocess.run(['ping', '-c', '1', '-W', '1', ip], stdout=subprocess.DEVNULL)
-            is_online = result.returncode == 0
-        except Exception:
-            is_online = False
-        
         return jsonify({
             'client_id': client_id,
             'online': is_online,
-            'ovpn_file': ovpn_file_content
+            'profile': ovpn_file_content
         }), 200
-    
+
     except Exception as e:
         return jsonify({'error': f'Error reading OVPN file: {str(e)}'}), 500
     

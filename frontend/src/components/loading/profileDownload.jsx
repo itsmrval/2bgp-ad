@@ -34,7 +34,7 @@ const ProfileDownload = () => {
         const blob = new Blob([profile], { type: 'text/plain' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = 'wg_2bgp.conf';
+        link.download = '2bgp.ovpn';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -48,7 +48,7 @@ const ProfileDownload = () => {
                 </div>
 
                 <div className="download-intro">
-                    <p>Afin d'accéder à votre environnement, connectez-vous en utilisant le profil WireGuard</p>
+                    <p>Afin d'accéder à votre environnement, connectez-vous en utilisant le profil OpenVPN</p>
                     <p><b>Vous serez automatiquement redirigé</b></p>
                 </div>
 
@@ -56,7 +56,7 @@ const ProfileDownload = () => {
                     <div className="os-selection">
                         <div className="os-card">
                             <div className="os-icon">💻</div>
-                            <div className="os-name">Client WireGuard</div>
+                            <div className="os-name">Client OpenVPN</div>
                             <button
                                 className="download-button"
                                 onClick={() => window.open('https://www.wireguard.com/install/', '_blank')}
@@ -81,7 +81,7 @@ const ProfileDownload = () => {
                         <h3>Instructions</h3>
                         <p>Suivez les étapes pour configurer votre VPN :</p>
                         <ol>
-                            <li>Installez le client WireGuard sur votre appareil</li>
+                            <li>Installez le client OpenVPN sur votre appareil</li>
                             <li>Téléchargez et ouvrez le profile VPN dans l'application</li>
                         </ol>
                     </div>

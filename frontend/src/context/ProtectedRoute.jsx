@@ -5,7 +5,7 @@ import VmsLoadingPage from "../pages/loading/vmsLoadingPage";
 import ProfileDownloadPage from "../pages/loading/profileDownloadPage";
 
 const ProtectedRoute = ({ children }) => {
-  const { user, wgState, vmsState, loading } = useAuth();
+  const { user, ovpnState, vmsState, loading } = useAuth();
 
   if (loading) return <div>Loading...</div>;
 
@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (wgState === false) {
+  if (ovpnState === false) {
     return <ProfileDownloadPage />;
   }
 

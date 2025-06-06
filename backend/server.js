@@ -30,12 +30,12 @@ async function backgroundLoop() {
       const users = await User.find();
       
       for (const user of users) {
-          const wgData = await retrieveWireguard(user.client_id);
+          const ovpnData = await retrieveWireguard(user.client_id);
           const vmData = await retrieveVM(user.client_id);
 
-          if (user.wg_state !== wgData.online) {
-              console.log(`User ${user.username} Wireguard state ${user.wg_state}  changed: ${wgData.online}`);
-              user.wg_state = wgData.online;
+          if (user.ovpn_state !== ovpnData.online) {
+              console.log(`User ${user.username} OVPN state ${user.ovpn_state}  changed: ${ovpnData.online}`);
+              user.ovpn_state = ovpnData.online;
               user.save();
           }
 

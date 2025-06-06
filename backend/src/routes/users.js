@@ -28,7 +28,7 @@ router.get('/:id', authenticate, async (req, res) => {
   }
 });
 
-router.get('/:id/wg', authenticate, async (req, res) => {
+router.get('/:id/ovpn', authenticate, async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
     if (!user) {

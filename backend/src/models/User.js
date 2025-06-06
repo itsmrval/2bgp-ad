@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
   ],
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
   client_id: { type: Number, unique: true, required: true },
-  wg_state: { type: Boolean, default: false },
+  ovpn_state: { type: Boolean, default: false },
   vms_state: { type: Boolean, default: false },
 });
 

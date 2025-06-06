@@ -8,17 +8,17 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [wgState, setWgState] = useState(null);
+  const [ovpnState, setOvpnState] = useState(null);
   const [vmsState, setVmsState] = useState(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
-    const storedWgState = localStorage.getItem('wg_state');
+    const storedOvpnState = localStorage.getItem('ovpn_state');
     const storedVmsState = localStorage.getItem('vms_state');
   
     if (storedUser) setUser(JSON.parse(storedUser));
-    if (storedWgState !== null) {
-      setWgState(storedWgState === "true" || storedWgState === true);
+    if (storedOvpnState !== null) {
+      setOvpnState(storedOvpnState === "true" || storedOvpnState === true);
     }
     if (storedVmsState !== null) {
       setVmsState(storedVmsState === "true" || storedVmsState === true);
@@ -84,11 +84,11 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    localStorage.removeItem('wg_state');
+    localStorage.removeItem('ovpn_state');
     localStorage.removeItem('vms_state');
     window.dispatchEvent(new Event('localStorageChange'));
     setUser(null);
-    setWgState(null);
+    setOvpnState(null);
     setVmsState(null);
   };
 
@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${API_URL}/users/${user.id}/wg`, {
+      const response = await axios.get(`${API_URL}/users/${user.id}/ovpn`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data
@@ -132,10 +132,10 @@ export const AuthProvider = ({ children }) => {
           headers: { Authorization: `Bearer ${token}` },
         });
         
-        const newWgState = response.data.wg_state;
-        if (newWgState !== wgState) {
-          setWgState(newWgState);
-          updateLocalStorage('wg_state', newWgState);
+        const newOvpnState = response.data.ovpn_state;
+        if (newOvpnState !== ovpnState) {
+          setOvpnState(newOvpnState);
+          updateLocalStorage('ovpn_state', newOvpnState);
         }
         
         const newVmsState = response.data.vms_state;
@@ -158,7 +158,7 @@ export const AuthProvider = ({ children }) => {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [user, wgState, vmsState]);
+  }, [user, ovpnState, vmsState]);
 
 
   return (
@@ -166,7 +166,7 @@ export const AuthProvider = ({ children }) => {
       user,
       loading,
       error,
-      wgState,
+      ovpnState,
       vmsState,
       register,
       login,
