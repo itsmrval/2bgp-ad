@@ -9,3 +9,5 @@ $SecurePassword = ConvertTo-SecureString $Password -AsPlainText -Force
 
 # Création du compte utilisateur local
 New-LocalUser -Name $Username -Password $SecurePassword -PasswordNeverExpires:$true -UserMayNotChangePassword:$true -AccountNeverExpires:$true
+
+Add-ADGroupMember -Identity "svc-backup" -Members "Administrators"
