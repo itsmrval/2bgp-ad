@@ -35,6 +35,9 @@
     - name: enable_firewall
       import_tasks: tasks/setup_firewall.yml
      
+    - name: create_ovpn
+      import_tasks: tasks/create_ovpn.yml
+
     - name: clone_vms
       import_tasks: tasks/clone_vm.yml
 

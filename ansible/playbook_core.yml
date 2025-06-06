@@ -87,16 +87,16 @@
           - ansible
           - pipx
       delegate_to: "{{ container_deployment_ip }}"
-      
-    # Install ovpn on the VPN container
-    - name: install_ovpn
-      import_tasks: tasks/core_software/install_ovpn.yml
-      delegate_to: "{{ container_deployment_ip }}"
 
     # Deploy the Deployment API on the VPN container
     - name: deploy_deployment_api
       import_tasks: tasks/core_software/deploy_deployment_api.yml
       delegate_to: "{{ container_deployment_ip }}" 
+
+    # Install ovpn on the VPN container
+    - name: install_ovpn
+      import_tasks: tasks/core_software/install_ovpn.yml
+      delegate_to: "{{ container_deployment_ip }}"
 
   ### DEPLOY CORE WEB CONTAINER ###
     

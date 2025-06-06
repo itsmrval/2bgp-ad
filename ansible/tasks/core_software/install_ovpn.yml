@@ -1,5 +1,11 @@
+- name: Ensure OpenVPN setup script is executable
+  ansible.builtin.file:
+    path: /opt/deployment_api/ovpn_scripts/setup_ovpn.sh
+    mode: '0755'
+  become: yes
+
 - name: Run OpenVPN setup script
   ansible.builtin.shell: /opt/deployment_api/ovpn_scripts/setup_ovpn.sh
   args:
     executable: /bin/bash
-  become: yes 
+  become: yes

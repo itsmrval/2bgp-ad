@@ -96,50 +96,6 @@ def check_infrastructure(client_id):
         }), 500
 
 
-@app.route('/ovpn', methods=['POST'])
-def generate_wireguard_client():
-    data = request.json
-    
-    if not data or 'client_id' not in data:
-        return jsonify({'error': 'Missing required fields: client_id'}), 400
-    
-    client_id = data['client_id']
-    
-    try:
-        cmd = [
-            '/bin/bash', 
-            '/opt/deployment_api/ovpn_scripts/deploy_user_ovpn.sh',
-            str(client_id),
-            public_ip
-        ]
-
-        result = subprocess.run(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
-
-        
-        if result.returncode != 0:
-            return jsonify({
-                'status': 'error',
-                'message': 'OVPN execution failed',
-                'error': result.stderr
-            }), 500
-        
-        return jsonify({
-            'status': 'success',
-            'client_id': client_id,
-            'message': 'OVPN client generated successfully'
-        })
-        
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'message': str(e)
-        }), 500
-
 @app.route('/ovpn/<int:client_id>', methods=['GET'])
 def get_ovpn_client(client_id):
     filepath = f'/etc/openvpn/user{client_id}/clients/client{client_id}.ovpn'

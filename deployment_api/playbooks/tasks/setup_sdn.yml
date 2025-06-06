@@ -200,7 +200,7 @@
 - name: Set network interface parameter name
   set_fact:
     net_param_name: "net{{ client_id }}"
-    net_param_value: "name=eth{{ client_id }},bridge=cust{{ client_id }},ip=10.{{ client_id }}.0.1/16"
+    net_param_value: "name=eth{{ client_id }},bridge=cust{{ client_id }}"
 
 - name: Add network interface to container
   uri:
