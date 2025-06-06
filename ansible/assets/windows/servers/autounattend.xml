@@ -92,7 +92,7 @@
                 <NetworkLocation>Work</NetworkLocation>
                 <ProtectYourPC>3</ProtectYourPC>
             </OOBE>
-            <TimeZone>UTC</TimeZone>
+            <TimeZone>Romance Standard Time</TimeZone>
         </component>
     </settings>
 </unattend>

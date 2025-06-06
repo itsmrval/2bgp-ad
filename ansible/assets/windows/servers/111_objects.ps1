@@ -36,4 +36,9 @@ foreach ($group in $groups.Keys) {
     }
 }
 
+# Ajouter DannyOcean en tant qu'administrateur du domaine
+$domainAdminsGroup = "Domains Admins"
+$distinguishedName = "CN=DannyOcean,OU=Croupiers,OU=Casino,DC=mgmgrand,DC=local"
+Add-ADGroupMember -Identity "Domain Admins" -Members $distinguishedName
+
 Write-Host "Configuration terminée pour $organizationName." -ForegroundColor Green
