@@ -6,7 +6,6 @@
   tasks:
 
   ### SETUP ANSIBLE ###
-
   # Permission ssh key for ansible
     - name: apply_chmod_ssh_key
       file:
@@ -87,11 +86,16 @@
           - ansible
           - pipx
       delegate_to: "{{ container_deployment_ip }}"
-      
+
     # Deploy the Deployment API on the VPN container
     - name: deploy_deployment_api
       import_tasks: tasks/core_software/deploy_deployment_api.yml
       delegate_to: "{{ container_deployment_ip }}" 
+
+    # Install ovpn on the VPN container
+    - name: install_ovpn
+      import_tasks: tasks/core_software/install_ovpn.yml
+      delegate_to: "{{ container_deployment_ip }}"
 
   ### DEPLOY CORE WEB CONTAINER ###
     
@@ -138,7 +142,7 @@
       import_tasks: tasks/core_software/deploy_web_containers.yml
       delegate_to: "{{ container_web_ip }}"
 
-    # Apply iptables rules for WireGuard
+    # Apply iptables rules for OVPN
     - name: setup_iptable
       import_tasks: tasks/proxmox/setup_forward.yml
       vars:

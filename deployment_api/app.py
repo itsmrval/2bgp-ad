@@ -106,9 +106,17 @@ def get_ovpn_client(client_id):
     try:
         with open(filepath, 'r') as f:
             ovpn_file_content = f.read()
+
+        ip = f'172.17.{client_id}.2'
+        try:
+            result = subprocess.run(['ping', '-c', '1', '-W', '1', ip], stdout=subprocess.DEVNULL)
+            is_online = result.returncode == 0
+        except Exception:
+            is_online = False
         
         return jsonify({
             'client_id': client_id,
+            'online': is_online,
             'ovpn_file': ovpn_file_content
         }), 200
     
