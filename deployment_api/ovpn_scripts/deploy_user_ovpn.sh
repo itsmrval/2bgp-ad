@@ -72,6 +72,10 @@ mkdir -p $CONFIG_DIR
 mkdir -p $CONFIG_DIR/ccd
 mkdir -p $CONFIG_DIR/clients
 
+echo -e "${YELLOW}Creating client-specific configuration for static IP...${NC}"
+echo "ifconfig-push ${SUBNET}.100 ${BRIDGE_NETMASK}" > $CONFIG_DIR/ccd/client${USER_ID}
+
+
 # Generate server certificate for this user (batch mode)
 echo -e "${YELLOW}Generating server certificate for ${SERVER_NAME}...${NC}"
 cd $EASY_RSA_DIR
@@ -102,6 +106,7 @@ persist-key
 persist-tun
 cipher AES-256-CBC
 auth SHA256
+explicit-exit-notify
 verb 3
 
 <ca>
@@ -147,7 +152,7 @@ verb 3
 cipher AES-256-CBC
 auth SHA256
 tls-version-min 1.2
-keepalive 10 120
+keepalive 2 30
 persist-key
 persist-tun
 user nobody

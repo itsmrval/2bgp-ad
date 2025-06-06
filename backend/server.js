@@ -34,7 +34,7 @@ async function backgroundLoop() {
           const vmData = await retrieveVM(user.client_id);
 
           if (user.ovpn_state !== ovpnData.online) {
-              console.log(`User ${user.username} OVPN state ${user.ovpn_state}  changed: ${ovpnData.online}`);
+              console.log(`User ${user.username} OVPN state ${user.ovpn_state} changed: ${ovpnData.online}`);
               user.ovpn_state = ovpnData.online;
               user.save();
           }

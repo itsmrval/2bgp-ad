@@ -30,12 +30,14 @@ const retrieveWireguard = async (client_id) => {
             if (response.data && response.status === 200) {
                 return response.data;
             } else {
-                console.log('Wireguard config retrieval failed:', response.data);
-                throw new Error('Wireguard config retrieval failed');
+                console.log('OVPN config retrieval failed:', response.data);
+                return { "online": false }
             }
         })
         .catch(error => {
-            throw new Error(`Wireguard config retrieval error: ${error.message}`);
+                console.log('OVPN config retrieval failed:', error.message);
+                return { "online": false }
+
         });
 }
 
@@ -46,11 +48,14 @@ const retrieveVM = async (client_id) => {
                 return { "online": response.data.success };
             } else {
                 console.log('VM config retrieval failed:', response.data);
-                throw new Error('VM config retrieval failed');
+                return { "online": false }
+
             }
         })
         .catch(error => {
-            throw new Error(`VM config retrieval error: ${error.message}`);
+                console.log('VM config retrieval failed:', error.message);
+                return { "online": false }
+
         });
 }
 
