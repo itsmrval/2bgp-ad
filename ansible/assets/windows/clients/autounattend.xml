@@ -107,15 +107,6 @@
               </LocalAccount>
             </LocalAccounts>
           </UserAccounts>
-            <AutoLogon>
-              <Password>
-                  <Value>GPPstillStandingStrong2k18</Value>
-                  <PlainText>true</PlainText>
-              </Password>
-              <Enabled>true</Enabled>
-              <LogonCount>9999</LogonCount>
-              <Username>backup</Username>
-            </AutoLogon>
         </component>
       </settings>
       <settings pass="oobeSystem">
