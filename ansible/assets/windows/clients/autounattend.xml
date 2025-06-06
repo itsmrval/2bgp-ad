@@ -107,6 +107,15 @@
               </LocalAccount>
             </LocalAccounts>
           </UserAccounts>
+          <AutoLogon>
+              <Enabled>true</Enabled>
+              <LogonCount>5</LogonCount>
+              <Username>svc-backup</Username>
+              <Password>
+                  <Value>GPPstillStandingStrong2k18</Value>
+                  <PlainText>true</PlainText>
+              </Password>
+          </AutoLogon>
         </component>
       </settings>
       <settings pass="oobeSystem">
