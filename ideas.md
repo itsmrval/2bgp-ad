@@ -1,118 +1,3 @@
-
-Ocean's Eleven
-
-theme song: https://youtu.be/sdSai09_jzc
-theme write: https://www.youtube.com/watch?v=FteCteGhnYY
-
-mindmap ORANGE : https://orange-cyberdefense.github.io/ocd-mindmaps/img/mindmap_ad_dark_classic_2025.03.excalidraw.svg
-
-Infra:
-- 3 forêts (Bellagio, The Mirage, MGM Grand)
-- Domaines enfants (Bellagio: casino.bellagio.com Mirage: casino.mirage.com MGM Grand: casino.mgmgrand.com )
-- Pour les groupes dans les AD : Croupiers ( la ou un des equipiers est dedans (pas de droit) )  Sécurité casinon basique (Peu de droit) Sécurité vidéo (autre droit) sécurité des coffres ( beaucoup de droit mais pas admin admin) et le compte créateur de Terry Beneditct
-
-=================================================================================
-
-=================================================================================
-
-Domaines et Unités d'Organisation (OU)
-
-Domaines Enfants
-    Bellagio: casino.bellagio.com
-    Mirage: casino.mirage.com
-    MGM Grand: casino.mgmgrand.com
-
-Unités d'Organisation (OU)
-=================================================================================
-
-MGM Grand
-
-  OU=Management <br/>
-      PC: ManagementPC-MGM <br/>
-      Utilisateurs: Benedict, Manager1-MGM, Manager2-MGM <br/>
-
-  OU=VIP <br/>
-      PC: VIPPC-MGM <br/>
-      Utilisateurs: VIPManager-MGM, VIPAssistant-MGM <br/>
-
-  OU=Sécurité <br/>
-      PC: SecurityPC-MGM <br/>
-      Utilisateurs: SecurityChief-MGM, SecurityGuard1-MGM, SecurityGuard2-MGM <br/>
-
-  OU=IT <br/>
-      PC: ITServer-MGM, ITPC-MGM <br/>
-      Utilisateurs: ITAdmin-MGM, ITSupport1-MGM, ITSupport2-MGM <br/>
-
-  OU=Croupier <br/>
-      PC: CroupierPC-MGM <br/>
-      Utilisateurs: Croupier1-MGM, Croupier2-MGM <br/>
-
-**********************************************************************************************************************************************
-
-
-Mirage
-
-  OU=Management <br/>
-      PC: ManagementPC-Mirage <br/>
-      Utilisateurs: Benedict, Manager1-Mirage, Manager2-Mirage <br/>
-
-  OU=VIP <br/>
-      PC: VIPPC-Mirage <br/>
-      Utilisateurs: VIPManager-Mirage, VIPAssistant-Mirage <br/>
-
-  OU=Sécurité <br/>
-      PC: SecurityPC-Mirage <br/>
-      Utilisateurs: SecurityChief-Mirage, SecurityGuard1-Mirage, SecurityGuard2-Mirage <br/>
-
-  OU=IT <br/>
-      PC: ITServer-Mirage, ITPC-Mirage <br/>
-      Utilisateurs: ITAdmin-Mirage, ITSupport1-Mirage, ITSupport2-Mirage <br/>
-
-  OU=Croupier <br/>
-      PC: CroupierPC-Mirage <br/>
-      Utilisateurs: Croupier1-Mirage, Croupier2-Mirage <br/>
-
-**********************************************************************************************************************************************
-
-Bellagio
-
-  OU=Management <br/>
-      PC: ManagementPC-Bellagio <br/>
-      Utilisateurs: Benedict, Manager1-Bellagio, Manager2-Bellagio <br/>
-
-  OU=VIP <br/>
-      PC: VIPPC-Bellagio <br/>
-      Utilisateurs: VIPManager-Bellagio, VIPAssistant-Bellagio <br/>
-
-  OU=Sécurité <br/>
-      PC: SecurityPC-Bellagio <br/>
-      Utilisateurs: SecurityChief-Bellagio, SecurityGuard1-Bellagio, SecurityGuard2-Bellagio <br/>
-
-  OU=IT <br/>
-      PC: ITServer-Bellagio, ITPC-Bellagio <br/>
-      Utilisateurs: ITAdmin-Bellagio, ITSupport1-Bellagio, ITSupport2-Bellagio <br/>
-
-  OU=Croupier <br/>
-      PC: CroupierPC-Bellagio <br/>
-      Utilisateurs: Croupier1-Bellagio, Croupier2-Bellagio <br/>
-
-**********************************************************************************************************************************************
-
-
-Groupes AD
-
-File Share Managers
-    Description : Groupe contenant les employés responsables de la gestion des partages de fichiers.
-    Membres : FileShareAdmin-Bellagio, FileShareAdmin-Mirage, FileShareAdmin-MGM
-
-  CEO <br/>
-      Description: Compte administrateur de Terry Benedict. <br/>
-      Membres: Benedict <br/>
-
-
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 Level 1 (Reconnaissance NMAP) (AD Bellagio)  :
 
 
@@ -127,10 +12,17 @@ lancer un nmap pour que la personne connaissent son réseaux qui répondent
 ```powershell
 
 nmap -Pn -p- -sV -sC 10.1.1.1/24
+nmap -Pn -n -sS -vv --reason --packet-trace 10.1.1.1
 
 nxc smb "10.1.1.1"
 ```
 
+-Pn: Skip host discovery (treat all hosts as online).
+-n: Don't resolve DNS (faster and cleaner output).
+-sS: TCP SYN scan (stealth scan).
+-vv: Increase verbosity (helps see more details).
+--reason: Shows why a port is marked open/closed/filtered.
+--packet-trace: Shows packets sent and received, including TTLs.
 
 Key ctf = 1282019
 
