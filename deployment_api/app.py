@@ -96,7 +96,7 @@ def check_infrastructure(client_id):
         }), 500
 
 
-@app.route('/wg', methods=['POST'])
+@app.route('/ovpn', methods=['POST'])
 def generate_wireguard_client():
     data = request.json
     
@@ -107,29 +107,31 @@ def generate_wireguard_client():
     
     try:
         cmd = [
-            'ansible-playbook', 
-            WG_PLAYBOOK_PATH, 
-            f'--extra-vars=client_id={client_id}'
+            '/bin/bash', 
+            '/opt/deployment_api/ovpn_scripts/deploy_user_ovpn.sh',
+            str(client_id),
+            public_ip
         ]
-        
+
         result = subprocess.run(
-            cmd, 
-            stdout=subprocess.PIPE, 
+            cmd,
+            stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True
         )
+
         
         if result.returncode != 0:
             return jsonify({
                 'status': 'error',
-                'message': 'Ansible playbook execution failed',
+                'message': 'OVPN execution failed',
                 'error': result.stderr
             }), 500
         
         return jsonify({
             'status': 'success',
             'client_id': client_id,
-            'message': 'WireGuard client generated successfully'
+            'message': 'OVPN client generated successfully'
         })
         
     except Exception as e:
@@ -138,81 +140,31 @@ def generate_wireguard_client():
             'message': str(e)
         }), 500
 
-@app.route('/wg/<int:client_id>', methods=['POST'])
-def create_client(client_id):
-    data = request.json
-    
-    if not data or 'private_key' not in data or 'public_key' not in data:
-        return jsonify({'error': 'Missing required fields: private_key and public_key'}), 400
-    
-    private_key = data['private_key']
-    public_key = data['public_key']
-    server_public_key = data.get('server_public_key', '')
-    
-    filename = f'client_{client_id}.json'
-    filepath = os.path.join(CONFIGS_DIR, filename)
-    
-    if os.path.exists(filepath):
-        return jsonify({
-            'status': 'error',
-            'message': f'Client with ID {client_id} already exists'
-        }), 409
-    
-    client_data = {
-        'client_id': client_id,
-        'private_key': private_key,
-        'public_key': public_key,
-        'server_public_key': server_public_key,
-        'public_address': public_ip
-    }
-    
-    with open(filepath, 'w') as f:
-        json.dump(client_data, f)
-    
-    return jsonify({
-        'status': 'success',
-        'client_id': client_id,
-        'message': 'Client created successfully'
-    })
-
-@app.route('/wg/<int:client_id>', methods=['GET'])
-def get_client_config(client_id):
-    filename = f'client_{client_id}.json'
-    filepath = os.path.join(CONFIGS_DIR, filename)
+@app.route('/ovpn/<int:client_id>', methods=['GET'])
+def get_ovpn_client(client_id):
+    filepath = f'/etc/openvpn/user{client_id}/clients/client{client_id}.ovpn'
     
     if not os.path.exists(filepath):
-        return jsonify({'error': 'Client not found'}), 404
+        return jsonify({'error': f'OVPN file for client {client_id} not found'}), 404
     
     try:
         with open(filepath, 'r') as f:
-            client_data = json.load(f)
-        
-        ip = f'172.17.{client_id}.2'
-        try:
-            result = subprocess.run(['ping', '-c', '1', '-W', '1', ip], stdout=subprocess.DEVNULL)
-            is_online = result.returncode == 0
-        except Exception:
-            is_online = False
-        
-        config_content = f"""[Interface]
-PrivateKey = {client_data['private_key']}
-Address = 172.17.{client_id}.2/30
-DNS = 1.1.1.1, 8.8.8.8
-
-[Peer]
-PublicKey = {client_data['server_public_key']}
-Endpoint = {public_ip}:51{client_id}
-AllowedIPs = 10.{client_id}.0.0/16,172.17.{client_id}.1/32
-PersistentKeepalive = 5
-"""
+            ovpn_file_content = f.read()
         
         return jsonify({
-            'profile': config_content,
-            'online': is_online
+            'client_id': client_id,
+            'ovpn_file': ovpn_file_content
         }), 200
     
     except Exception as e:
-        return jsonify({'error': f'Error generating client config: {str(e)}'}), 500
+        return jsonify({'error': f'Error reading OVPN file: {str(e)}'}), 500
+    
+@app.route('/ovpn/<int:client_id>', methods=['POST'])
+def disabled_upload(client_id):
+    return jsonify({
+        'status': 'error',
+        'message': 'Uploading .ovpn files is disabled now.'
+    }), 403
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

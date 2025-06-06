@@ -86,7 +86,6 @@
           - python3
           - ansible
           - pipx
-          - wireguard
       delegate_to: "{{ container_deployment_ip }}"
       
     # Deploy the Deployment API on the VPN container

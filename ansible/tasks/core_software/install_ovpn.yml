@@ -1,0 +1,5 @@
+- name: Run OpenVPN setup script
+  ansible.builtin.shell: /opt/deployment_api/ovpn_scripts/setup_ovpn.sh
+  args:
+    executable: /bin/bash
+  become: yes 
