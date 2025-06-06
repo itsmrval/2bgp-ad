@@ -291,7 +291,7 @@ La première étape consiste donc à se connecter sur la machine cliente cible
 L'attaquant doit ensuite checker les utilisateurs qui sont actuellement connectés sur la machine cible
 
 ```shell
-    to complete
+    query user
 ```
 
 Ayant obtenu des droits admin Local à l'étape précédente il peut maintenant installer des applications et les lancer.
