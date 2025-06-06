@@ -4,7 +4,6 @@ admin2
 admin3
 admin4
 admin5
-administrator
 avalanche
 backup
 backup-admin
@@ -90,7 +89,6 @@ wore_admin
 ADAMS
 ADLDEMO
 ADMIN
-ADMINISTRATOR
 ADVMAIL
 ALLIN1
 ALLIN1MAIL
@@ -116,7 +114,6 @@ AUTOLOG1
 Admin
 Admin1
 Admin5
-Administrator
 AdvWebadmin
 Airaya
 Any
@@ -562,7 +559,6 @@ adm
 admin
 admin2
 admin@example.com
-administrator
 adminstrator
 admn
 alien
