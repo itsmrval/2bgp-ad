@@ -56,7 +56,13 @@ Ensure you have the following installed:
 
 ### Installation
 
-1. **Modify Configuration**
+1. **Clone the Repository**
+   ```sh
+   git clone https://github.com/itsmrval/2bgp-ad
+   cd 2bgp-ad
+   ```
+
+2. **Modify Configuration**
    - Navigate to the `ansible` directory:
      ```sh
      cd ansible
@@ -64,58 +70,14 @@ Ensure you have the following installed:
    - Edit the files in `group_vars/all.yml` and `inventory.yml`.
    - On thoses, specify passwords and remote proxmox specifications
 
-1. **Clone the Repository**
-   ```sh
-   git clone https://github.com/itsmrval/2bgp-ad
-   cd 2bgp-ctf
-   ```
-
-2. **Build the Docker Images**
+3. **Run the main playbook**
    
    ```sh
-   bash build.sh
-   ```
-
-3. **Verify Docker Images**
-   Check that all required images are built successfully:
-   ```sh
-   docker images
-   ```
-   You should see a list of images similar to:
-   ```
-   2bgp-ctf_level10    latest       97c23908ce72   2 seconds ago    586MB
-   2bgp-ctf_level4     latest       11d730a5631c   10 seconds ago   526MB
-   2bgp-ctf_level8     latest       cd097699aa08   10 seconds ago   517MB
-   2bgp-ctf_level6     latest       203b7a2e68d7   10 seconds ago   538MB
-   2bgp-ctf_level7     latest       ee21fa815f5d   10 seconds ago   517MB
-   2bgp-ctf_level5     latest       fbd92b290638   10 seconds ago   513MB
-   2bgp-ctf_level9     latest       01540d18db8a   10 seconds ago   516MB
-   2bgp-ctf_level3     latest       34a45762f452   11 seconds ago   513MB
-   2bgp-ctf_level2     latest       77878bb6128d   12 seconds ago   519MB
-   2bgp-ctf_level1     latest       8278a9cf3f5e   12 seconds ago   513MB
-   2bgp-ctf_backend    latest       9241d8460298   18 seconds ago   1.16GB
-   2bgp-ctf_frontend   latest       f0e0a7d519ab   21 seconds ago   67.3MB
-   ```
-
-4. **Modify Configuration**
-   - Navigate to the `dist` directory:
-     ```sh
-     cd dist
-     ```
-   - Edit the `ADMIN_SYSTEM_TOKEN` in `config/backend.env`.
-   - Optionally, modify MongoDB credentials in `config/backend.env` and `config/mongodb.env`.
-
-5. **Modify Hosts File**
-   - Add `2bgp-ctf.rvcs.fr` to `127.0.0.1` in your `/etc/hosts` file.
-   - For Windows, edit `C:\Windows\System32\drivers\etc\hosts`.
-
-6. **Start Docker Containers**
-   ```sh
-   docker compose up -d
+   ansible-playbook playbook.yml -i inventory.yml
    ```
 
 7. **Access the Platform**
-   - Once all containers are running and the backend is healthy, access the platform at [https://2bgp-ctf.rvcs.fr](https://2bgp-ctf.rvcs.fr).
+   - Once the playbook is running, you can navigate to http://[provided-ip]
    - Note: the first user registered is an admin.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
