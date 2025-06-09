@@ -16,6 +16,7 @@
   </p>
 </div>
 
+
 <details>
   <summary>Table of contents</summary>
   <ol>
@@ -29,7 +30,6 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
   </ol>
 </details>
 
@@ -39,6 +39,10 @@
 This project was carried out for educational purposes.
 
 It will deploy 5 VMs and a SDN with security rules per user for isolated environment, automaticly.
+
+Homepage             |  Installation
+:-------------------------:|:-------------------------:
+![](https://i.imgur.com/1PGLYmC.jpeg)  |  ![](https://i.imgur.com/v0G9vW0.png) 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
